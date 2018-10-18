@@ -80,7 +80,7 @@ namespace ZBuffer
             scene.Bitmap.WritePixels(rect, pixels, stride, 0);
         }
 
-        public void DrawSceneByPoints(Scene scene, List<Point3D> points)
+        public void DrawSceneByPoints(Scene scene, List<MPoint> points)
         {
             Int32Rect rect = new Int32Rect(0, 0, (int)scene.Bitmap.Width, (int)scene.Bitmap.Height);
 
@@ -154,10 +154,10 @@ namespace ZBuffer
 
         public void DrawFacet(Scene scene, MFacet facet)
         {
-            Point3D point1 = new Point3D(facet.Vert[0].SX, facet.Vert[0].SY, facet.Vert[0].SZ);
-            Point3D point2 = new Point3D(facet.Vert[1].SX, facet.Vert[1].SY, facet.Vert[1].SZ);
+            MPoint point1 = new MPoint(facet.Vert[0].SX, facet.Vert[0].SY, facet.Vert[0].SZ);
+            MPoint point2 = new MPoint(facet.Vert[1].SX, facet.Vert[1].SY, facet.Vert[1].SZ);
 
-            List<Point3D> points = new VectorMath().GetAllVectorPoints(point1, point2);
+            List<MPoint> points = new VectorMath().GetAllVectorPoints(point1, point2);
 
             Int32Rect rect = new Int32Rect(0, 0, (int)scene.Bitmap.Width, (int)scene.Bitmap.Height);
 
@@ -167,7 +167,7 @@ namespace ZBuffer
             {
                 for (int x = 0; x < scene.Bitmap.PixelWidth; x++)
                 {
-                    var currPoint = new Point3D(x, y, -1);
+                    var currPoint = new MPoint(x, y, -1);
 
                     int alpha = 255;
                     int red = 255;

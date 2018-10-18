@@ -8,7 +8,7 @@ using ZBuffer.ZBufferMath;
 
 namespace ZBuffer.Shapes
 {
-    public class MFacet : MShape
+    public class MFacet : MCommonPrimitive
     {
         public MPoint[] Vert;  //вершины
         public int Argb;  //цвет грани
@@ -25,41 +25,46 @@ namespace ZBuffer.Shapes
             Argb = argb;
         }
 
-        public override HashSet<Point3D> GetHashedPoints()
+        //public override HashSet<Point3D> GetHashedPoints()
+        //{
+        //    var points = new HashSet<Point3D>();
+
+        //    VectorMath vectorMath = new VectorMath();
+
+        //    foreach (Point3D point in vectorMath.GetAllVectorPoints(new Point3D(Vert[0].X, Vert[0].Y, Vert[0].Z), new Point3D(Vert[1].X, Vert[1].Y, Vert[1].Z)))
+        //    {
+        //        points.Add(point);
+        //    }
+
+        //    foreach (Point3D point in vectorMath.GetAllVectorPoints(new Point3D(Vert[2].X, Vert[2].Y, Vert[2].Z), new Point3D(Vert[1].X, Vert[1].Y, Vert[1].Z)))
+        //    {
+        //        points.Add(point);
+        //    }
+
+        //    foreach (Point3D point in vectorMath.GetAllVectorPoints(new Point3D(Vert[0].X, Vert[0].Y, Vert[0].Z), new Point3D(Vert[2].X, Vert[2].Y, Vert[2].Z)))
+        //    {
+        //        points.Add(point);
+        //    }
+
+        //    return points;
+        //}
+
+        public override List<MPoint> GetAllPoints()
         {
-            var points = new HashSet<Point3D>();
+            var points = new List<MPoint>();
 
             VectorMath vectorMath = new VectorMath();
 
-            foreach (Point3D point in vectorMath.GetAllVectorPoints(new Point3D(Vert[0].X, Vert[0].Y, Vert[0].Z), new Point3D(Vert[1].X, Vert[1].Y, Vert[1].Z)))
-            {
-                points.Add(point);
-            }
-
-            foreach (Point3D point in vectorMath.GetAllVectorPoints(new Point3D(Vert[2].X, Vert[2].Y, Vert[2].Z), new Point3D(Vert[1].X, Vert[1].Y, Vert[1].Z)))
-            {
-                points.Add(point);
-            }
-
-            foreach (Point3D point in vectorMath.GetAllVectorPoints(new Point3D(Vert[0].X, Vert[0].Y, Vert[0].Z), new Point3D(Vert[2].X, Vert[2].Y, Vert[2].Z)))
-            {
-                points.Add(point);
-            }
+            points.AddRange(vectorMath.GetAllVectorPoints(new MPoint(Vert[0].X, Vert[0].Y, Vert[0].Z), new MPoint(Vert[1].X, Vert[1].Y, Vert[1].Z)));
+            points.AddRange(vectorMath.GetAllVectorPoints(new MPoint(Vert[2].X, Vert[2].Y, Vert[2].Z), new MPoint(Vert[1].X, Vert[1].Y, Vert[1].Z)));
+            points.AddRange(vectorMath.GetAllVectorPoints(new MPoint(Vert[0].X, Vert[0].Y, Vert[0].Z), new MPoint(Vert[2].X, Vert[2].Y, Vert[2].Z)));
 
             return points;
         }
 
-        public override List<Point3D> GetPoints()
+        public override List<MPoint> GetVertices()
         {
-            var points = new List<Point3D>();
-
-            VectorMath vectorMath = new VectorMath();
-
-            points.AddRange(vectorMath.GetAllVectorPoints(new Point3D(Vert[0].X, Vert[0].Y, Vert[0].Z), new Point3D(Vert[1].X, Vert[1].Y, Vert[1].Z)));
-            points.AddRange(vectorMath.GetAllVectorPoints(new Point3D(Vert[2].X, Vert[2].Y, Vert[2].Z), new Point3D(Vert[1].X, Vert[1].Y, Vert[1].Z)));
-            points.AddRange(vectorMath.GetAllVectorPoints(new Point3D(Vert[0].X, Vert[0].Y, Vert[0].Z), new Point3D(Vert[2].X, Vert[2].Y, Vert[2].Z)));
-
-            return points;
+            throw new NotImplementedException();
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Windows.Media.Media3D;
 
 namespace ZBuffer.Shapes
 {
-    public class MBox : MShape
+    public class MBox : MCommonPrimitive
     {
         private const int verticesCount = 8;
 
@@ -124,19 +124,24 @@ namespace ZBuffer.Shapes
             };
         }
 
-        public override List<Point3D> GetPoints()
+        public override List<MPoint> GetAllPoints()
         {
-            var points = new List<Point3D>();
+            var points = new List<MPoint>();
 
             for (int i = 0; i < Facets.Length; ++i)
-                points.AddRange(Facets[i].GetPoints());
+                points.AddRange(Facets[i].GetAllPoints());
 
             return points;
         }
 
-        public override HashSet<Point3D> GetHashedPoints()
+        public override List<MPoint> GetVertices()
         {
-            throw new NotImplementedException();
+            return Vertices.ToList();
         }
+
+        //public override HashSet<Point3D> GetHashedPoints()
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

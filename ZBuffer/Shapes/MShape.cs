@@ -9,7 +9,7 @@ namespace ZBuffer.Shapes
 {
     public abstract class MShape
     {
-        public abstract HashSet<Point3D> GetHashedPoints();
-        public abstract List<Point3D> GetPoints();
+        //public abstract HashSet<MPoint> GetHashedPoints();
+        public abstract List<MPoint> GetAllPoints();
     }
 }

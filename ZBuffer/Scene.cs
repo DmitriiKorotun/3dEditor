@@ -35,7 +35,7 @@ namespace ZBuffer
 
         public WriteableBitmap Render()
         {
-            List<Point3D> allPoints = GetAllPoints();
+            List<MPoint> allPoints = GetAllPoints();
 
             var painter = new Painter();
 
@@ -49,17 +49,17 @@ namespace ZBuffer
             Shapes.Add(shape);
         }
 
-        private List<Point3D> GetAllPoints()
+        private List<MPoint> GetAllPoints()
         {
-            var allPoints = new List<Point3D>();
+            var allPoints = new List<MPoint>();
 
             foreach (MShape shape in Shapes)
             {
-                allPoints.AddRange(shape.GetPoints());
+                allPoints.AddRange(shape.GetAllPoints());
             }
             //foreach(MShape shape in Shapes)
             //{
-            //    foreach (Point3D point in shape.GetPoints())
+            //    foreach (MPoint point in shape.GetPoints())
             //        allPoints.Add(point);
             //}
 

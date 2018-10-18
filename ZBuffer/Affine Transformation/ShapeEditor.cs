@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using ZBuffer.Shapes;
@@ -10,6 +11,53 @@ namespace ZBuffer.Affine_Transformation
 {
     public class ShapeEditor
     {
+        public void RotateX(MCommonPrimitive shape, double angle)
+        {
+            double rads = angle * Math.PI / 180.0;
+
+            var vertices = shape.GetVertices();
+
+            var axis = Vector3.UnitZ;
+
+            Quaternion rotationQuaternion = GetRotationQuaternion(axis, rads);
+
+            RotateShape(vertices, rotationQuaternion);
+        }
+
+        private void RotateShape(List<MPoint> vertices, Quaternion rotationQuaternion)
+        {          
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                var vertexVector = new Vector3(vertices[i].X, vertices[i].Y, vertices[i].Z);
+
+                var newCoords = Vector3.Transform(vertexVector, rotationQuaternion);
+
+                SetVectorCoordinatesToPoint(vertices[i], newCoords);
+            }
+        }
+
+        private void SetVectorCoordinatesToPoint(MPoint point, Vector3 vector)
+        {
+            point.X = vector.X;
+            point.Y = vector.Y;
+            point.Z = vector.Z;
+        }
+
+        private Quaternion GetRotationQuaternion(Vector3 axis, double rads)
+        {
+            float quaternionX = (float)(Math.Sin(rads / 2) * axis.X),
+                   quaternionY = (float)(Math.Sin(rads / 2) * axis.Y),
+                   quaternionZ = (float)(Math.Sin(rads / 2) * axis.Z),
+                   quaternionW = (float)(Math.Cos(rads / 2));
+
+            //float quaternionX = 0,
+            //       quaternionY = 0,
+            //       quaternionZ = (float)(Math.Sin(rads / 2) * axis.Z),
+            //       quaternionW = (float)Math.Cos(rads) / 2;
+
+            return new Quaternion(quaternionX, quaternionY, quaternionZ, quaternionW);
+        }
+
         public float[,] RotateY(MPoint shapeCenter, double angle)
         {
             double rads = angle * Math.PI / 180.0;
@@ -86,7 +134,7 @@ namespace ZBuffer.Affine_Transformation
         }
 
         //TO DEL
-        public void RotateZVertices(MPoint[] vertices, double angle)
+        public void RotateZVertices(List<MPoint> vertices, double angle)
         {
             double rads = angle * Math.PI / 180.0;
             //формируем матрицу поворота;
@@ -97,7 +145,7 @@ namespace ZBuffer.Affine_Transformation
                 { 0, 0, 0, 1 }
             };
 
-            for (int i = 0; i < vertices.Length; ++i)
+            for (int i = 0; i < vertices.Count; ++i)
             {
                 float[,] shapeCoords = { { vertices[i].X }, { vertices[i].Y }, { vertices[i].Z }, { 1 } };
 

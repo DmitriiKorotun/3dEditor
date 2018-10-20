@@ -154,8 +154,8 @@ namespace ZBuffer
 
         public void DrawFacet(Scene scene, MFacet facet)
         {
-            MPoint point1 = new MPoint(facet.Vert[0].SX, facet.Vert[0].SY, facet.Vert[0].SZ);
-            MPoint point2 = new MPoint(facet.Vert[1].SX, facet.Vert[1].SY, facet.Vert[1].SZ);
+            MPoint point1 = new MPoint(facet.Vertices[0].SX, facet.Vertices[0].SY, facet.Vertices[0].SZ);
+            MPoint point2 = new MPoint(facet.Vertices[1].SX, facet.Vertices[1].SY, facet.Vertices[1].SZ);
 
             List<MPoint> points = new VectorMath().GetAllVectorPoints(point1, point2);
 

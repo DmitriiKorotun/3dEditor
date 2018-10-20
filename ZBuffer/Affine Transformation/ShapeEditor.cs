@@ -60,9 +60,6 @@ namespace ZBuffer.Affine_Transformation
                 vertices[i].X -= shapeCenter.X;
                 vertices[i].Y -= shapeCenter.Y;
                 vertices[i].Z -= shapeCenter.Z;
-                //vertices[i].X = vertices[i].X >= 0 ? vertices[i].X - shapeCenter.X : vertices[i].X + shapeCenter.X;
-                //vertices[i].Y = vertices[i].Y >= 0 ? vertices[i].Y - shapeCenter.Y : vertices[i].Y + shapeCenter.Y;
-                //vertices[i].X = vertices[i].X >= 0 ? vertices[i].X - shapeCenter.Z : vertices[i].X + shapeCenter.Z;
             }
         }
 
@@ -75,9 +72,6 @@ namespace ZBuffer.Affine_Transformation
                 vertices[i].X += previousShapeCenter.X;
                 vertices[i].Y += previousShapeCenter.Y;
                 vertices[i].Z += previousShapeCenter.Z;
-                //vertices[i].X = vertices[i].X >= 0 ? vertices[i].X + shape.Length : vertices[i].X - shape.Length;
-                //vertices[i].Y = vertices[i].Y >= 0 ? vertices[i].Y + shape.Width : vertices[i].Y - shape.Width;
-                //vertices[i].X = vertices[i].X >= 0 ? vertices[i].X + shape.Height : vertices[i].X - shape.Height;
             }
         }
 
@@ -106,11 +100,6 @@ namespace ZBuffer.Affine_Transformation
                    quaternionY = (float)(Math.Sin(rads / 2) * axis.Y),
                    quaternionZ = (float)(Math.Sin(rads / 2) * axis.Z),
                    quaternionW = (float)(Math.Cos(rads / 2));
-
-            //float quaternionX = 0,
-            //       quaternionY = 0,
-            //       quaternionZ = (float)(Math.Sin(rads / 2) * axis.Z),
-            //       quaternionW = (float)Math.Cos(rads) / 2;
 
             return new Quaternion(quaternionX, quaternionY, quaternionZ, quaternionW);
         }

@@ -10,17 +10,17 @@ namespace ZBuffer.Shapes
 {
     public class MFacet : MCommonPrimitive
     {
-        public MPoint[] Vert;  //вершины
+        public MPoint[] Vertices;  //вершины
         public int Argb;  //цвет грани
 
         public MFacet(MPoint first, MPoint second, MPoint third)
         {
-            Vert = new MPoint[] { first, second, third };
+            Vertices = new MPoint[] { first, second, third };
         }
 
         public MFacet(MPoint first, MPoint second, MPoint third, int argb)
         {
-            Vert = new MPoint[] { first, second, third };
+            Vertices = new MPoint[] { first, second, third };
 
             Argb = argb;
         }
@@ -55,21 +55,24 @@ namespace ZBuffer.Shapes
 
             VectorMath vectorMath = new VectorMath();
 
-            points.AddRange(vectorMath.GetAllVectorPoints(new MPoint(Vert[0].X, Vert[0].Y, Vert[0].Z), new MPoint(Vert[1].X, Vert[1].Y, Vert[1].Z)));
-            points.AddRange(vectorMath.GetAllVectorPoints(new MPoint(Vert[2].X, Vert[2].Y, Vert[2].Z), new MPoint(Vert[1].X, Vert[1].Y, Vert[1].Z)));
-            points.AddRange(vectorMath.GetAllVectorPoints(new MPoint(Vert[0].X, Vert[0].Y, Vert[0].Z), new MPoint(Vert[2].X, Vert[2].Y, Vert[2].Z)));
+            points.AddRange(vectorMath.GetAllVectorPoints(
+                new MPoint(Vertices[0].X, Vertices[0].Y, Vertices[0].Z),
+                new MPoint(Vertices[1].X, Vertices[1].Y, Vertices[1].Z)));
+
+            points.AddRange(vectorMath.GetAllVectorPoints(
+                new MPoint(Vertices[2].X, Vertices[2].Y, Vertices[2].Z),
+                new MPoint(Vertices[1].X, Vertices[1].Y, Vertices[1].Z)));
+
+            points.AddRange(vectorMath.GetAllVectorPoints(
+                new MPoint(Vertices[0].X, Vertices[0].Y, Vertices[0].Z),
+                new MPoint(Vertices[2].X, Vertices[2].Y, Vertices[2].Z)));
 
             return points;
         }
 
-        public override MPoint GetCenterPoint()
-        {
-            throw new NotImplementedException();
-        }
-
         public override List<MPoint> GetVertices()
         {
-            throw new NotImplementedException();
+            return Vertices.ToList();
         }
     }
 }

@@ -14,31 +14,6 @@ namespace ZBuffer.Shapes
         public MPoint[] Vertices { get; set; }  //вершины
         public MFacet[] Facets { get; set; }  //грани
 
-        //FOR TESTS
-        //TODO REWORK INITIALIZTIONS ACCORDING TO WIDTH AND LENGTH CHANGES
-        public MBox(float width, float length, float height)
-        {
-            Width = width;
-            Length = length;
-            Height = height;
-
-            Vertices = new MPoint[] {
-                new MPoint((float)21.5, (float)45.39, 4), new MPoint((float)21.5 + width, (float)45.39, 4),
-                new MPoint((float)21.5 + width, (float)45.39 + length, 4), new MPoint((float)21.5, (float)45.39 + length, 4),
-                new MPoint((float)21.5, (float)45.39, 4 + height), new MPoint((float)21.5 + width, (float)45.39, 4 + height),
-                new MPoint((float)21.5 + width, (float)45.39 + length, 4 + height), new MPoint((float)21.5, (float)45.39 + length, 4 + height),
-            };
-
-            Facets = new MFacet[] {
-                new MFacet(Vertices[0], Vertices[1], Vertices[2]),
-                new MFacet(Vertices[0], Vertices[1], Vertices[5]),
-                new MFacet(Vertices[0], Vertices[3], Vertices[7]),
-                new MFacet(Vertices[6], Vertices[5], Vertices[4]),
-                new MFacet(Vertices[6], Vertices[5], Vertices[2]),
-                new MFacet(Vertices[6], Vertices[7], Vertices[3]),
-            };
-        }
-
         public MBox(MPoint leftFaceCorner, float length, float width, float height)
         {
             SetParameters(length, width, height);
@@ -144,25 +119,6 @@ namespace ZBuffer.Shapes
         public override List<MPoint> GetVertices()
         {
             return Vertices.ToList();
-        }
-
-        public override MPoint GetCenterPoint()
-        {
-            MPoint maxCoords = new MPoint(Vertices[0].X, Vertices[0].Y, Vertices[0].Z);
-            MPoint minCoords = new MPoint(Vertices[0].X, Vertices[0].Y, Vertices[0].Z);
-
-            foreach (MPoint vertex in Vertices)
-            {
-                maxCoords.X = vertex.X > maxCoords.X ? vertex.X : maxCoords.X;
-                maxCoords.Y = vertex.Y > maxCoords.Y ? vertex.Y : maxCoords.Y;
-                maxCoords.Z = vertex.Z > maxCoords.Z ? vertex.Z : maxCoords.Z;
-
-                minCoords.X = vertex.X < minCoords.X ? vertex.X : minCoords.X;
-                minCoords.Y = vertex.Y < minCoords.Y ? vertex.Y : minCoords.Y;
-                minCoords.Z = vertex.Z < minCoords.Z ? vertex.Z : minCoords.Z;
-            }
-
-            return new MPoint((maxCoords.X + minCoords.X) / 2, (maxCoords.Y + minCoords.Y) / 2, (maxCoords.Z + minCoords.Z) / 2);
         }
 
         //public override HashSet<Point3D> GetHashedPoints()

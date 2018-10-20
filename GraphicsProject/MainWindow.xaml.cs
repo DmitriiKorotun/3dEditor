@@ -41,9 +41,9 @@ namespace GraphicsProject
             var box1 = new MBox(new MPoint(75, 75, 0), 50, 50, 50);
             var box2 = new MBox(new MPoint(75, 75, 0), 50, 50, 50);
             var box3 = new MBox(new MPoint(75, 75, 0), 50, 50, 50);
-            new ShapeEditor().RotateX(box2, 25);
-            new ShapeEditor().RotateZVertices(box3.GetVertices(), 25);
-            scene.AddShape(box1);
+            new ShapeEditor().RotateZ(box2, 80);
+            //new ShapeEditor().RotateZVertices(box3.GetVertices(), 25);
+            //scene.AddShape(box1);
             scene.AddShape(box2);
             //scene.AddShape(box3);
 

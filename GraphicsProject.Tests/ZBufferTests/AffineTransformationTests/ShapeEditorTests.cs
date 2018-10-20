@@ -90,5 +90,26 @@ namespace GraphicsProject.Tests.ZBufferTests.AffineTransformationTests
             // assert
             Assert.IsTrue(isMatrixesEqual);
         }
+
+        //[TestMethod]
+        //public void MoveShapeToOrigin_CubeWithAllPositiveCooridnatesMoreThatParameters_ExpectedTransformationMatrixReturned()
+        //{
+        //    // arrange
+        //    ShapeEditor editor = new ShapeEditor();
+
+        //    MPoint shapeCenter = new MPoint(3, 1, 4);
+
+        //    double angle = 30;
+
+        //    float[,] expectedResult = { { 3 }, { (float)-1.13397455 }, { (float)3.96410155 }, { 1 } };
+
+        //    // act
+        //    var transformationMatrix = editor.RotateX(shapeCenter, angle);
+
+        //    bool isMatrixesEqual = MatrixComparator.IsMatrixesEqual(expectedResult, transformationMatrix);
+
+        //    // assert
+        //    Assert.IsTrue(isMatrixesEqual);
+        //}
     }
 }

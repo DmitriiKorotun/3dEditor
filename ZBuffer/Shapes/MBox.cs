@@ -13,16 +13,14 @@ namespace ZBuffer.Shapes
 
         public MPoint[] Vertices { get; set; }  //вершины
         public MFacet[] Facets { get; set; }  //грани
-        public float Heigth { get; set; }  //высота
-        public float Length { get; set; }  //длина
-        public float Width { get; set; }  //ширина
 
         //FOR TESTS
+        //TODO REWORK INITIALIZTIONS ACCORDING TO WIDTH AND LENGTH CHANGES
         public MBox(float width, float length, float height)
         {
             Width = width;
             Length = length;
-            Heigth = height;
+            Height = height;
 
             Vertices = new MPoint[] {
                 new MPoint((float)21.5, (float)45.39, 4), new MPoint((float)21.5 + width, (float)45.39, 4),
@@ -41,13 +39,22 @@ namespace ZBuffer.Shapes
             };
         }
 
-        public MBox(MPoint leftFaceCorner, float width, float length, float height)
+        public MBox(MPoint leftFaceCorner, float length, float width, float height)
         {
-            InitVertices(leftFaceCorner, width, length, height);
+            SetParameters(length, width, height);
+
+            InitVertices(leftFaceCorner, length, width, height);
             InitFacets(Vertices);
         }
 
-        private void InitVertices(MPoint leftFrontCorner, float width, float length, float height)
+        private void SetParameters(float length, float width, float height)
+        {
+            Length = length;
+            Width = width;
+            Height = height;
+        }
+
+        private void InitVertices(MPoint leftFrontCorner, float length, float width, float height)
         {
             int verticesCount = 8;
 
@@ -71,17 +78,17 @@ namespace ZBuffer.Shapes
 
                     //Right front corner
                     case 1:
-                        vertex = new MPoint(leftFrontCorner.SX + width, leftFrontCorner.SY, leftFrontCorner.SZ + applyingHeight);
+                        vertex = new MPoint(leftFrontCorner.SX + length, leftFrontCorner.SY, leftFrontCorner.SZ + applyingHeight);
                         break;
 
                     //Right rear corner
                     case 2:
-                        vertex = new MPoint(leftFrontCorner.SX + width, leftFrontCorner.SY + length, leftFrontCorner.SZ + applyingHeight);
+                        vertex = new MPoint(leftFrontCorner.SX + length, leftFrontCorner.SY + width, leftFrontCorner.SZ + applyingHeight);
                         break;
 
                     //Left rear corner
                     case 3:
-                        vertex = new MPoint(leftFrontCorner.SX, leftFrontCorner.SY + length, leftFrontCorner.SZ + applyingHeight);
+                        vertex = new MPoint(leftFrontCorner.SX, leftFrontCorner.SY + width, leftFrontCorner.SZ + applyingHeight);
                         break;
 
                     default:
@@ -137,6 +144,25 @@ namespace ZBuffer.Shapes
         public override List<MPoint> GetVertices()
         {
             return Vertices.ToList();
+        }
+
+        public override MPoint GetCenterPoint()
+        {
+            MPoint maxCoords = new MPoint(Vertices[0].X, Vertices[0].Y, Vertices[0].Z);
+            MPoint minCoords = new MPoint(Vertices[0].X, Vertices[0].Y, Vertices[0].Z);
+
+            foreach (MPoint vertex in Vertices)
+            {
+                maxCoords.X = vertex.X > maxCoords.X ? vertex.X : maxCoords.X;
+                maxCoords.Y = vertex.Y > maxCoords.Y ? vertex.Y : maxCoords.Y;
+                maxCoords.Z = vertex.Z > maxCoords.Z ? vertex.Z : maxCoords.Z;
+
+                minCoords.X = vertex.X < minCoords.X ? vertex.X : minCoords.X;
+                minCoords.Y = vertex.Y < minCoords.Y ? vertex.Y : minCoords.Y;
+                minCoords.Z = vertex.Z < minCoords.Z ? vertex.Z : minCoords.Z;
+            }
+
+            return new MPoint((maxCoords.X + minCoords.X) / 2, (maxCoords.Y + minCoords.Y) / 2, (maxCoords.Z + minCoords.Z) / 2);
         }
 
         //public override HashSet<Point3D> GetHashedPoints()

@@ -13,18 +13,75 @@ namespace ZBuffer.Affine_Transformation
     {
         public void RotateX(MCommonPrimitive shape, double angle)
         {
+            var axis = Vector3.UnitX;
+
+            RotateShape(shape, angle, axis);
+        }
+
+        public void RotateY(MCommonPrimitive shape, double angle)
+        {
+            var axis = Vector3.UnitY;
+
+            RotateShape(shape, angle, axis);
+        }
+
+        public void RotateZ(MCommonPrimitive shape, double angle)
+        {
+            var axis = Vector3.UnitZ;
+
+            RotateShape(shape, angle, axis);
+        }
+
+        private void RotateShape(MCommonPrimitive shape, double angle, Vector3 axis)
+        {
             double rads = angle * Math.PI / 180.0;
 
-            var vertices = shape.GetVertices();
+            MPoint currentShapeCenter;
 
-            var axis = Vector3.UnitZ;
+            MoveShapeToOrigin(shape, out currentShapeCenter);
 
             Quaternion rotationQuaternion = GetRotationQuaternion(axis, rads);
 
-            RotateShape(vertices, rotationQuaternion);
+            var vertices = shape.GetVertices();
+
+            RotateVertices(vertices, rotationQuaternion);
+
+            MoveShapeToPreviousPosition(shape, currentShapeCenter);
         }
 
-        private void RotateShape(List<MPoint> vertices, Quaternion rotationQuaternion)
+        private void MoveShapeToOrigin(MCommonPrimitive shape, out MPoint shapeCenter)
+        {
+            var vertices = shape.GetVertices();
+
+            shapeCenter = shape.GetCenterPoint();
+
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                vertices[i].X -= shapeCenter.X;
+                vertices[i].Y -= shapeCenter.Y;
+                vertices[i].Z -= shapeCenter.Z;
+                //vertices[i].X = vertices[i].X >= 0 ? vertices[i].X - shapeCenter.X : vertices[i].X + shapeCenter.X;
+                //vertices[i].Y = vertices[i].Y >= 0 ? vertices[i].Y - shapeCenter.Y : vertices[i].Y + shapeCenter.Y;
+                //vertices[i].X = vertices[i].X >= 0 ? vertices[i].X - shapeCenter.Z : vertices[i].X + shapeCenter.Z;
+            }
+        }
+
+        private void MoveShapeToPreviousPosition(MCommonPrimitive shape, MPoint previousShapeCenter)
+        {
+            var vertices = shape.GetVertices();
+
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                vertices[i].X += previousShapeCenter.X;
+                vertices[i].Y += previousShapeCenter.Y;
+                vertices[i].Z += previousShapeCenter.Z;
+                //vertices[i].X = vertices[i].X >= 0 ? vertices[i].X + shape.Length : vertices[i].X - shape.Length;
+                //vertices[i].Y = vertices[i].Y >= 0 ? vertices[i].Y + shape.Width : vertices[i].Y - shape.Width;
+                //vertices[i].X = vertices[i].X >= 0 ? vertices[i].X + shape.Height : vertices[i].X - shape.Height;
+            }
+        }
+
+        private void RotateVertices(List<MPoint> vertices, Quaternion rotationQuaternion)
         {          
             for (int i = 0; i < vertices.Count; ++i)
             {

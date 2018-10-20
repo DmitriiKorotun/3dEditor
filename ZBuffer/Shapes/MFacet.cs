@@ -62,6 +62,11 @@ namespace ZBuffer.Shapes
             return points;
         }
 
+        public override MPoint GetCenterPoint()
+        {
+            throw new NotImplementedException();
+        }
+
         public override List<MPoint> GetVertices()
         {
             throw new NotImplementedException();

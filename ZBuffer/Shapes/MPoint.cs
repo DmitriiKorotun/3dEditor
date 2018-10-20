@@ -20,31 +20,61 @@ namespace ZBuffer.Shapes
         public MPoint(float x, float y, float z)
         {
             X = x;
-            SX = x;
+            SX = X;
 
             Y = y;
-            SY = y;
+            SY = Y;
 
             Z = z;
-            SZ = z;
+            SZ = Z;
 
             W = 1;
-            SW = 1;
+            SW = W;
+        }
+
+        public MPoint(double x, double y, double z)
+        {
+            X = (float)x;
+            SX = X;
+
+            Y = (float)y;
+            SY = Y;
+
+            Z = (float)z;
+            SZ = Z;
+
+            W = 1;
+            SW = W;
         }
 
         public MPoint(float x, float y, float z, float w)
         {
             X = x;
-            SX = x;
+            SX = X;
 
             Y = y;
-            SY = y;
+            SY = Y;
 
             Z = z;
-            SZ = z;
+            SZ = Z;
 
             W = w;
-            SW = w;
+            SW = W;
+        }
+
+        public MPoint(double x, double y, double z, double w)
+        {
+            X = (float)x;
+            SX = X;
+
+            Y = (float)y;
+            SY = Y;
+
+            Z = (float)z;
+            SZ = Z;
+
+            W = (float)w;
+            SW = W;
         }
     }
 }

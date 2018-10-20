@@ -41,10 +41,13 @@ namespace GraphicsProject
             var box1 = new MBox(new MPoint(75, 75, 0), 50, 50, 50);
             var box2 = new MBox(new MPoint(75, 75, 0), 50, 50, 50);
             var box3 = new MBox(new MPoint(75, 75, 0), 50, 50, 50);
-            new ShapeEditor().RotateZ(box2, 80);
+            var mfacet = new MFacet(new MPoint(50, 35, 0), new MPoint(100, 23, 0), new MPoint(72, 75, 0));
+            var mfacet2 = new MFacet(new MPoint(50, 35, 0), new MPoint(100, 23, 0), new MPoint(72, 75, 0));
+            new ShapeEditor().RotateY(mfacet2, 45);
             //new ShapeEditor().RotateZVertices(box3.GetVertices(), 25);
             //scene.AddShape(box1);
-            scene.AddShape(box2);
+            scene.AddShape(mfacet);
+            scene.AddShape(mfacet2);
             //scene.AddShape(box3);
 
             //for (int i = 0; i < 100; ++i)

@@ -127,6 +127,7 @@ namespace GraphicsProject
             screen.Source = Scene.Render();
         }
 
+        
         private void menuItem_saveScene_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
@@ -139,6 +140,7 @@ namespace GraphicsProject
             }
         }
 
+        //TODO Change this to something more adequate
         private void menuItem_openScene_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();

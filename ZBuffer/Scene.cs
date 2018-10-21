@@ -13,6 +13,7 @@ using System.Runtime.Serialization;
 
 namespace ZBuffer
 {
+    //TODO Think about changing DataSerializer to XmlSerializer
     [DataContract]
     [KnownType(typeof(MFacet))]
     public class Scene
@@ -20,6 +21,7 @@ namespace ZBuffer
         //TODO Refactor
         public WriteableBitmap Bitmap { get; set; }
 
+        //TODO Make public?
         [DataMember]
         private List<MShape> Shapes { get; set; }
         [DataMember]

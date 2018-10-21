@@ -1,17 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ZBuffer.Shapes
 {
+    [DataContract]
     public class MPoint
     {
+        [DataMember]
         public float X { get; set; }  //текущий х
+        [DataMember]
         public float Y { get; set; }  //текущий у
+        [DataMember]
         public float Z { get; set; }  //текущая z
+        [DataMember]
         public float W { get; set; }  //текщий параметр масштабирования
+
         public float SX { get; }  //начальный х
         public float SY { get; }  //начальный y
         public float SZ { get; }  //начальная z

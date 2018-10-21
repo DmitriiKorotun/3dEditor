@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 
 namespace ZBuffer.Shapes
 {
+    [DataContract]
     public class MBox : MCommonPrimitive
     {
         private const int verticesCount = 8;
 
+        [DataMember]
         public MPoint[] Vertices { get; set; }  //вершины
+        [DataMember]
         public MFacet[] Facets { get; set; }  //грани
 
         public MBox(MPoint leftFaceCorner, float length, float width, float height)

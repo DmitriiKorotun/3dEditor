@@ -9,15 +9,21 @@ using System.Windows.Media.Imaging;
 using ZBuffer.Tools;
 using ZBuffer.Shapes;
 using System.Windows.Media.Media3D;
+using System.Runtime.Serialization;
 
 namespace ZBuffer
 {
+    [DataContract]
+    [KnownType(typeof(MFacet))]
     public class Scene
     {
         //TODO Refactor
         public WriteableBitmap Bitmap { get; set; }
 
+        [DataMember]
         private List<MShape> Shapes { get; set; }
+        [DataMember]
+        private List<MShape> SelectedShapes { get; set; }
         private Tools.ZBuffer Buffer { get; set; }
         private Tools.Camera CurrentCamera { get; set; }
         
@@ -31,6 +37,8 @@ namespace ZBuffer
             Bitmap = new WriteableBitmap(width, heigth, 96, 96, PixelFormats.Bgra32, null);
 
             Shapes = new List<MShape>();
+
+            SelectedShapes = new List<MShape>();
         }
 
         public WriteableBitmap Render()

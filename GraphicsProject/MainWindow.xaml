@@ -16,7 +16,7 @@
         <StackPanel HorizontalAlignment="Left" Height="250" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="798" Orientation="Horizontal">
             <Canvas HorizontalAlignment="Left" Height="230" Margin="10,10" VerticalAlignment="Top" Width="500" >
                 <Border BorderBrush="Black" BorderThickness="2" Margin="10">
-                    <Image x:Name="screen" Height="210" Width="480" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Image x:Name="screen" Height="210" Width="480" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Top" MouseUp="screen_MouseUp" PreviewMouseUp="screen_MouseUp"/>
                 </Border>
             </Canvas>
             <Grid Width="auto">
@@ -90,24 +90,28 @@
             </Grid>
         </StackPanel>
         <Grid HorizontalAlignment="Left" Height="Auto" Margin="10,10" VerticalAlignment="Top" Width="500" Grid.Row="2">
-            <Button Content="Тест" HorizontalAlignment="Left" Margin="10,10" VerticalAlignment="Top" Width="75" Click="Button_Click" RenderTransformOrigin="-2.219,0.75"/>
-            <Button Name="btn_clear" Content="Очистить" HorizontalAlignment="Left" Margin="107,10,0,0" VerticalAlignment="Top" Width="75" Click="btn_clear_Click"/>
-            <Button Name="btn_rotateLeft" Content="Повернуть" HorizontalAlignment="Left" Margin="203,10,0,0" VerticalAlignment="Top" Width="75" Click="btn_rotateLeft_Click"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25*"/>
+                <ColumnDefinition Width="25*"/>
+                <ColumnDefinition Width="25*"/>
+                <ColumnDefinition Width="25*"/>
+            </Grid.ColumnDefinitions>
+            <Button Name="btn_clear" Content="Очистить" Grid.Column="3" HorizontalAlignment="Center" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="btn_clear_Click"/>
+            <Button Name="btn_rotateLeft" Content="Повернуть влево" Grid.Column="1" HorizontalAlignment="Center" Margin="10,10,0,0" VerticalAlignment="Top" Width="auto" Click="btn_rotateLeft_Click"/>
+            <Button x:Name="btn_rotateRight" Content="Повернуть вправо" Grid.Column="2" HorizontalAlignment="Center" Margin="10,10,0,0" VerticalAlignment="Top" Width="auto" Click="btn_rotateRight_Click"/>
         </Grid>
         <DockPanel LastChildFill="True">
             <Menu Height="Auto" DockPanel.Dock="Top">
-                <MenuItem Header="File">
-                    <MenuItem Header="New Project" />
-                    <MenuItem Header="Open Project" >
-                        <MenuItem Header="WinForms"/>
-                        <MenuItem Header="WPF" />
-                    </MenuItem>
+                <MenuItem Header="Файл">
+                    <MenuItem Name="menuItem_newScene" Header="Новая сцена" Click="menuItem_newScene_Click" />
+                    <MenuItem Name="menuItem_openScene" Header="Открыть сцену" Click="menuItem_openScene_Click" />
                     <Separator />
-                    <MenuItem Header="Exit" />
+                    <MenuItem Name="menuItem_saveScene" Header="Сохранить сцену" Click="menuItem_saveScene_Click" />
                 </MenuItem>
                 <MenuItem Header="Edit" />
                 <MenuItem Header="View" />
             </Menu>
         </DockPanel>
+        <Button Content="Тест" HorizontalAlignment="Left" Margin="702,25,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" RenderTransformOrigin="-2.219,0.75" Grid.Row="2"/>
     </Grid>
 </Window>

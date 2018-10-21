@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
@@ -8,9 +9,12 @@ using ZBuffer.ZBufferMath;
 
 namespace ZBuffer.Shapes
 {
+    [DataContract]
     public class MFacet : MCommonPrimitive
     {
+        [DataMember]
         public MPoint[] Vertices;  //вершины
+        [DataMember]
         public int Argb;  //цвет грани
 
         public MFacet(MPoint first, MPoint second, MPoint third)

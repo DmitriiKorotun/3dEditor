@@ -9,7 +9,8 @@ using ZBuffer.ZBufferMath;
 
 namespace ZBuffer.Affine_Transformation
 {
-    public class ShapeEditor
+    //TODO Implement unified rotation method and optimize shape movement (while rotation) 
+    public class ShapeEditor : IShapeEditor
     {
         public void RotateX(MCommonPrimitive shape, double angle)
         {
@@ -32,20 +33,42 @@ namespace ZBuffer.Affine_Transformation
             RotateShape(shape, angle, axis);
         }
 
+        public void Move(MCommonPrimitive shape, float Sx, float Sy, float Sz)
+        {
+            float[,] movementMatrix = {
+                { 1, 0, 0, Sx },
+                { 0, 1, 0, Sy },
+                { 0, 0, 1, Sz },
+                { 0, 0, 0, 1 }
+            }; ;
+
+            TranformShape(shape, movementMatrix);
+        }
+
+        public void Scale(MCommonPrimitive shape, float Sx, float Sy, float Sz)
+        {
+            float[,] scaleMatrix = {
+                { Sx, 0, 0, 0 },
+                { 0, Sy, 0, 0 },
+                { 0, 0, Sz, 0 },
+                { 0, 0, 0, 1 }
+            };
+
+            TranformShape(shape, scaleMatrix);
+        }
+
         private void RotateShape(MCommonPrimitive shape, double angle, Vector3 axis)
         {
             double rads = angle * Math.PI / 180.0;
+            var vertices = shape.GetVertices();
 
             MPoint currentShapeCenter;
 
-            MoveShapeToOrigin(shape, out currentShapeCenter);
-
             Quaternion rotationQuaternion = GetRotationQuaternion(axis, rads);
 
-            var vertices = shape.GetVertices();
-
+            // Sets object in the coordinate's origin, rotates it and move to the previous place
+            MoveShapeToOrigin(shape, out currentShapeCenter);                   
             RotateVertices(vertices, rotationQuaternion);
-
             MoveShapeToPreviousPosition(shape, currentShapeCenter);
         }
 
@@ -83,15 +106,8 @@ namespace ZBuffer.Affine_Transformation
 
                 var newCoords = Vector3.Transform(vertexVector, rotationQuaternion);
 
-                SetVectorCoordinatesToPoint(vertices[i], newCoords);
+                SetNewCoordinatesToPoint(vertices[i], newCoords);
             }
-        }
-
-        private void SetVectorCoordinatesToPoint(MPoint point, Vector3 vector)
-        {
-            point.X = vector.X;
-            point.Y = vector.Y;
-            point.Z = vector.Z;
         }
 
         private Quaternion GetRotationQuaternion(Vector3 axis, double rads)
@@ -217,6 +233,34 @@ namespace ZBuffer.Affine_Transformation
             float[,] shapeCoords = { { shapeCenter.SX }, { shapeCenter.SY }, { shapeCenter.SZ }, { 1 } };
 
             return MatrixMultiplier.MultiplyMatrix(rotateZ, shapeCoords);
+        }
+
+        private void TranformShape(MCommonPrimitive shape, float[,] transformationMatrix)
+        {
+            List<MPoint> vertices = shape.GetVertices();
+
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                float[,] vertexCoords = { { vertices[i].X }, { vertices[i].Y }, { vertices[i].Z }, { 1 } };
+
+                float[,] newCoords = MatrixMultiplier.MultiplyMatrix(transformationMatrix, vertexCoords);
+
+                SetNewCoordinatesToPoint(vertices[i], newCoords);
+            }
+        }
+
+        private void SetNewCoordinatesToPoint(MPoint destinationPoint, Vector3 newCoordinates)
+        {
+            destinationPoint.X = newCoordinates.X;
+            destinationPoint.Y = newCoordinates.Y;
+            destinationPoint.Z = newCoordinates.Z;
+        }
+
+        private void SetNewCoordinatesToPoint(MPoint destinationPoint, float[,] newCoordinates)
+        {
+            destinationPoint.X = newCoordinates[0, 0];
+            destinationPoint.Y = newCoordinates[1, 0];
+            destinationPoint.Z = newCoordinates[2, 0];
         }
     }
 }

@@ -7,6 +7,7 @@ using KellermanSoftware.CompareNetObjects;
 
 namespace GraphicsProject.Tests.ZBufferTests.AffineTransformationTests
 {
+    //TODO Make test's names more obvious (input part is prioritized)
     [TestClass]
     public class ShapeEditorTests
     {
@@ -87,6 +88,64 @@ namespace GraphicsProject.Tests.ZBufferTests.AffineTransformationTests
 
             // act
             editor.RotateZ(testedFacet, angle);
+
+
+            // assert
+            CompareLogic compareLogic = new CompareLogic();
+
+            var comparsionResult = compareLogic.Compare(expectedFacet, testedFacet);
+
+            Assert.IsTrue(comparsionResult.AreEqual);
+        }
+
+        [TestMethod]
+        public void Move_MFacet_MFacetShiftedBy21AlongZ()
+        {
+            // arrange
+            ShapeEditor editor = new ShapeEditor();
+
+            MFacet testedFacet = new MFacet(new MPoint(12, 10, -3), new MPoint(80, 49, 0), new MPoint(34, 105, 4));
+
+            MFacet expectedFacet = new MFacet(new MPoint(12, 10, -3), new MPoint(80, 49, 0), new MPoint(34, 105, 4));
+
+            SetPointCoordinatesToDestinationPoint(new MPoint(12, 10, 18), expectedFacet.Vertices[0]);
+            SetPointCoordinatesToDestinationPoint(new MPoint(80, 49, 21), expectedFacet.Vertices[1]);
+            SetPointCoordinatesToDestinationPoint(new MPoint(34, 105, 25), expectedFacet.Vertices[2]);
+
+            float distanceZ = 21;
+
+
+            // act
+            editor.Move(testedFacet, 0, 0, distanceZ);
+
+
+            // assert
+            CompareLogic compareLogic = new CompareLogic();
+
+            var comparsionResult = compareLogic.Compare(expectedFacet, testedFacet);
+
+            Assert.IsTrue(comparsionResult.AreEqual);
+        }
+
+        [TestMethod]
+        public void Move_MFacet_MFacetShiftedByMinus10AlongYAndBy208AlongX()
+        {
+            // arrange
+            ShapeEditor editor = new ShapeEditor();
+
+            MFacet testedFacet = new MFacet(new MPoint(26, 18, 20), new MPoint(156, 74, 12), new MPoint(85, 26, 0));
+
+            MFacet expectedFacet = new MFacet(new MPoint(26, 18, 20), new MPoint(156, 74, 12), new MPoint(85, 26, 0));
+
+            SetPointCoordinatesToDestinationPoint(new MPoint(234, 8, 20), expectedFacet.Vertices[0]);
+            SetPointCoordinatesToDestinationPoint(new MPoint(364, 64, 12), expectedFacet.Vertices[1]);
+            SetPointCoordinatesToDestinationPoint(new MPoint(293, 16, 0), expectedFacet.Vertices[2]);
+
+            float distanceY = -10, distanceX = 208;
+
+
+            // act
+            editor.Move(testedFacet, distanceX, distanceY, 0);
 
 
             // assert

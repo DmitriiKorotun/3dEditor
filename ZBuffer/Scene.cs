@@ -35,7 +35,7 @@ namespace ZBuffer
         {
             Buffer = new Tools.ZBuffer(width * heigth);
 
-            CurrentCamera = new Tools.OrthographicCamera(-50, 50, -50, 50, -10, 0);
+            CurrentCamera = new Tools.OrthographicCamera(-40, 40, -100, 100, -10, 0);
             //CurrentCamera = new Tools.PerspectiveCamera((float)Math.PI / 4, 16 / 9, 10, -10);
 
             Bitmap = new WriteableBitmap(width, heigth, 96, 96, PixelFormats.Bgra32, null);

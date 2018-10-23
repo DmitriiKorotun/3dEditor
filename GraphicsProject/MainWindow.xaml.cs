@@ -41,7 +41,7 @@ namespace GraphicsProject
 
             var ls = new Stopwatch();
             ls.Start();
-            var box1 = new MBox(new MPoint(-25, -25, -25), 50, 50, 50);
+            var box1 = new MBox(new MPoint(0, 0, 0), 50, 50, 50);
             var box2 = new MBox(new MPoint(75, 75, 0), 50, 50, 50);
             var box3 = new MBox(new MPoint(75, 75, 0), 50, 50, 50);
             var mfacet = new MFacet(new MPoint(50, 35, 0), new MPoint(100, 23, 0), new MPoint(72, 75, 0));

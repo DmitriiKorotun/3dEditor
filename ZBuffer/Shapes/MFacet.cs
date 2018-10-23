@@ -17,7 +17,7 @@ namespace ZBuffer.Shapes
         [DataMember]
         public int Argb;  //цвет грани
 
-        public MFacet(MPoint first, MPoint second, MPoint third)
+        public MFacet(MPoint first, MPoint second, MPoint third) : base()
         {
             Vertices = new MPoint[] { first, second, third };
         }

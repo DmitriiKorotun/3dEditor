@@ -18,7 +18,7 @@ namespace ZBuffer.Shapes
         [DataMember]
         public MFacet[] Facets { get; set; }  //грани
 
-        public MBox(MPoint leftFaceCorner, float length, float width, float height)
+        public MBox(MPoint leftFaceCorner, float length, float width, float height) : base()
         {
             SetParameters(length, width, height);
 

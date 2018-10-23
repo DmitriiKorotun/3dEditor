@@ -13,8 +13,34 @@ namespace ZBuffer.Shapes
         public float Height { get; set; }
         public float Length { get; set; }
         public float Width { get; set; }
+        public float[,] TransformationMatrix { get; set; }
+
+        //public MCommonPrimitive(float length, float width, float height)
+        //{
+        //    Length = length;
+        //    Width = width;
+        //    Height = height;
+
+        //    TransformationMatrix = new float[,] {
+        //        {1, 0, 0, 0 },
+        //        {0, 1, 0, 0 },
+        //        {0, 0, 1, 0 },
+        //        {0, 0, 0, 1 }
+        //    };
+        //}
+
+        public MCommonPrimitive()
+        {
+            TransformationMatrix = new float[,] {
+                {1, 0, 0, 0 },
+                {0, 1, 0, 0 },
+                {0, 0, 1, 0 },
+                {0, 0, 0, 1 }
+            };
+        }
 
         public abstract List<MPoint> GetVertices();
+
         public virtual MPoint GetCenterPoint()
         {
             var vertices = GetVertices();

@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using ZBuffer.Shapes;
+using ZBuffer.Tools;
 using ZBuffer.ZBufferMath;
 
 namespace ZBuffer.Affine_Transformation
@@ -40,9 +41,11 @@ namespace ZBuffer.Affine_Transformation
                 { 0, 1, 0, Sy },
                 { 0, 0, 1, Sz },
                 { 0, 0, 0, 1 }
-            }; ;
+            };
 
-            TranformShape(shape, movementMatrix);
+            shape.TransformationMatrix = MatrixMultiplier.MultiplyMatrix(movementMatrix, shape.TransformationMatrix);
+
+            //TranformShape(shape, movementMatrix);
         }
 
         public void Scale(MCommonPrimitive shape, float Sx, float Sy, float Sz)
@@ -55,6 +58,16 @@ namespace ZBuffer.Affine_Transformation
             };
 
             TranformShape(shape, scaleMatrix);
+        }
+
+        public void ProjectShape(MCommonPrimitive shape, Camera camera)
+        {
+            TranformShape(shape, camera.ProjectionMatrix);
+
+            //foreach (MPoint point in shape.GetAllPoints())
+            //{
+            //    point.
+            //}
         }
 
         private void RotateShape(MCommonPrimitive shape, double angle, Vector3 axis)
@@ -70,6 +83,18 @@ namespace ZBuffer.Affine_Transformation
             MoveShapeToOrigin(shape, out currentShapeCenter);                   
             RotateVertices(vertices, rotationQuaternion);
             MoveShapeToPreviousPosition(shape, currentShapeCenter);
+        }
+
+        private void RotateVertices(List<MPoint> vertices, Quaternion rotationQuaternion)
+        {          
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                var vertexVector = new Vector3(vertices[i].X, vertices[i].Y, vertices[i].Z);
+
+                var newCoords = Vector3.Transform(vertexVector, rotationQuaternion);
+
+                SetNewCoordinatesToPoint(vertices[i], newCoords);
+            }
         }
 
         private void MoveShapeToOrigin(MCommonPrimitive shape, out MPoint shapeCenter)
@@ -95,18 +120,6 @@ namespace ZBuffer.Affine_Transformation
                 vertices[i].X += previousShapeCenter.X;
                 vertices[i].Y += previousShapeCenter.Y;
                 vertices[i].Z += previousShapeCenter.Z;
-            }
-        }
-
-        private void RotateVertices(List<MPoint> vertices, Quaternion rotationQuaternion)
-        {          
-            for (int i = 0; i < vertices.Count; ++i)
-            {
-                var vertexVector = new Vector3(vertices[i].X, vertices[i].Y, vertices[i].Z);
-
-                var newCoords = Vector3.Transform(vertexVector, rotationQuaternion);
-
-                SetNewCoordinatesToPoint(vertices[i], newCoords);
             }
         }
 
@@ -246,7 +259,33 @@ namespace ZBuffer.Affine_Transformation
                 float[,] newCoords = MatrixMultiplier.MultiplyMatrix(transformationMatrix, vertexCoords);
 
                 SetNewCoordinatesToPoint(vertices[i], newCoords);
+
+                //TEST
+                TransformPointCoordsToDecart(vertices[i]);
             }
+        }
+
+        private void TransformShape(MCommonPrimitive shape)
+        {
+            List<MPoint> vertices = shape.GetVertices();
+
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                float[,] vertexCoords = { { vertices[i].SX }, { vertices[i].SY }, { vertices[i].SZ }, { 1 } };
+
+                float[,] newCoords = MatrixMultiplier.MultiplyMatrix(shape.TransformationMatrix, vertexCoords);
+
+                SetNewCoordinatesToPoint(vertices[i], newCoords);
+
+                ////TEST
+                //TransformPointCoordsToDecart(vertices[i]);
+            }
+        }
+
+        public void TransformShapes(List<MCommonPrimitive> shapes)
+        {
+            foreach (MCommonPrimitive shape in shapes)
+                TransformShape(shape);
         }
 
         private void SetNewCoordinatesToPoint(MPoint destinationPoint, Vector3 newCoordinates)
@@ -261,6 +300,18 @@ namespace ZBuffer.Affine_Transformation
             destinationPoint.X = newCoordinates[0, 0];
             destinationPoint.Y = newCoordinates[1, 0];
             destinationPoint.Z = newCoordinates[2, 0];
+            destinationPoint.W = newCoordinates[3, 0];
+        }
+
+        private void TransformPointCoordsToDecart(MPoint point)
+        {
+            point.X /= point.W;
+            point.Y /= point.W;
+            point.Z /= point.W;
+
+            point.X = 640 / 2 * point.X + (point.SX + 640 / 2);
+            point.Y = 360 / 2 * point.Y + (point.SY + 360 / 2);
+            point.Z = (10 - (-10)) / 2 * point.Z + (0) / 2;
         }
     }
 }

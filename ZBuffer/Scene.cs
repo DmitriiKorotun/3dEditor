@@ -10,6 +10,7 @@ using ZBuffer.Tools;
 using ZBuffer.Shapes;
 using System.Windows.Media.Media3D;
 using System.Runtime.Serialization;
+using ZBuffer.Affine_Transformation;
 
 namespace ZBuffer
 {
@@ -23,28 +24,31 @@ namespace ZBuffer
 
         //TODO Make public?
         [DataMember]
-        private List<MShape> Shapes { get; set; }
+        private List<MCommonPrimitive> Shapes { get; set; }
         [DataMember]
-        private List<MShape> SelectedShapes { get; set; }
+        private List<MCommonPrimitive> SelectedShapes { get; set; }
         private Tools.ZBuffer Buffer { get; set; }
-        private Tools.Camera CurrentCamera { get; set; }
-        
+        public Tools.Camera CurrentCamera { get; set; }
+
 
         public Scene(int width, int heigth, int z)
         {
             Buffer = new Tools.ZBuffer(width * heigth);
 
-            CurrentCamera = new Tools.Camera(width, heigth, z);
+            CurrentCamera = new Tools.OrthographicCamera(heigth, 0, 0, width, 10, -10);
+            //CurrentCamera = new Tools.PerspectiveCamera((float)Math.PI / 4, 16 / 9, 10, -10);
 
             Bitmap = new WriteableBitmap(width, heigth, 96, 96, PixelFormats.Bgra32, null);
 
-            Shapes = new List<MShape>();
+            Shapes = new List<MCommonPrimitive>();
 
-            SelectedShapes = new List<MShape>();
+            SelectedShapes = new List<MCommonPrimitive>();
         }
 
         public WriteableBitmap Render()
         {
+            new ShapeEditor().TranformShapes(Shapes);
+
             List<MPoint> allPoints = GetAllPoints();
 
             var painter = new Painter();
@@ -54,7 +58,7 @@ namespace ZBuffer
             return Bitmap;
         }
 
-        public void AddShape(MShape shape)
+        public void AddShape(MCommonPrimitive shape)
         {
             Shapes.Add(shape);
         }

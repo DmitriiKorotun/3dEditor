@@ -55,5 +55,44 @@ namespace ZBuffer.Tools
             Far = 200;
             Focus = 70;
         }
+
+        public PerspectiveCamera(float l, float r, float b, float t, float n, float f) : base()
+        {
+            projectionMatrix = SetFrustum(l, r, b, t, n, f);
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////
+        // return a perspective frustum with 6 params
+        // (left, right, bottom, top, near, far)
+        ///////////////////////////////////////////////////////////////////////////////
+        private float[,] SetFrustum(float l, float r, float b, float t, float n, float f)
+        {
+            return new float[,] {
+                {
+                    2 * n / (r - l),
+                    0,
+                    (r + l) / (r - l),
+                    0
+                },
+                {
+                    0,
+                    2 * n / (t - b),
+                    (t + b) / (t - b),
+                    0
+                },
+                {
+                    0,
+                    0,
+                    -(f + n) / (f - n),
+                    -(2 * f * n) / (f - n)
+                },
+                {
+                    0,
+                    0,
+                    -1,
+                    0
+                }
+            };
+        }
     }
 }

@@ -9,13 +9,41 @@ namespace ZBuffer.Tools
 {
     class OrthographicCamera : Camera
     {
-        public OrthographicCamera(float top, float bottom, float left, float right, float far, float near)
+        public OrthographicCamera(float l, float r, float b, float t, float n, float f) : base()
         {
-            projectionMatrix = new float[,] {
-                { 2 / (right - left), 0, 0, -(right + left) / (right - left) },
-                { 0, 2 / (top - bottom), 0, -(top + bottom) / (top - bottom) },
-                { 0, 0, -2 / (far - near), -(far + near) / (far - near) },
-                { 0, 0, 0, 1}
+            projectionMatrix = SetOrthoFrustum(l, r, b, t, n, f);
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////
+        // set a orthographic frustum with 6 params
+        // (left, right, bottom, top, near, far)
+        ///////////////////////////////////////////////////////////////////////////////
+        private float[,] SetOrthoFrustum(float l, float r, float b, float t, float n, float f)
+        {
+            return new float[,] {
+                {
+                    2 / (r - l),
+                    0,
+                    0,
+                    -(r + l) / (r - l)
+                },
+                {
+                    0,
+                    2 / (t - b),
+                    0,
+                    -(t + b) / (t - b)
+                },
+                {   0,
+                    0,
+                    -2 / (f - n),
+                    -(f + n) / (f - n)
+                },
+                {
+                    0,
+                    0,
+                    0,
+                    1
+                }
             };
         }
     }

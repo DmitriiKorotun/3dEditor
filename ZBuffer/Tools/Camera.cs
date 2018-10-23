@@ -12,5 +12,16 @@ namespace ZBuffer.Tools
         protected float[,] projectionMatrix;
 
         public float[,] ProjectionMatrix { get { return projectionMatrix; } }
+        public float[,] ViewMatrix { get; set; }
+
+        public Camera()
+        {
+            ViewMatrix = new float[,] {
+                { 1, 0, 0, 0 },
+                { 0, 1, 0, 0 },
+                { 0, 0, 1, 0 },
+                { 0, 0, 0, 1 }
+            };
+        }
     }
 }

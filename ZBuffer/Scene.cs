@@ -35,7 +35,7 @@ namespace ZBuffer
         {
             Buffer = new Tools.ZBuffer(width * heigth);
 
-            CurrentCamera = new Tools.OrthographicCamera(heigth, 0, 0, width, 10, -10);
+            CurrentCamera = new Tools.OrthographicCamera(-50, 50, -50, 50, -10, 0);
             //CurrentCamera = new Tools.PerspectiveCamera((float)Math.PI / 4, 16 / 9, 10, -10);
 
             Bitmap = new WriteableBitmap(width, heigth, 96, 96, PixelFormats.Bgra32, null);
@@ -47,13 +47,11 @@ namespace ZBuffer
 
         public WriteableBitmap Render()
         {
-            new ShapeEditor().TranformShapes(Shapes);
+            new ShapeEditor().GetTransformedShapes(Shapes, CurrentCamera);
 
             List<MPoint> allPoints = GetAllPoints();
 
-            var painter = new Painter();
-
-            painter.DrawSceneByPoints(this, allPoints);
+            new Painter().DrawSceneByPoints(this, allPoints);
 
             return Bitmap;
         }

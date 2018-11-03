@@ -121,7 +121,7 @@
 
                 <Grid Name="grid_Controls">
 
-                    <Grid Name="grid_RotationControls">
+                    <Grid Name="grid_TransformationControls">
 
                         <Grid.Resources>
                             <Style x:Key="VerticalControl" TargetType="{x:Type Control}">
@@ -137,7 +137,7 @@
                             <RowDefinition Height="50*"/>
                         </Grid.RowDefinitions>
 
-                        <Grid Name="grid_RotationControlsInput">
+                        <Grid Name="grid_TransformationControlsInput">
 
                             <Grid.Resources>
                                 <Style TargetType="TextBox" BasedOn="{StaticResource VerticalControl}">
@@ -154,22 +154,22 @@
 
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="X: "></Label>
-                                <TextBox Name="tb_RotationX"/>
+                                <TextBox Name="tb_TransformationX"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="1" Orientation="Horizontal">
                                 <Label Content="Y: "></Label>
-                                <TextBox Name="tb_RotationY" Width="60"/>
+                                <TextBox Name="tb_TransformationY" Width="60"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2" Orientation="Horizontal">
                                 <Label Content="Z: "></Label>
-                                <TextBox Name="tb_RotationZ" Width="60"/>
+                                <TextBox Name="tb_TransformationZ" Width="60"/>
                             </StackPanel>
 
                         </Grid>
 
-                        <Grid Name="grid_RotationControlsControls" Grid.Row="1">
+                        <Grid Name="grid_TransformationControlsControls" Grid.Row="1">
                             
                             <Grid.Resources>
                                 <Style TargetType="Button" BasedOn="{StaticResource VerticalControl}">

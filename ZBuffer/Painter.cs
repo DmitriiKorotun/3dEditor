@@ -86,6 +86,11 @@ namespace ZBuffer
 
             byte[] pixels = new byte[(int)scene.Bitmap.Width * (int)scene.Bitmap.Height * scene.Bitmap.Format.BitsPerPixel / 8];
 
+            for (int i = 0; i < points.Count; ++i)
+            {
+                points[i].Y = (float)scene.Bitmap.Height - points[i].Y;
+            }
+
             int alpha = 255;
             int red = 0;
             int green = 0;

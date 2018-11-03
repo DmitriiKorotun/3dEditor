@@ -18,11 +18,19 @@ namespace ZBuffer.Shapes
         [DataMember]
         public MFacet[] Facets { get; set; }  //грани
 
-        public MBox(MPoint leftFaceCorner, float length, float width, float height)
+        //public MBox(MPoint leftFaceCorner, float length, float width, float height) : base(leftFaceCorner.X, leftFaceCorner.Y, leftFaceCorner.Z)
+        //{
+        //    SetParameters(length, width, height);
+
+        //    InitVertices(leftFaceCorner, length, width, height);
+        //    InitFacets(Vertices);
+        //}
+
+        public MBox(MPoint center, float length, float width, float height) : base(center.X, center.Y, center.Z)
         {
             SetParameters(length, width, height);
 
-            InitVertices(leftFaceCorner, length, width, height);
+            InitVerticesCenter(center, length, width, height);
             InitFacets(Vertices);
         }
 
@@ -31,6 +39,59 @@ namespace ZBuffer.Shapes
             Length = length;
             Width = width;
             Height = height;
+        }
+
+        private void InitVerticesCenter(MPoint center, float length, float width, float height)
+        {
+            Vertices = GetVerticesFromCenter(center, length, width, height);
+        }
+
+        private MPoint[] GetVerticesFromCenter(MPoint center, float length, float width, float height)
+        {
+            const int verticesCount = 8;
+
+            Vertices = new MPoint[verticesCount];
+
+            float halfLength = length / 2,
+                halfWidth = width / 2;
+
+            for (int i = 0; i < verticesCount; ++i)
+            {
+                MPoint vertex = null;
+
+                float halfHeight = i >= verticesCount / 2 ? height / 2 : -height / 2;
+
+                // Calculates new vertices counterclockwise
+                switch (i % 4)
+                {
+                    //Left front corner
+                    case 0:
+                        vertex = new MPoint( -halfLength, -halfWidth, halfHeight);
+                        break;
+
+                    //Right front corner
+                    case 1:
+                        vertex = new MPoint( halfLength, -halfWidth, halfHeight);
+                        break;
+
+                    //Right rear corner
+                    case 2:
+                        vertex = new MPoint( halfLength, halfWidth, halfHeight);
+                        break;
+
+                    //Left rear corner
+                    case 3:
+                        vertex = new MPoint( -halfLength, halfWidth, halfHeight);
+                        break;
+
+                    default:
+                        throw new Exception("Error while trying to initialize MBox vertices");
+                }
+
+                Vertices[i] = vertex;
+            }
+
+            return Vertices;
         }
 
         private void InitVertices(MPoint leftFrontCorner, float length, float width, float height)

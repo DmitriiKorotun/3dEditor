@@ -103,7 +103,8 @@ namespace GraphicsProject
 
         private void btn_rotateLeft_Click(object sender, RoutedEventArgs e)
         {
-            
+            Scene.RotateSelected(10);
+            screen.Source = Scene.Render();
         }
 
         private void btn_rotateRight_Click(object sender, RoutedEventArgs e)

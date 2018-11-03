@@ -1,53 +1,100 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 
 namespace ZBuffer.Shapes
 {
-    public class MBox : MShape
+    [DataContract]
+    public class MBox : MCommonPrimitive
     {
         private const int verticesCount = 8;
 
+        [DataMember]
         public MPoint[] Vertices { get; set; }  //вершины
+        [DataMember]
         public MFacet[] Facets { get; set; }  //грани
-        public float Heigth { get; set; }  //высота
-        public float Length { get; set; }  //длина
-        public float Width { get; set; }  //ширина
 
-        //FOR TESTS
-        public MBox(float width, float length, float height)
+        //public MBox(MPoint leftFaceCorner, float length, float width, float height) : base(leftFaceCorner.X, leftFaceCorner.Y, leftFaceCorner.Z)
+        //{
+        //    SetParameters(length, width, height);
+
+        //    InitVertices(leftFaceCorner, length, width, height);
+        //    InitFacets(Vertices);
+        //}
+
+        public MBox(MPoint center, float length, float width, float height) : base(center.X, center.Y, center.Z)
         {
-            Width = width;
-            Length = length;
-            Heigth = height;
+            SetParameters(length, width, height);
 
-            Vertices = new MPoint[] {
-                new MPoint((float)21.5, (float)45.39, 4), new MPoint((float)21.5 + width, (float)45.39, 4),
-                new MPoint((float)21.5 + width, (float)45.39 + length, 4), new MPoint((float)21.5, (float)45.39 + length, 4),
-                new MPoint((float)21.5, (float)45.39, 4 + height), new MPoint((float)21.5 + width, (float)45.39, 4 + height),
-                new MPoint((float)21.5 + width, (float)45.39 + length, 4 + height), new MPoint((float)21.5, (float)45.39 + length, 4 + height),
-            };
-
-            Facets = new MFacet[] {
-                new MFacet(Vertices[0], Vertices[1], Vertices[2]),
-                new MFacet(Vertices[0], Vertices[1], Vertices[5]),
-                new MFacet(Vertices[0], Vertices[3], Vertices[7]),
-                new MFacet(Vertices[6], Vertices[5], Vertices[4]),
-                new MFacet(Vertices[6], Vertices[5], Vertices[2]),
-                new MFacet(Vertices[6], Vertices[7], Vertices[3]),
-            };
-        }
-
-        public MBox(MPoint leftFaceCorner, float width, float length, float height)
-        {
-            InitVertices(leftFaceCorner, width, length, height);
+            InitVerticesCenter(center, length, width, height);
             InitFacets(Vertices);
         }
 
-        private void InitVertices(MPoint leftFrontCorner, float width, float length, float height)
+        private void SetParameters(float length, float width, float height)
+        {
+            Length = length;
+            Width = width;
+            Height = height;
+        }
+
+        private void InitVerticesCenter(MPoint center, float length, float width, float height)
+        {
+            Vertices = GetVerticesFromCenter(center, length, width, height);
+        }
+
+        private MPoint[] GetVerticesFromCenter(MPoint center, float length, float width, float height)
+        {
+            const int verticesCount = 8;
+
+            Vertices = new MPoint[verticesCount];
+
+            float halfLength = length / 2,
+                halfWidth = width / 2;
+
+            for (int i = 0; i < verticesCount; ++i)
+            {
+                MPoint vertex = null;
+
+                float halfHeight = i >= verticesCount / 2 ? height / 2 : -height / 2;
+
+                // Calculates new vertices counterclockwise
+                switch (i % 4)
+                {
+                    //Left front corner
+                    case 0:
+                        vertex = new MPoint( -halfLength, -halfWidth, halfHeight);
+                        break;
+
+                    //Right front corner
+                    case 1:
+                        vertex = new MPoint( halfLength, -halfWidth, halfHeight);
+                        break;
+
+                    //Right rear corner
+                    case 2:
+                        vertex = new MPoint( halfLength, halfWidth, halfHeight);
+                        break;
+
+                    //Left rear corner
+                    case 3:
+                        vertex = new MPoint( -halfLength, halfWidth, halfHeight);
+                        break;
+
+                    default:
+                        throw new Exception("Error while trying to initialize MBox vertices");
+                }
+
+                Vertices[i] = vertex;
+            }
+
+            return Vertices;
+        }
+
+        private void InitVertices(MPoint leftFrontCorner, float length, float width, float height)
         {
             int verticesCount = 8;
 
@@ -71,17 +118,17 @@ namespace ZBuffer.Shapes
 
                     //Right front corner
                     case 1:
-                        vertex = new MPoint(leftFrontCorner.SX + width, leftFrontCorner.SY, leftFrontCorner.SZ + applyingHeight);
+                        vertex = new MPoint(leftFrontCorner.SX + length, leftFrontCorner.SY, leftFrontCorner.SZ + applyingHeight);
                         break;
 
                     //Right rear corner
                     case 2:
-                        vertex = new MPoint(leftFrontCorner.SX + width, leftFrontCorner.SY + length, leftFrontCorner.SZ + applyingHeight);
+                        vertex = new MPoint(leftFrontCorner.SX + length, leftFrontCorner.SY + width, leftFrontCorner.SZ + applyingHeight);
                         break;
 
                     //Left rear corner
                     case 3:
-                        vertex = new MPoint(leftFrontCorner.SX, leftFrontCorner.SY + length, leftFrontCorner.SZ + applyingHeight);
+                        vertex = new MPoint(leftFrontCorner.SX, leftFrontCorner.SY + width, leftFrontCorner.SZ + applyingHeight);
                         break;
 
                     default:
@@ -124,19 +171,24 @@ namespace ZBuffer.Shapes
             };
         }
 
-        public override List<Point3D> GetPoints()
+        public override List<MPoint> GetAllPoints()
         {
-            var points = new List<Point3D>();
+            var points = new List<MPoint>();
 
             for (int i = 0; i < Facets.Length; ++i)
-                points.AddRange(Facets[i].GetPoints());
+                points.AddRange(Facets[i].GetAllPoints());
 
             return points;
         }
 
-        public override HashSet<Point3D> GetHashedPoints()
+        public override List<MPoint> GetVertices()
         {
-            throw new NotImplementedException();
+            return Vertices.ToList();
         }
+
+        //public override HashSet<Point3D> GetHashedPoints()
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

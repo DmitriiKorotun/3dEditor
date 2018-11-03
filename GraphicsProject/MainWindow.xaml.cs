@@ -24,25 +24,37 @@ namespace GraphicsProject
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Scene Scene { get; set; }
+
+
         public MainWindow()
         {
             InitializeComponent();
+            Scene = new Scene((int)screen.Width, (int)screen.Height, 1);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var scene = new Scene((int)screen.Width, (int)screen.Height, 1);
             var painter = new Painter();
 
             Random rand = new Random();
 
             var ls = new Stopwatch();
             ls.Start();
-            var box1 = new MBox(new MPoint(75, 75, 0), 50, 50, 50);
+            var box1 = new MBox(new MPoint(0, 0, 0), 50, 50, 50);
             var box2 = new MBox(new MPoint(75, 75, 0), 50, 50, 50);
-            new ShapeEditor().RotateZVertices(box2.Vertices, 25);
-            scene.AddShape(box1);
-            scene.AddShape(box2);
+            var box3 = new MBox(new MPoint(75, 75, 0), 50, 50, 50);
+            var mfacet = new MFacet(new MPoint(50, 35, 0), new MPoint(100, 23, 0), new MPoint(72, 75, 0));
+            var mfacet2 = new MFacet(new MPoint(50, 35, 0), new MPoint(100, 23, 0), new MPoint(72, 75, 0));
+            //new ShapeEditor().RotateY(box1, 20);
+            //new ShapeEditor().RotateZ(box1, 90);
+            //new ShapeEditor().Move(box1, -50, 0, 0);
+            //new ShapeEditor().ProjectShape(mfacet2, Scene.CurrentCamera);
+            //new ShapeEditor().RotateZVertices(box3.GetVertices(), 25);
+            Scene.AddShape(box1);
+            //Scene.AddShape(mfacet);
+            //Scene.AddShape(mfacet2);
+            //scene.AddShape(box3);
 
             //for (int i = 0; i < 100; ++i)
             //{
@@ -64,7 +76,7 @@ namespace GraphicsProject
             //painter.DrawFacet(scene, new MFacet(new MPoint(1, 1, 0), new MPoint(100, 100, 0), new MPoint(1, 1, 0)));
 
             ls.Restart();
-            screen.Source = scene.Render();
+            screen.Source = Scene.Render();
             var lol2 = ls.Elapsed;
             var lol4 = ls.Elapsed;
         }
@@ -91,7 +103,63 @@ namespace GraphicsProject
 
         private void btn_rotateLeft_Click(object sender, RoutedEventArgs e)
         {
+            Scene.RotateSelected(10);
+            screen.Source = Scene.Render();
+        }
 
+        private void btn_rotateRight_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        //TODO Deal with event firing only after image.source is setted
+        private void screen_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            e.GetPosition(screen);
+        }
+
+        private void screen_MouseUp(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void menuItem_newScene_Click(object sender, RoutedEventArgs e)
+        {
+            Scene = new Scene((int)screen.Width, (int)screen.Height, 1);
+
+            screen.Source = Scene.Render();
+        }
+
+        
+        private void menuItem_saveScene_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+
+            var dialogResult = dlg.ShowDialog();
+
+            if (dialogResult == true)
+            {
+                GraphicsProjectIO.WriteToXmlFile(dlg.FileName, Scene);
+            }
+        }
+
+        //TODO Change this to something more adequate
+        private void menuItem_openScene_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            var dialogResult = dlg.ShowDialog();
+
+            if (dialogResult == true)
+            {
+                var deserialaziedScene = GraphicsProjectIO.ReadFromXmlFile<Scene>(dlg.FileName);
+
+                deserialaziedScene.Bitmap = Scene.Bitmap;
+
+                Scene = deserialaziedScene;
+
+                screen.Source = Scene.Render();
+            }
         }
     }
 }

@@ -9,57 +9,80 @@ using System.Windows.Media.Imaging;
 using ZBuffer.Tools;
 using ZBuffer.Shapes;
 using System.Windows.Media.Media3D;
+using System.Runtime.Serialization;
+using ZBuffer.Affine_Transformation;
 
 namespace ZBuffer
 {
+    //TODO Think about changing DataSerializer to XmlSerializer
+    [DataContract]
+    [KnownType(typeof(MFacet))]
     public class Scene
     {
         //TODO Refactor
         public WriteableBitmap Bitmap { get; set; }
 
-        private List<MShape> Shapes { get; set; }
+        //TODO Make public?
+        [DataMember]
+        private List<MCommonPrimitive> Shapes { get; set; }
+        [DataMember]
+        private List<MCommonPrimitive> SelectedShapes { get; set; }
         private Tools.ZBuffer Buffer { get; set; }
-        private Tools.Camera CurrentCamera { get; set; }
-        
+        public Tools.Camera CurrentCamera { get; set; }
+
 
         public Scene(int width, int heigth, int z)
         {
             Buffer = new Tools.ZBuffer(width * heigth);
 
-            CurrentCamera = new Tools.Camera(width, heigth, z);
+            CurrentCamera = new Tools.OrthographicCamera(-40, 40, -100, 100, -10, 0);
+            //CurrentCamera = new Tools.PerspectiveCamera((float)Math.PI / 4, 16 / 9, 10, -10);
 
             Bitmap = new WriteableBitmap(width, heigth, 96, 96, PixelFormats.Bgra32, null);
 
-            Shapes = new List<MShape>();
+            Shapes = new List<MCommonPrimitive>();
+
+            SelectedShapes = new List<MCommonPrimitive>();
         }
 
         public WriteableBitmap Render()
         {
-            List<Point3D> allPoints = GetAllPoints();
+            new ShapeEditor().GetTransformedShapes(Shapes, CurrentCamera);
 
-            var painter = new Painter();
+            List<MPoint> allPoints = GetAllPoints();
 
-            painter.DrawSceneByPoints(this, allPoints);
+            new Painter().DrawSceneByPoints(this, allPoints);
 
             return Bitmap;
         }
 
-        public void AddShape(MShape shape)
+        public void AddShape(MCommonPrimitive shape)
         {
             Shapes.Add(shape);
         }
 
-        private List<Point3D> GetAllPoints()
+        public void RotateSelected(double angle)
         {
-            var allPoints = new List<Point3D>();
+            //TODO remove this
+            SelectedShapes = Shapes;
+
+            var ls = new ShapeEditor();
+
+            for (int i = 0; i < SelectedShapes.Count; ++i)            
+                ls.Move(SelectedShapes[i], 10, 0, 0);
+        }
+
+        private List<MPoint> GetAllPoints()
+        {
+            var allPoints = new List<MPoint>();
 
             foreach (MShape shape in Shapes)
             {
-                allPoints.AddRange(shape.GetPoints());
+                allPoints.AddRange(shape.GetAllPoints());
             }
             //foreach(MShape shape in Shapes)
             //{
-            //    foreach (Point3D point in shape.GetPoints())
+            //    foreach (MPoint point in shape.GetPoints())
             //        allPoints.Add(point);
             //}
 

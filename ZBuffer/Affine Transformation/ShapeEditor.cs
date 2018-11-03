@@ -1,15 +1,140 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using ZBuffer.Shapes;
+using ZBuffer.Tools;
 using ZBuffer.ZBufferMath;
 
 namespace ZBuffer.Affine_Transformation
 {
-    public class ShapeEditor
+    //TODO Implement unified rotation method and optimize shape movement (while rotation) 
+    public class ShapeEditor : IShapeEditor
     {
+        public void RotateX(MCommonPrimitive shape, double angle)
+        {
+            var axis = Vector3.UnitX;
+
+            RotateShape(shape, angle, axis);
+        }
+
+        public void RotateY(MCommonPrimitive shape, double angle)
+        {
+            var axis = Vector3.UnitY;
+
+            RotateShape(shape, angle, axis);
+        }
+
+        public void RotateZ(MCommonPrimitive shape, double angle)
+        {
+            var axis = Vector3.UnitZ;
+
+            RotateShape(shape, angle, axis);
+        }
+
+        public void Move(MCommonPrimitive shape, float Sx, float Sy, float Sz)
+        {
+            float[,] movementMatrix = {
+                { 1, 0, 0, Sx },
+                { 0, 1, 0, Sy },
+                { 0, 0, 1, Sz },
+                { 0, 0, 0, 1 }
+            };
+
+            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(movementMatrix, shape.ModelMatrix);
+
+            //TranformShape(shape, movementMatrix);
+        }
+
+        public void Scale(MCommonPrimitive shape, float Sx, float Sy, float Sz)
+        {
+            float[,] scaleMatrix = {
+                { Sx, 0, 0, 0 },
+                { 0, Sy, 0, 0 },
+                { 0, 0, Sz, 0 },
+                { 0, 0, 0, 1 }
+            };
+
+            TranformShape(shape, scaleMatrix);
+        }
+
+        public void ProjectShape(MCommonPrimitive shape, Camera camera)
+        {
+            TranformShape(shape, camera.ProjectionMatrix);
+
+            //foreach (MPoint point in shape.GetAllPoints())
+            //{
+            //    point.
+            //}
+        }
+
+        private void RotateShape(MCommonPrimitive shape, double angle, Vector3 axis)
+        {
+            double rads = angle * Math.PI / 180.0;
+            var vertices = shape.GetVertices();
+
+            MPoint currentShapeCenter;
+
+            Quaternion rotationQuaternion = GetRotationQuaternion(axis, rads);
+
+            shape.RotationQuaternion *= rotationQuaternion;
+
+            // Sets object in the coordinate's origin, rotates it and move to the previous place
+            MoveShapeToOrigin(shape, out currentShapeCenter);
+            RotateVertices(vertices, rotationQuaternion);
+            MoveShapeToPreviousPosition(shape, currentShapeCenter);
+        }
+
+        private void RotateVertices(List<MPoint> vertices, Quaternion rotationQuaternion)
+        {          
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                var vertexVector = new Vector3(vertices[i].X, vertices[i].Y, vertices[i].Z);
+
+                var newCoords = Vector3.Transform(vertexVector, rotationQuaternion);
+
+                SetNewCoordinatesToPoint(vertices[i], newCoords);
+            }
+        }
+
+        private void MoveShapeToOrigin(MCommonPrimitive shape, out MPoint shapeCenter)
+        {
+            var vertices = shape.GetVertices();
+
+            shapeCenter = shape.GetCenterPoint();
+
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                vertices[i].X -= shapeCenter.X;
+                vertices[i].Y -= shapeCenter.Y;
+                vertices[i].Z -= shapeCenter.Z;
+            }
+        }
+
+        private void MoveShapeToPreviousPosition(MCommonPrimitive shape, MPoint previousShapeCenter)
+        {
+            var vertices = shape.GetVertices();
+
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                vertices[i].X += previousShapeCenter.X;
+                vertices[i].Y += previousShapeCenter.Y;
+                vertices[i].Z += previousShapeCenter.Z;
+            }
+        }
+
+        private Quaternion GetRotationQuaternion(Vector3 axis, double rads)
+        {
+            float quaternionX = (float)(Math.Sin(rads / 2) * axis.X),
+                   quaternionY = (float)(Math.Sin(rads / 2) * axis.Y),
+                   quaternionZ = (float)(Math.Sin(rads / 2) * axis.Z),
+                   quaternionW = (float)(Math.Cos(rads / 2));
+
+            return new Quaternion(quaternionX, quaternionY, quaternionZ, quaternionW);
+        }
+
         public float[,] RotateY(MPoint shapeCenter, double angle)
         {
             double rads = angle * Math.PI / 180.0;
@@ -86,7 +211,7 @@ namespace ZBuffer.Affine_Transformation
         }
 
         //TO DEL
-        public void RotateZVertices(MPoint[] vertices, double angle)
+        public void RotateZVertices(List<MPoint> vertices, double angle)
         {
             double rads = angle * Math.PI / 180.0;
             //формируем матрицу поворота;
@@ -97,7 +222,7 @@ namespace ZBuffer.Affine_Transformation
                 { 0, 0, 0, 1 }
             };
 
-            for (int i = 0; i < vertices.Length; ++i)
+            for (int i = 0; i < vertices.Count; ++i)
             {
                 float[,] shapeCoords = { { vertices[i].X }, { vertices[i].Y }, { vertices[i].Z }, { 1 } };
 
@@ -123,6 +248,155 @@ namespace ZBuffer.Affine_Transformation
             float[,] shapeCoords = { { shapeCenter.SX }, { shapeCenter.SY }, { shapeCenter.SZ }, { 1 } };
 
             return MatrixMultiplier.MultiplyMatrix(rotateZ, shapeCoords);
+        }
+
+        private void TranformShape(MCommonPrimitive shape, float[,] transformationMatrix)
+        {
+            List<MPoint> vertices = shape.GetVertices();
+
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                float[,] vertexCoords = { { vertices[i].X }, { vertices[i].Y }, { vertices[i].Z }, { 1 } };
+
+                float[,] newCoords = MatrixMultiplier.MultiplyMatrix(transformationMatrix, vertexCoords);
+
+                SetNewCoordinatesToPoint(vertices[i], newCoords);
+
+                //TEST
+                TransformPointCoordsToDecart(vertices[i]);
+            }
+        }
+
+        private void SetNewCoordinatesToPoint(MPoint destinationPoint, Vector3 newCoordinates)
+        {
+            destinationPoint.X = newCoordinates.X;
+            destinationPoint.Y = newCoordinates.Y;
+            destinationPoint.Z = newCoordinates.Z;
+        }
+
+        private void SetNewCoordinatesToPoint(MPoint destinationPoint, float[,] newCoordinates)
+        {
+            destinationPoint.X = newCoordinates[0, 0];
+            destinationPoint.Y = newCoordinates[1, 0];
+            destinationPoint.Z = newCoordinates[2, 0];
+            destinationPoint.W = newCoordinates[3, 0];
+        }
+
+        private void TransformPointCoordsToDecart(MPoint point)
+        {
+            point.X = 640 / 2 * point.X + (point.SX + 640 / 2);
+            point.Y = 360 / 2 * point.Y + (point.SY + 360 / 2);
+            point.Z = (10 - (-10)) / 2 * point.Z + (0) / 2;
+        }
+
+
+        private void TransformShape(MCommonPrimitive shape)
+        {
+            List<MPoint> vertices = shape.GetVertices();
+
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                float[,] vertexCoords = { { vertices[i].SX }, { vertices[i].SY }, { vertices[i].SZ }, { 1 } };
+
+                float[,] newCoords = MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, vertexCoords);
+
+                SetNewCoordinatesToPoint(vertices[i], newCoords);
+
+                ////TEST
+                //TransformPointCoordsToDecart(vertices[i]);
+            }
+        }
+
+        public void TransformShapes(List<MCommonPrimitive> shapes)
+        {
+            foreach (MCommonPrimitive shape in shapes)
+                TransformShape(shape);
+        }
+
+        public void GetTransformedShapes(List<MCommonPrimitive> shapes, Camera camera)
+        {
+            for (int i = 0; i < shapes.Count; ++i)
+                GetTransformedShape(shapes[i], camera);
+        }
+
+        public void GetTransformedShape(MCommonPrimitive shape, Camera camera)
+        {
+            //GetEyeCoordinates(shape, camera);
+            //GetClippedCoordinates(shape, camera);
+            //GetNormalizedCoordinates(shape);
+            //GetWindowCoordinates(shape);
+            float[,] modelView = MatrixMultiplier.MultiplyMatrix(camera.ViewMatrix, shape.ModelMatrix);
+            float[,] projModelView = MatrixMultiplier.MultiplyMatrix(camera.ProjectionMatrix, modelView);
+
+            for (int i = 0; i < projModelView.GetLength(0); ++i)
+            {
+                for (int j = 0; j < projModelView.GetLength(1); ++j)
+                {
+                    if (i != 3 && j != 3)
+                        projModelView[i, j] /= projModelView[3, 3];
+                }
+            }
+
+            List<MPoint> vertices = shape.GetVertices();
+
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                float[,] vertexCoords = { { vertices[i].SX }, { vertices[i].SY }, { vertices[i].SZ }, { vertices[i].SW } };
+
+                float[,] newCoords = MatrixMultiplier.MultiplyMatrix(projModelView, vertexCoords);
+
+                SetNewCoordinatesToPoint(vertices[i], newCoords);
+
+                TransformPointCoordsToDecart(vertices[i]);
+            }
+        }
+
+        private void GetEyeCoordinates(MCommonPrimitive shape, Camera camera)
+        {
+            List<MPoint> vertices = shape.GetVertices();
+
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                float[,] vertexCoords = { { vertices[i].SX }, { vertices[i].SY }, { vertices[i].SZ }, { 1 } };
+
+                float[,] modelView = MatrixMultiplier.MultiplyMatrix(camera.ViewMatrix, shape.ModelMatrix);
+
+                float[,] newCoords = MatrixMultiplier.MultiplyMatrix(modelView, vertexCoords);
+
+                SetNewCoordinatesToPoint(vertices[i], newCoords);
+            }
+        }
+
+        private void GetClippedCoordinates(MCommonPrimitive shape, Camera camera)
+        {
+            List<MPoint> vertices = shape.GetVertices();
+
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                float[,] vertexCoords = { { vertices[i].X }, { vertices[i].Y }, { vertices[i].Z }, { 1 } };
+
+                float[,] newCoords = MatrixMultiplier.MultiplyMatrix(camera.ProjectionMatrix, vertexCoords);
+
+                SetNewCoordinatesToPoint(vertices[i], newCoords);
+            }
+        }
+
+        private void GetNormalizedCoordinates(MCommonPrimitive shape)
+        {
+            List<MPoint> vertices = shape.GetVertices();
+
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                float[,] newCoords = { { vertices[i].X / vertices[i].W }, { vertices[i].Y / vertices[i].W }, { vertices[i].Z / vertices[i].W }, { vertices[i].W } };
+
+                SetNewCoordinatesToPoint(vertices[i], newCoords);
+            }
+        }
+
+        private void GetWindowCoordinates(MCommonPrimitive shape)
+        {
+            foreach (MPoint point in shape.GetVertices())
+                TransformPointCoordsToDecart(point);
         }
     }
 }

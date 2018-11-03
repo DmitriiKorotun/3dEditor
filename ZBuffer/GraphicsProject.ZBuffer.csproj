@@ -34,6 +34,8 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,7 +45,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Affine Transformation\IShapeEditor.cs" />
     <Compile Include="Affine Transformation\MatrixCatalogue.cs" />
+    <Compile Include="Shapes\MCommonPrimitive.cs" />
+    <Compile Include="Tools\OrthographicCamera.cs" />
+    <Compile Include="Tools\PerspectiveCamera.cs" />
     <Compile Include="ZBufferMath\MatrixComparator.cs" />
     <Compile Include="ZBufferMath\MatrixMultiplier.cs" />
     <Compile Include="Affine Transformation\ShapeEditor.cs" />
@@ -58,7 +64,6 @@
     <Compile Include="Shapes\MShape.cs" />
     <Compile Include="Shapes\MSideCylinder.cs" />
     <Compile Include="Shapes\MTopCylinder.cs" />
-    <Compile Include="Test.cs" />
     <Compile Include="Tools\Camera.cs" />
     <Compile Include="Tools\ZBuffer.cs" />
     <Compile Include="ZBufferMath\VectorMath.cs" />

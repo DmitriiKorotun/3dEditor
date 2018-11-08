@@ -185,9 +185,9 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Button Content="Повернуть"></Button>
-                            <Button Content="Перенести" Grid.Column="1"></Button>
-                            <Button Content="Масштабировать" Grid.Column="2"></Button>
+                            <Button Name="btn_rotate" Content="Повернуть" Click="btn_rotate_Click"></Button>
+                            <Button Name="btn_move" Content="Перенести" Grid.Column="1" Click="btn_move_Click"></Button>
+                            <Button Name="btn_scale" Content="Масштабировать" Grid.Column="2" Click="btn_scale_Click"></Button>
 
                         </Grid>
 
@@ -202,8 +202,8 @@
                         <ColumnDefinition Width="25*"/>
                     </Grid.ColumnDefinitions>
                     <Button Name="btn_clear" Content="Очистить" Grid.Column="3" HorizontalAlignment="Center" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="btn_clear_Click"/>
-                    <Button Name="btn_rotateLeft" Content="Повернуть влево" Grid.Column="1" HorizontalAlignment="Center" Margin="10,10,0,0" VerticalAlignment="Top" Width="auto" Click="btn_rotateLeft_Click"/>
-                    <Button x:Name="btn_rotateRight" Content="Повернуть вправо" Grid.Column="2" HorizontalAlignment="Center" Margin="10,10,0,0" VerticalAlignment="Top" Width="auto" Click="btn_rotateRight_Click"/>
+                    <Button Name="btn_rotateLeft" Content="Повернуть влево" Grid.Column="1" HorizontalAlignment="Center" Margin="10,10,0,0" VerticalAlignment="Top" Width="auto"/>
+                    <Button x:Name="btn_rotateRight" Content="Повернуть вправо" Grid.Column="2" HorizontalAlignment="Center" Margin="10,10,0,0" VerticalAlignment="Top" Width="auto"/>
                 </Grid>
             </Grid>
         </Border>

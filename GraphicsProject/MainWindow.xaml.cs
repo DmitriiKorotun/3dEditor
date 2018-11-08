@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -101,26 +102,10 @@ namespace GraphicsProject
             MBox mbox = new MBox(leftFaceCorner, width, length, height);
         }
 
-        private void btn_rotateLeft_Click(object sender, RoutedEventArgs e)
-        {
-            Scene.RotateSelected(10);
-            screen.Source = Scene.Render();
-        }
-
-        private void btn_rotateRight_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         //TODO Deal with event firing only after image.source is setted
         private void screen_MouseUp(object sender, MouseButtonEventArgs e)
         {
             e.GetPosition(screen);
-        }
-
-        private void screen_MouseUp(object sender, MouseEventArgs e)
-        {
-
         }
 
         private void menuItem_newScene_Click(object sender, RoutedEventArgs e)
@@ -161,5 +146,66 @@ namespace GraphicsProject
                 screen.Source = Scene.Render();
             }
         }
+
+        private void btn_rotate_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Not implemented");
+        }
+
+        private void btn_move_Click(object sender, RoutedEventArgs e)
+        {
+            TransformShapes(MoveShapes, tb_TransformationX.Text, tb_TransformationY.Text, tb_TransformationZ.Text, 0);
+        }
+
+        private void btn_scale_Click(object sender, RoutedEventArgs e)
+        {
+            TransformShapes(ScaleShapes, tb_TransformationX.Text, tb_TransformationY.Text, tb_TransformationZ.Text, 1);
+        }
+
+        private void TransformShapes(Transofrmation operation, string sx, string sy, string sz, float defaultInputValue)
+        {
+            try
+            {
+                Vector3 coordinates = GetCoordinates(sx, sy, sz, defaultInputValue);
+
+                operation(coordinates);
+
+                screen.Source = Scene.Render();
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (UIException ex) when (ex.Status == UIExceptions.TransformationInputEmpty)
+            {
+                MessageBox.Show("Заполните хотя бы одно из полей выше");
+            }
+        }
+
+        private void MoveShapes(Vector3 coordinates)
+        {          
+            Scene.MoveSelected(coordinates.X, coordinates.Y, coordinates.Z);
+        }
+
+        private void ScaleShapes(Vector3 coordinates)
+        {
+            Scene.ScaleSelected(coordinates.X, coordinates.Y, coordinates.Z);           
+        }
+
+        private Vector3 GetCoordinates(string sx, string sy, string sz, float defaultValue)
+        {
+            if (sx == "" && sy == "" && sz == "")
+                throw new UIException(UIExceptions.TransformationInputEmpty, "All transformation input fields are empty");
+
+            Vector3 coordinates = new Vector3(
+                sx != "" ? float.Parse(sx) : defaultValue,
+                sy != "" ? float.Parse(sy) : defaultValue,
+                sz != "" ? float.Parse(sz) : defaultValue
+                );
+
+            return coordinates;
+        }
+
+        private delegate void Transofrmation(Vector3 coordinates);
     }
 }

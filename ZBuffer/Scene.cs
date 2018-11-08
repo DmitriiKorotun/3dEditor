@@ -61,15 +61,40 @@ namespace ZBuffer
             Shapes.Add(shape);
         }
 
+        //TODO Rework
         public void RotateSelected(double angle)
         {
             //TODO remove this
             SelectedShapes = Shapes;
 
-            var ls = new ShapeEditor();
+            var editor = new ShapeEditor();
 
-            for (int i = 0; i < SelectedShapes.Count; ++i)            
-                ls.Move(SelectedShapes[i], 10, 0, 0);
+            for (int i = 0; i < SelectedShapes.Count; ++i)
+                editor.Move(SelectedShapes[i], 10, 0, 0);
+        }
+
+        //TODO Rework
+        public void MoveSelected(float Sx, float Sy, float Sz)
+        {
+            //TODO remove this
+            SelectedShapes = Shapes;
+
+            var editor = new ShapeEditor();
+
+            for (int i = 0; i < SelectedShapes.Count; ++i)
+                editor.Move(SelectedShapes[i], Sx, Sy, Sz);
+        }
+
+        //TODO Rework
+        public void ScaleSelected(float Sx, float Sy, float Sz)
+        {
+            //TODO remove this
+            SelectedShapes = Shapes;
+
+            var editor = new ShapeEditor();
+
+            for (int i = 0; i < SelectedShapes.Count; ++i)
+                editor.Scale(SelectedShapes[i], Sx, Sy, Sz);
         }
 
         private List<MPoint> GetAllPoints()

@@ -57,7 +57,7 @@ namespace ZBuffer.Affine_Transformation
                 { 0, 0, 0, 1 }
             };
 
-            TranformShape(shape, scaleMatrix);
+            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(scaleMatrix, shape.ModelMatrix);
         }
 
         public void ProjectShape(MCommonPrimitive shape, Camera camera)

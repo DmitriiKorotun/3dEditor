@@ -19,30 +19,32 @@ namespace ZBuffer
     [KnownType(typeof(MFacet))]
     public class Scene
     {
-        //TODO Refactor
-        public WriteableBitmap Bitmap { get; set; }
+        public int Height { get; set; }
+        public int Width { get; set; }
 
         //TODO Make public?
         [DataMember]
         private List<MCommonPrimitive> Shapes { get; set; }
         [DataMember]
-        private List<MCommonPrimitive> SelectedShapes { get; set; }
+        public List<MCommonPrimitive> SelectedShapes { get; set; }
         private Tools.ZBuffer Buffer { get; set; }
         public Tools.Camera CurrentCamera { get; set; }
 
 
         public Scene(int width, int heigth, int z)
         {
+            Width = width;
+            Height = heigth;
+
             Buffer = new Tools.ZBuffer(width * heigth);
 
-            CurrentCamera = new Tools.OrthographicCamera(-40, 40, -100, 100, -10, 0);
+            CurrentCamera = new Tools.OrthographicCamera(-160, 160, -90, 90, -50, 50);
             //CurrentCamera = new Tools.PerspectiveCamera((float)Math.PI / 4, 16 / 9, 10, -10);
-
-            Bitmap = new WriteableBitmap(width, heigth, 96, 96, PixelFormats.Bgra32, null);
 
             Shapes = new List<MCommonPrimitive>();
 
-            SelectedShapes = new List<MCommonPrimitive>();
+            //TODO Rework
+            SelectedShapes = Shapes;
         }
 
         public WriteableBitmap Render()
@@ -51,9 +53,7 @@ namespace ZBuffer
 
             List<MPoint> allPoints = GetAllPoints();
 
-            new Painter().DrawSceneByPoints(this, allPoints);
-
-            return Bitmap;
+            return new Painter().DrawSceneByPoints(this.Width, this.Height, allPoints);
         }
 
         public void AddShape(MCommonPrimitive shape)
@@ -69,32 +69,8 @@ namespace ZBuffer
 
             var editor = new ShapeEditor();
 
-            for (int i = 0; i < SelectedShapes.Count; ++i)
-                editor.Move(SelectedShapes[i], 10, 0, 0);
-        }
-
-        //TODO Rework
-        public void MoveSelected(float Sx, float Sy, float Sz)
-        {
-            //TODO remove this
-            SelectedShapes = Shapes;
-
-            var editor = new ShapeEditor();
-
-            for (int i = 0; i < SelectedShapes.Count; ++i)
-                editor.Move(SelectedShapes[i], Sx, Sy, Sz);
-        }
-
-        //TODO Rework
-        public void ScaleSelected(float Sx, float Sy, float Sz)
-        {
-            //TODO remove this
-            SelectedShapes = Shapes;
-
-            var editor = new ShapeEditor();
-
-            for (int i = 0; i < SelectedShapes.Count; ++i)
-                editor.Scale(SelectedShapes[i], Sx, Sy, Sz);
+            for (int i = 0; i < SelectedShapes.Count; ++i)            
+                ls.Rotate(SelectedShapes[i], 10, 0, 0);
         }
 
         private List<MPoint> GetAllPoints()

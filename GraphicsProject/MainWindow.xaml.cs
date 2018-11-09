@@ -49,6 +49,8 @@ namespace GraphicsProject
 
         private void btn_clear_Click(object sender, RoutedEventArgs e)
         {
+            Scene.Clear();
+
             screen.Source = null;
         }
 
@@ -137,17 +139,17 @@ namespace GraphicsProject
 
         private void btn_rotate_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Not implemented");
+            TransformShapes(RotateSelected, tb_TransformationX.Text, tb_TransformationY.Text, tb_TransformationZ.Text, 0);
         }
 
         private void btn_move_Click(object sender, RoutedEventArgs e)
         {
-            TransformShapes(MoveShapes, tb_TransformationX.Text, tb_TransformationY.Text, tb_TransformationZ.Text, 0);
+            TransformShapes(MoveSelected, tb_TransformationX.Text, tb_TransformationY.Text, tb_TransformationZ.Text, 0);
         }
 
         private void btn_scale_Click(object sender, RoutedEventArgs e)
         {
-            TransformShapes(ScaleShapes, tb_TransformationX.Text, tb_TransformationY.Text, tb_TransformationZ.Text, 1);
+            TransformShapes(ScaleSelected, tb_TransformationX.Text, tb_TransformationY.Text, tb_TransformationZ.Text, 1);
         }
 
         private void TransformShapes(Transofrmation operation, string sx, string sy, string sz, float defaultInputValue)
@@ -170,14 +172,19 @@ namespace GraphicsProject
             }
         }
 
-        private void MoveShapes(Vector3 coordinates)
+        private void MoveSelected(Vector3 coordinates)
         {          
-            Scene.MoveSelected(coordinates.X, coordinates.Y, coordinates.Z);
+            new ShapeEditor().MoveRange(Scene.SelectedShapes, coordinates.X, coordinates.Y, coordinates.Z);
         }
 
-        private void ScaleShapes(Vector3 coordinates)
+        private void ScaleSelected(Vector3 multiplier)
         {
-            Scene.ScaleSelected(coordinates.X, coordinates.Y, coordinates.Z);           
+            new ShapeEditor().ScaleRange(Scene.SelectedShapes, multiplier.X, multiplier.Y, multiplier.Z);
+        }
+
+        private void RotateSelected(Vector3 angles)
+        {
+            new ShapeEditor().RotateRange(Scene.SelectedShapes, angles.X, angles.Y, angles.Z);
         }
 
         private Vector3 GetCoordinates(string sx, string sy, string sz, float defaultValue)

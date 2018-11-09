@@ -69,8 +69,8 @@ namespace ZBuffer
 
             var editor = new ShapeEditor();
 
-            for (int i = 0; i < SelectedShapes.Count; ++i)            
-                ls.Rotate(SelectedShapes[i], 10, 0, 0);
+            for (int i = 0; i < SelectedShapes.Count; ++i)
+                editor.Rotate(SelectedShapes[i], 10, 0, 0);
         }
 
         private List<MPoint> GetAllPoints()
@@ -89,6 +89,11 @@ namespace ZBuffer
 
 
             return allPoints;
+        }
+
+        public void Clear()
+        {
+            this.Shapes.Clear();
         }
     }
 }

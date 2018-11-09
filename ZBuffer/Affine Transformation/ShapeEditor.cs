@@ -79,7 +79,7 @@ namespace ZBuffer.Affine_Transformation
         public void MoveRange(List<MCommonPrimitive> shapes, float sx, float sy, float sz)
         {
             for (int i = 0; i < shapes.Count; ++i)
-                Rotate(shapes[i], sx, sy, sz);
+                Move(shapes[i], sx, sy, sz);
         }
 
         public void Scale(MCommonPrimitive shape, float sx, float sy, float sz)

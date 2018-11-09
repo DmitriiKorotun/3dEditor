@@ -61,12 +61,13 @@ namespace ZBuffer
             Shapes.Add(shape);
         }
 
+        //TODO Rework
         public void RotateSelected(double angle)
         {
             //TODO remove this
             SelectedShapes = Shapes;
 
-            var ls = new ShapeEditor();
+            var editor = new ShapeEditor();
 
             for (int i = 0; i < SelectedShapes.Count; ++i)            
                 ls.Rotate(SelectedShapes[i], 10, 0, 0);

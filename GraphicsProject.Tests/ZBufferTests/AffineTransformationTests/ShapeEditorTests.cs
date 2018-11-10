@@ -116,7 +116,7 @@ namespace GraphicsProject.Tests.ZBufferTests.AffineTransformationTests
 
 
             // act
-            editor.Move(testedFacet, 0, 0, distanceZ);
+            editor.Translate(testedFacet, 0, 0, distanceZ);
 
 
             // assert
@@ -145,7 +145,7 @@ namespace GraphicsProject.Tests.ZBufferTests.AffineTransformationTests
 
 
             // act
-            editor.Move(testedFacet, distanceX, distanceY, 0);
+            editor.Translate(testedFacet, distanceX, distanceY, 0);
 
 
             // assert
@@ -219,24 +219,24 @@ namespace GraphicsProject.Tests.ZBufferTests.AffineTransformationTests
         //    Assert.IsTrue(isMatrixesEqual);
         //}
 
-        [TestMethod]
-        public void Scale_ShapeCenterCoords_ExpectedShapeCenterCoordsIncreaseByOneAndHalf()
-        {
-            // arrange
-            ShapeEditor editor = new ShapeEditor();
+        //[TestMethod]
+        //public void Scale_ShapeCenterCoords_ExpectedShapeCenterCoordsIncreaseByOneAndHalf()
+        //{
+        //    // arrange
+        //    ShapeEditor editor = new ShapeEditor();
 
-            MPoint shapeCenter = new MPoint(5, 12, 3);
+        //    MPoint shapeCenter = new MPoint(5, 12, 3);
 
-            float[,] expectedResult = { { shapeCenter.SX * (float)1.5 }, { shapeCenter.SY * (float)1.5 }, { shapeCenter.SZ * (float)1.5 }, { 1 } };
+        //    float[,] expectedResult = { { shapeCenter.SX * (float)1.5 }, { shapeCenter.SY * (float)1.5 }, { shapeCenter.SZ * (float)1.5 }, { 1 } };
 
-            // act
-            var transformationMatrix = editor.Scale(shapeCenter, (float)1.5, (float)1.5, (float)1.5);
+        //    // act
+        //    var transformationMatrix = editor.Scale(shapeCenter, (float)1.5, (float)1.5, (float)1.5);
 
-            bool isMatrixesEqual = MatrixComparator.IsMatrixesEqual(expectedResult, transformationMatrix);
+        //    bool isMatrixesEqual = MatrixComparator.IsMatrixesEqual(expectedResult, transformationMatrix);
 
-            // assert
-            Assert.IsTrue(isMatrixesEqual);
-        }
+        //    // assert
+        //    Assert.IsTrue(isMatrixesEqual);
+        //}
 
         // I need to prevent point.SW from changing in order to compare points
         private void SetPointCoordinatesToDestinationPoint(MPoint sourcePoint, MPoint destinationPoint)

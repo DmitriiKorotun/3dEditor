@@ -174,7 +174,7 @@ namespace GraphicsProject
 
         private void MoveSelected(Vector3 coordinates)
         {          
-            new ShapeEditor().MoveRange(Scene.SelectedShapes, coordinates.X, coordinates.Y, coordinates.Z);
+            new ShapeEditor().TranslateRange(Scene.SelectedShapes, coordinates.X, coordinates.Y, coordinates.Z);
         }
 
         private void ScaleSelected(Vector3 multiplier)

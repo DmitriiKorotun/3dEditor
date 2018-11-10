@@ -14,81 +14,83 @@ namespace ZBuffer
 { 
     public class Painter
     {
-        public void DrawPoint(Scene scene, Point3D point)
+        //public void DrawPoint(Scene scene, Point3D point)
+        //{
+        //    Int32Rect rect = new Int32Rect(0, 0, (int)scene.Bitmap.Width, (int)scene.Bitmap.Height);
+
+        //    byte[] pixels = new byte[(int)scene.Bitmap.Width * (int)scene.Bitmap.Height * scene.Bitmap.Format.BitsPerPixel / 8];
+
+        //    for (int y = 0; y < scene.Bitmap.PixelHeight; y++)
+        //    {
+        //        for (int x = 0; x < scene.Bitmap.PixelWidth; x++)
+        //        {
+        //            int alpha = 255;
+        //            int red = 0;
+        //            int green = 0;
+        //            int blue = 0;
+
+        //            int pixelOffset = (x + y * scene.Bitmap.PixelWidth) * scene.Bitmap.Format.BitsPerPixel / 8;
+        //            pixels[pixelOffset] = (byte)blue;
+        //            pixels[pixelOffset + 1] = (byte)green;
+        //            pixels[pixelOffset + 2] = (byte)red;
+        //            pixels[pixelOffset + 3] = (byte)alpha;
+        //        }
+
+        //        int stride = (scene.Bitmap.PixelWidth * scene.Bitmap.Format.BitsPerPixel) / 8;
+
+        //        scene.Bitmap.WritePixels(rect, pixels, stride, 0);
+        //    }   
+        //}
+
+        //public void DrawScene(Scene scene, HashSet<Point3D> points)
+        //{
+        //    Int32Rect rect = new Int32Rect(0, 0, (int)scene.Bitmap.Width, (int)scene.Bitmap.Height);
+
+        //    byte[] pixels = new byte[(int)scene.Bitmap.Width * (int)scene.Bitmap.Height * scene.Bitmap.Format.BitsPerPixel / 8];
+
+        //    for (int y = 0; y < scene.Bitmap.PixelHeight; y++)
+        //    {
+        //        for (int x = 0; x < scene.Bitmap.PixelWidth; x++)
+        //        {
+        //            var currPoint = new Point3D(x, y, 0);
+
+        //            int alpha = 255;
+        //            int red = 255;
+        //            int green = 255;
+        //            int blue = 255;
+
+        //            if (points.Contains(currPoint))
+        //            {
+        //                alpha = 255;
+        //                red = 0;
+        //                green = 0;
+        //                blue = 0;
+        //            }
+
+        //            int pixelOffset = (x + y * scene.Bitmap.PixelWidth) * scene.Bitmap.Format.BitsPerPixel / 8;
+        //            pixels[pixelOffset] = (byte)blue;
+        //            pixels[pixelOffset + 1] = (byte)green;
+        //            pixels[pixelOffset + 2] = (byte)red;
+        //            pixels[pixelOffset + 3] = (byte)alpha;
+        //        }
+        //    }
+
+        //    int stride = (scene.Bitmap.PixelWidth * scene.Bitmap.Format.BitsPerPixel) / 8;
+
+        //    scene.Bitmap.WritePixels(rect, pixels, stride, 0);
+        //}
+
+        public WriteableBitmap DrawSceneByPoints(int width, int height, List<MPoint> points)
         {
-            Int32Rect rect = new Int32Rect(0, 0, (int)scene.Bitmap.Width, (int)scene.Bitmap.Height);
+            WriteableBitmap wBitmap = new WriteableBitmap(width, height, 96, 96, PixelFormats.Bgra32, null);
 
-            byte[] pixels = new byte[(int)scene.Bitmap.Width * (int)scene.Bitmap.Height * scene.Bitmap.Format.BitsPerPixel / 8];
+            Int32Rect rect = new Int32Rect(0, 0, width, height);
 
-            for (int y = 0; y < scene.Bitmap.PixelHeight; y++)
-            {
-                for (int x = 0; x < scene.Bitmap.PixelWidth; x++)
-                {
-                    int alpha = 255;
-                    int red = 0;
-                    int green = 0;
-                    int blue = 0;
-
-                    int pixelOffset = (x + y * scene.Bitmap.PixelWidth) * scene.Bitmap.Format.BitsPerPixel / 8;
-                    pixels[pixelOffset] = (byte)blue;
-                    pixels[pixelOffset + 1] = (byte)green;
-                    pixels[pixelOffset + 2] = (byte)red;
-                    pixels[pixelOffset + 3] = (byte)alpha;
-                }
-
-                int stride = (scene.Bitmap.PixelWidth * scene.Bitmap.Format.BitsPerPixel) / 8;
-
-                scene.Bitmap.WritePixels(rect, pixels, stride, 0);
-            }   
-        }
-
-        public void DrawScene(Scene scene, HashSet<Point3D> points)
-        {
-            Int32Rect rect = new Int32Rect(0, 0, (int)scene.Bitmap.Width, (int)scene.Bitmap.Height);
-
-            byte[] pixels = new byte[(int)scene.Bitmap.Width * (int)scene.Bitmap.Height * scene.Bitmap.Format.BitsPerPixel / 8];
-
-            for (int y = 0; y < scene.Bitmap.PixelHeight; y++)
-            {
-                for (int x = 0; x < scene.Bitmap.PixelWidth; x++)
-                {
-                    var currPoint = new Point3D(x, y, 0);
-
-                    int alpha = 255;
-                    int red = 255;
-                    int green = 255;
-                    int blue = 255;
-
-                    if (points.Contains(currPoint))
-                    {
-                        alpha = 255;
-                        red = 0;
-                        green = 0;
-                        blue = 0;
-                    }
-
-                    int pixelOffset = (x + y * scene.Bitmap.PixelWidth) * scene.Bitmap.Format.BitsPerPixel / 8;
-                    pixels[pixelOffset] = (byte)blue;
-                    pixels[pixelOffset + 1] = (byte)green;
-                    pixels[pixelOffset + 2] = (byte)red;
-                    pixels[pixelOffset + 3] = (byte)alpha;
-                }
-            }
-
-            int stride = (scene.Bitmap.PixelWidth * scene.Bitmap.Format.BitsPerPixel) / 8;
-
-            scene.Bitmap.WritePixels(rect, pixels, stride, 0);
-        }
-
-        public void DrawSceneByPoints(Scene scene, List<MPoint> points)
-        {
-            Int32Rect rect = new Int32Rect(0, 0, (int)scene.Bitmap.Width, (int)scene.Bitmap.Height);
-
-            byte[] pixels = new byte[(int)scene.Bitmap.Width * (int)scene.Bitmap.Height * scene.Bitmap.Format.BitsPerPixel / 8];
+            byte[] pixels = new byte[width * height * wBitmap.Format.BitsPerPixel / 8];
 
             for (int i = 0; i < points.Count; ++i)
             {
-                points[i].Y = (float)scene.Bitmap.Height - points[i].Y;
+                points[i].Y = height - points[i].Y;
             }
 
             int alpha = 255;
@@ -98,7 +100,7 @@ namespace ZBuffer
 
             for (int i = 0; i < points.Count; ++i)
             {
-                int pixelOffset = (int)(points[i].X + points[i].Y * scene.Bitmap.PixelWidth) * scene.Bitmap.Format.BitsPerPixel / 8;
+                int pixelOffset = (int)(points[i].X + points[i].Y * wBitmap.PixelWidth) * wBitmap.Format.BitsPerPixel / 8;
 
                 pixels[pixelOffset] = (byte)blue;
                 pixels[pixelOffset + 1] = (byte)green;
@@ -106,36 +108,11 @@ namespace ZBuffer
                 pixels[pixelOffset + 3] = (byte)alpha;
             }
 
-            //for (int y = 0; y < scene.Bitmap.PixelHeight; y++)
-            //{
-            //    for (int x = 0; x < scene.Bitmap.PixelWidth; x++)
-            //    {
-            //        var currPoint = new Point3D(x, y, 0);
+            int stride = (wBitmap.PixelWidth * wBitmap.Format.BitsPerPixel) / 8;
 
-            //        int alpha = 255;
-            //        int red = 255;
-            //        int green = 255;
-            //        int blue = 255;
+            wBitmap.WritePixels(rect, pixels, stride, 0);
 
-            //        if (points.Contains(currPoint))
-            //        {
-            //            alpha = 255;
-            //            red = 0;
-            //            green = 0;
-            //            blue = 0;
-            //        }
-
-            //        int pixelOffset = (x + y * scene.Bitmap.PixelWidth) * scene.Bitmap.Format.BitsPerPixel / 8;
-            //        pixels[pixelOffset] = (byte)blue;
-            //        pixels[pixelOffset + 1] = (byte)green;
-            //        pixels[pixelOffset + 2] = (byte)red;
-            //        pixels[pixelOffset + 3] = (byte)alpha;
-            //    }               
-            //}
-
-            int stride = (scene.Bitmap.PixelWidth * scene.Bitmap.Format.BitsPerPixel) / 8;
-
-            scene.Bitmap.WritePixels(rect, pixels, stride, 0);
+            return wBitmap;
         }
 
         //private void CalculateLinePoints(List<Point3D> points, Point3D point1, Point3D point2)
@@ -157,48 +134,48 @@ namespace ZBuffer
         //    CalculateLinePoints(points, newPoint, point2);
         //}
 
-        public void DrawFacet(Scene scene, MFacet facet)
-        {
-            MPoint point1 = new MPoint(facet.Vertices[0].SX, facet.Vertices[0].SY, facet.Vertices[0].SZ);
-            MPoint point2 = new MPoint(facet.Vertices[1].SX, facet.Vertices[1].SY, facet.Vertices[1].SZ);
+        //public void DrawFacet(Scene scene, MFacet facet)
+        //{
+        //    MPoint point1 = new MPoint(facet.Vertices[0].SX, facet.Vertices[0].SY, facet.Vertices[0].SZ);
+        //    MPoint point2 = new MPoint(facet.Vertices[1].SX, facet.Vertices[1].SY, facet.Vertices[1].SZ);
 
-            List<MPoint> points = new VectorMath().GetAllVectorPoints(point1, point2);
+        //    List<MPoint> points = new VectorMath().GetAllVectorPoints(point1, point2);
 
-            Int32Rect rect = new Int32Rect(0, 0, (int)scene.Bitmap.Width, (int)scene.Bitmap.Height);
+        //    Int32Rect rect = new Int32Rect(0, 0, (int)scene.Bitmap.Width, (int)scene.Bitmap.Height);
 
-            byte[] pixels = new byte[(int)scene.Bitmap.Width * (int)scene.Bitmap.Height * scene.Bitmap.Format.BitsPerPixel / 8];
+        //    byte[] pixels = new byte[(int)scene.Bitmap.Width * (int)scene.Bitmap.Height * scene.Bitmap.Format.BitsPerPixel / 8];
 
-            for (int y = 0; y < scene.Bitmap.PixelHeight; y++)
-            {
-                for (int x = 0; x < scene.Bitmap.PixelWidth; x++)
-                {
-                    var currPoint = new MPoint(x, y, -1);
+        //    for (int y = 0; y < scene.Bitmap.PixelHeight; y++)
+        //    {
+        //        for (int x = 0; x < scene.Bitmap.PixelWidth; x++)
+        //        {
+        //            var currPoint = new MPoint(x, y, -1);
 
-                    int alpha = 255;
-                    int red = 255;
-                    int green = 255;
-                    int blue = 255;
+        //            int alpha = 255;
+        //            int red = 255;
+        //            int green = 255;
+        //            int blue = 255;
 
-                    if (points.Contains(currPoint))
-                    {
-                        alpha = 255;
-                        red = 0;
-                        green = 0;
-                        blue = 0;
-                    }
+        //            if (points.Contains(currPoint))
+        //            {
+        //                alpha = 255;
+        //                red = 0;
+        //                green = 0;
+        //                blue = 0;
+        //            }
 
-                    int pixelOffset = (x + y * scene.Bitmap.PixelWidth) * scene.Bitmap.Format.BitsPerPixel / 8;
-                    pixels[pixelOffset] = (byte)blue;
-                    pixels[pixelOffset + 1] = (byte)green;
-                    pixels[pixelOffset + 2] = (byte)red;
-                    pixels[pixelOffset + 3] = (byte)alpha;
-                }
+        //            int pixelOffset = (x + y * scene.Bitmap.PixelWidth) * scene.Bitmap.Format.BitsPerPixel / 8;
+        //            pixels[pixelOffset] = (byte)blue;
+        //            pixels[pixelOffset + 1] = (byte)green;
+        //            pixels[pixelOffset + 2] = (byte)red;
+        //            pixels[pixelOffset + 3] = (byte)alpha;
+        //        }
 
-                int stride = (scene.Bitmap.PixelWidth * scene.Bitmap.Format.BitsPerPixel) / 8;
+        //        int stride = (scene.Bitmap.PixelWidth * scene.Bitmap.Format.BitsPerPixel) / 8;
 
-                scene.Bitmap.WritePixels(rect, pixels, stride, 0);
-            }
-        }
+        //        scene.Bitmap.WritePixels(rect, pixels, stride, 0);
+        //    }
+        //}
 
         public WriteableBitmap DrawCube(int imgWidth, int imgHeigth, int cubeWidth, int cubeHeigth, int centerX, int centerY)
         {

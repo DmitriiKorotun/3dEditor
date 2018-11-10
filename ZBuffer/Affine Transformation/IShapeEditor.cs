@@ -9,12 +9,13 @@ namespace ZBuffer.Affine_Transformation
 {
     interface IShapeEditor
     {
-        void RotateX(MCommonPrimitive shape, double angle);
-        void RotateY(MCommonPrimitive shape, double angle);
-        void RotateZ(MCommonPrimitive shape, double angle);
+        void Rotate(MCommonPrimitive shape, double sx, double sy, double sz);
+        void RotateRange(List<MCommonPrimitive> shapes, double sx, double sy, double sz);
 
-        void Move(MCommonPrimitive shape, float Sx, float Sy, float Sz);
+        void Translate(MCommonPrimitive shape, float sx, float sy, float sz);
+        void TranslateRange(List<MCommonPrimitive> shapes, float sx, float sy, float sz);
 
-        void Scale(MCommonPrimitive shape, float Sx, float Sy, float Sz);
+        void Scale(MCommonPrimitive shape, float sx, float sy, float sz);
+        void ScaleRange(List<MCommonPrimitive> shapes, float sx, float sy, float sz);
     }
 }

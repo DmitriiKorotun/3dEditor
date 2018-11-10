@@ -10,14 +10,14 @@ namespace ZBuffer.ZBufferMath
 {
     public class VectorMath
     {
-        public List<MPoint> GetAllVectorPoints(MPoint point1, MPoint point2)
-        {
-            List<MPoint> points = new List<MPoint>() { point1, point2 };
+        //public List<MPoint> GetAllVectorPoints(MPoint point1, MPoint point2)
+        //{
+        //    List<MPoint> points = new List<MPoint>() { point1, point2 };
 
-            CalculateLinePoints(points, point1, point2);
+        //    CalculateLinePoints(points, point1, point2);
 
-            return points;
-        }
+        //    return points;
+        //}
 
         private void CalculateLinePoints(List<MPoint> points, MPoint point1, MPoint point2)
         {
@@ -43,15 +43,92 @@ namespace ZBuffer.ZBufferMath
             return new MPoint(x, y, z);
         }
 
-        public MPoint MovePointTowards(MPoint a, MPoint b, float distance)
-        {
-            var vector = new MPoint(b.X - a.X, b.Y - a.Y, b.Z - a.Z);
+        
 
-            var length = (float)Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y);
+        // Using Bresenham's line algorithm
+        //public List<MPoint> GetAllVectorPoints(MPoint point1, MPoint point2)
+        //{
+        //    var points = new List<MPoint>();
 
-            var unitVector = new MPoint(vector.X / length, vector.Y / length, vector.Z / length);
+        //    bool isAxisWasSwapped = false;
 
-            return new MPoint(a.X + unitVector.X * distance, a.Y + unitVector.Y * distance, a.Z + unitVector.Z * distance);
-        }
+        //    if (point2.X == point1.X && point2.Y == point1.Y)
+        //        return new List<MPoint>() { point1 };
+
+        //    if (Math.Abs(point2.X - point1.X) < Math.Abs(point2.Y - point1.Y))
+        //    {
+        //        SwapPointAxis(point1);
+        //        SwapPointAxis(point2);
+
+        //        isAxisWasSwapped = true;
+        //    }
+
+        //    if (point2.X < point1.X)
+        //    {
+        //        var temp = point1;
+        //        point1 = point2;
+        //        point2 = temp;
+        //    }
+
+            
+        //    var angleCoeff = (point2.Y - point1.Y) / (point2.X - point1.X);
+
+        //    float error = 0,
+        //        threshold = angleCoeff > 0 ? (float)0.5 : (float)-0.5;
+
+        //    int currX = (int)point1.X,
+        //        currY = (int)point1.Y;
+        //    do
+        //    {             
+        //        error += angleCoeff;
+
+        //        ++currX;
+
+        //        if (angleCoeff > 0)
+        //        {
+        //            if (error > threshold)
+        //            {
+        //                ++currY;
+
+        //                error -= 1;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if (error < threshold)
+        //            {
+        //                --currY;
+
+        //                error += 1;
+        //            }
+        //        }
+
+        //        MPoint point = null;
+
+        //        if (isAxisWasSwapped)
+        //            point = new MPoint(currY, currX, 1);
+        //        else
+        //            point = new MPoint(currX, currY, 1);
+
+        //        points.Add(point);
+
+        //    } while (currX != (int)point2.X || currY != (int)point2.Y);
+
+        //    return points;
+        //}
+
+
+
+
+        //public MPoint MovePointTowards(MPoint a, MPoint b, float distance)
+        //{
+        //    var vector = new MPoint(b.X - a.X, b.Y - a.Y, b.Z - a.Z);
+
+        //    var length = (float)Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y);
+
+        //    var unitVector = new MPoint(vector.X / length, vector.Y / length, vector.Z / length);
+
+        //    return new MPoint(a.X + unitVector.X * distance, a.Y + unitVector.Y * distance, a.Z + unitVector.Z * distance);
+        //}
     }
 }

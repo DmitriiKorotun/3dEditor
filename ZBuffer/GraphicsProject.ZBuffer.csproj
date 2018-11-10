@@ -50,6 +50,8 @@
     <Compile Include="Shapes\MCommonPrimitive.cs" />
     <Compile Include="Tools\OrthographicCamera.cs" />
     <Compile Include="Tools\PerspectiveCamera.cs" />
+    <Compile Include="ZBufferMath\BresenhamLine.cs" />
+    <Compile Include="ZBufferMath\ILineRasterizer.cs" />
     <Compile Include="ZBufferMath\MatrixComparator.cs" />
     <Compile Include="ZBufferMath\MatrixMultiplier.cs" />
     <Compile Include="Affine Transformation\ShapeEditor.cs" />

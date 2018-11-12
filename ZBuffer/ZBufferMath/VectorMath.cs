@@ -10,14 +10,17 @@ namespace ZBuffer.ZBufferMath
 {
     public class VectorMath
     {
-        //public List<MPoint> GetAllVectorPoints(MPoint point1, MPoint point2)
-        //{
-        //    List<MPoint> points = new List<MPoint>() { point1, point2 };
+        public List<MPoint> GetAllVectorPoints(MPoint point1, MPoint point2)
+        {
+            ILineRasterizer lineRasterizer = new BresenhamLine();
 
-        //    CalculateLinePoints(points, point1, point2);
+            return lineRasterizer.GetLine(point1, point2);
+            //List<MPoint> points = new List<MPoint>() { point1, point2 };
 
-        //    return points;
-        //}
+            //CalculateLinePoints(points, point1, point2);
+
+            //return points;
+        }
 
         private void CalculateLinePoints(List<MPoint> points, MPoint point1, MPoint point2)
         {

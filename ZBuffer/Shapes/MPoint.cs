@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZBuffer.Shapes
+namespace EmuEngine.Shapes
 {
     [DataContract]
     public class MPoint

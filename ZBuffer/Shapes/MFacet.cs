@@ -5,9 +5,9 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
-using ZBuffer.ZBufferMath;
+using EmuEngine.EmuMath;
 
-namespace ZBuffer.Shapes
+namespace EmuEngine.Shapes
 {
     [DataContract]
     public class MFacet : MCommonPrimitive

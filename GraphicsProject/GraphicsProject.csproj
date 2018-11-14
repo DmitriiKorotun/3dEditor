@@ -99,9 +99,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ZBuffer\GraphicsProject.ZBuffer.csproj">
+    <ProjectReference Include="..\ZBuffer\GraphicsProject.EmuEngine.csproj">
       <Project>{acda8e75-8a84-4e3f-a46e-ca327f47312f}</Project>
-      <Name>GraphicsProject.ZBuffer</Name>
+      <Name>GraphicsProject.EmuEngine</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

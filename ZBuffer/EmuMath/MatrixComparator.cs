@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZBuffer.ZBufferMath
+namespace EmuEngine.EmuMath
 {
     public static class MatrixComparator
     {

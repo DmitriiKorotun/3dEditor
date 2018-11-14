@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
-using ZBuffer.ZBufferMath;
+using EmuEngine.EmuMath;
 
 namespace GraphicsProject.Tests.ZBufferTests.AffineTransformationTests
 {

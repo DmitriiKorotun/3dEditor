@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZBuffer.Affine_Transformation
+namespace EmuEngine.Affine_Transformation
 {
     public enum MatrixID
     {

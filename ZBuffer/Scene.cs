@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ZBuffer.Tools;
-using ZBuffer.Shapes;
+using EmuEngine.Tools;
+using EmuEngine.Shapes;
 using System.Windows.Media.Media3D;
 using System.Runtime.Serialization;
-using ZBuffer.Affine_Transformation;
+using EmuEngine.Affine_Transformation;
 
-namespace ZBuffer
+namespace EmuEngine
 {
     //TODO Think about changing DataSerializer to XmlSerializer
     [DataContract]

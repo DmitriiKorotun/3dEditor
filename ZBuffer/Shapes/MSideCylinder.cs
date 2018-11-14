@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZBuffer.Shapes
+namespace EmuEngine.Shapes
 {
     class MSideCylinder : MCylinder
     {

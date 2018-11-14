@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
-using ZBuffer.Shapes;
+using EmuEngine.Shapes;
 
-namespace ZBuffer.ZBufferMath
+namespace EmuEngine.EmuMath
 {
     public class VectorMath
     {

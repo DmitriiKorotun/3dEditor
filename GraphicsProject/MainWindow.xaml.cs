@@ -15,9 +15,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ZBuffer;
-using ZBuffer.Affine_Transformation;
-using ZBuffer.Shapes;
+using EmuEngine;
+using EmuEngine.Affine_Transformation;
+using EmuEngine.Shapes;
 
 namespace GraphicsProject
 {

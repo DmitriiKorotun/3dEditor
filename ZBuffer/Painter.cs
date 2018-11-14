@@ -7,10 +7,10 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
-using ZBuffer.Shapes;
-using ZBuffer.ZBufferMath;
+using EmuEngine.Shapes;
+using EmuEngine.EmuMath;
 
-namespace ZBuffer
+namespace EmuEngine
 { 
     public class Painter
     {

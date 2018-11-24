@@ -18,6 +18,8 @@ using System.Windows.Shapes;
 using EmuEngine;
 using EmuEngine.Affine_Transformation;
 using EmuEngine.Shapes;
+using System.IO;
+using System.Drawing;
 
 namespace GraphicsProject
 {
@@ -37,14 +39,30 @@ namespace GraphicsProject
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var painter = new Painter();
+            var testBox = new MBox(new MPoint(0, 0, 0), 50, 50, 50);
 
-            var box1 = new MBox(new MPoint(0, 0, 0), 50, 50, 50);
-
-            Scene.AddShape(box1);
+            Scene.AddShape(testBox);
 
             screen.Source = Scene.Render();
 
+            //screen.Source = BitmapToImageSource(Scene.RenderBitmap());
+        }
+
+        //TO DEL
+        BitmapImage BitmapToImageSource(Bitmap bitmap)
+        {
+            using (MemoryStream memory = new MemoryStream())
+            {
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                memory.Position = 0;
+                BitmapImage bitmapimage = new BitmapImage();
+                bitmapimage.BeginInit();
+                bitmapimage.StreamSource = memory;
+                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapimage.EndInit();
+
+                return bitmapimage;
+            }
         }
 
         private void btn_clear_Click(object sender, RoutedEventArgs e)
@@ -77,7 +95,7 @@ namespace GraphicsProject
 
                 for (int i = 0; i < 500; ++i)
                 {
-                    editor.RotateRange(Scene.SelectedShapes, 10, 0, 0);
+                    editor.RotateRange(Scene.SelectedShapes, 10, 10, 0);
 
                     if (screen.Dispatcher.CheckAccess())
                         Render();
@@ -91,6 +109,7 @@ namespace GraphicsProject
 
         private void Render()
         {
+            //screen.Source = BitmapToImageSource(Scene.RenderBitmap());
             screen.Source = Scene.Render();
         }
         
@@ -161,6 +180,7 @@ namespace GraphicsProject
                 operation(coordinates);
 
                 screen.Source = Scene.Render();
+                //screen.Source = BitmapToImageSource(Scene.RenderBitmap());
             }
             catch (FormatException ex)
             {

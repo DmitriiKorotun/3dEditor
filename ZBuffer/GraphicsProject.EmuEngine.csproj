@@ -48,6 +48,7 @@
     <Compile Include="Affine Transformation\IShapeEditor.cs" />
     <Compile Include="Affine Transformation\MatrixCatalogue.cs" />
     <Compile Include="EmuMath\ITriangleRasterizer.cs" />
+    <Compile Include="EmuMath\ParallelRasterizer.cs" />
     <Compile Include="Shapes\MCommonPrimitive.cs" />
     <Compile Include="Tools\OrthographicCamera.cs" />
     <Compile Include="Tools\PerspectiveCamera.cs" />

@@ -9,39 +9,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using EmuEngine.Shapes;
 using EmuEngine.EmuMath;
+using System.Drawing;
 
 namespace EmuEngine
 { 
     public class Painter
     {
-        //public void DrawPoint(Scene scene, Point3D point)
-        //{
-        //    Int32Rect rect = new Int32Rect(0, 0, (int)scene.Bitmap.Width, (int)scene.Bitmap.Height);
-
-        //    byte[] pixels = new byte[(int)scene.Bitmap.Width * (int)scene.Bitmap.Height * scene.Bitmap.Format.BitsPerPixel / 8];
-
-        //    for (int y = 0; y < scene.Bitmap.PixelHeight; y++)
-        //    {
-        //        for (int x = 0; x < scene.Bitmap.PixelWidth; x++)
-        //        {
-        //            int alpha = 255;
-        //            int red = 0;
-        //            int green = 0;
-        //            int blue = 0;
-
-        //            int pixelOffset = (x + y * scene.Bitmap.PixelWidth) * scene.Bitmap.Format.BitsPerPixel / 8;
-        //            pixels[pixelOffset] = (byte)blue;
-        //            pixels[pixelOffset + 1] = (byte)green;
-        //            pixels[pixelOffset + 2] = (byte)red;
-        //            pixels[pixelOffset + 3] = (byte)alpha;
-        //        }
-
-        //        int stride = (scene.Bitmap.PixelWidth * scene.Bitmap.Format.BitsPerPixel) / 8;
-
-        //        scene.Bitmap.WritePixels(rect, pixels, stride, 0);
-        //    }   
-        //}
-
         //public void DrawScene(Scene scene, HashSet<Point3D> points)
         //{
         //    Int32Rect rect = new Int32Rect(0, 0, (int)scene.Bitmap.Width, (int)scene.Bitmap.Height);
@@ -80,39 +53,79 @@ namespace EmuEngine
         //    scene.Bitmap.WritePixels(rect, pixels, stride, 0);
         //}
 
+
         public WriteableBitmap DrawSceneByPoints(int width, int height, List<MPoint> points)
         {
             WriteableBitmap wBitmap = new WriteableBitmap(width, height, 96, 96, PixelFormats.Bgra32, null);
 
             Int32Rect rect = new Int32Rect(0, 0, width, height);
 
-            byte[] pixels = new byte[width * height * wBitmap.Format.BitsPerPixel / 8];
+            var stride = (rect.Width * wBitmap.Format.BitsPerPixel + 7) / 8;
 
+            byte[] pixels = new byte[rect.Height * stride];
+
+            //Moves 0,0 point from top-left to bottom-left
             for (int i = 0; i < points.Count; ++i)
-            {
                 points[i].Y = height - points[i].Y;
-            }
 
-            int alpha = 255;
-            int red = 0;
-            int green = 0;
-            int blue = 0;
+            var zBufferManager = new Tools.ZBuffer(width, height);
+            var zBuffer = zBufferManager.GetBuffer(points);
 
-            for (int i = 0; i < points.Count; ++i)
+            for (int i = 0; i < zBuffer.Length; ++i)
             {
-                int pixelOffset = (int)(points[i].X + points[i].Y * wBitmap.PixelWidth) * wBitmap.Format.BitsPerPixel / 8;
+                var color = System.Drawing.Color.FromArgb(zBuffer[i].ARGB);
 
-                pixels[pixelOffset] = (byte)blue;
-                pixels[pixelOffset + 1] = (byte)green;
-                pixels[pixelOffset + 2] = (byte)red;
-                pixels[pixelOffset + 3] = (byte)alpha;
+                int pixelOffset = i * wBitmap.Format.BitsPerPixel / 8;
+
+                pixels[pixelOffset] = color.B;
+                pixels[pixelOffset + 1] = color.G;
+                pixels[pixelOffset + 2] = color.R;
+                pixels[pixelOffset + 3] = 255;
             }
 
-            int stride = (wBitmap.PixelWidth * wBitmap.Format.BitsPerPixel) / 8;
+            //for (int i = 0; i < points.Count; ++i)
+            //{
+            //    var color = System.Drawing.Color.FromArgb(zBuffer[(int)points[i].X + (int)points[i].Y * width].ARGB);
+
+            //    int pixelOffset = (int)(points[i].X + points[i].Y * wBitmap.PixelWidth) * wBitmap.Format.BitsPerPixel / 8;
+
+            //    pixels[pixelOffset] = color.B;
+            //    pixels[pixelOffset + 1] = color.G;
+            //    pixels[pixelOffset + 2] = color.R;
+            //    pixels[pixelOffset + 3] = color.A;
+            //}
 
             wBitmap.WritePixels(rect, pixels, stride, 0);
 
             return wBitmap;
+        }
+
+        public Bitmap DrawSceneByPointsBitmap(int width, int height, List<MPoint> points)
+        {
+            Bitmap bitmap = new Bitmap(width, height);
+
+            var zBufferManager = new Tools.ZBuffer(width, height);
+            var zBuffer = zBufferManager.GetBuffer(points);
+
+            //Moves 0,0 point from top-left to bottom-left
+            for (int i = 0; i < points.Count; ++i)
+                points[i].Y = height - points[i].Y;
+
+            for (int i = 0; i < bitmap.Width; ++i)
+            {
+                for (int j = 0; j < bitmap.Height; ++j)
+                {
+                    var color = System.Drawing.Color.FromArgb(zBuffer[i + j * width].ARGB);
+
+                    bitmap.SetPixel(i, j, color);
+                }                    
+            }
+                
+
+            //for (int i = 0; i < points.Count; ++i)
+            //    bitmap.SetPixel((int)points[i].X, (int)points[i].Y, System.Drawing.Color.Black);
+
+            return bitmap;
         }
 
         //private void CalculateLinePoints(List<Point3D> points, Point3D point1, Point3D point2)

@@ -24,6 +24,8 @@ namespace EmuEngine.Shapes
         public float SZ { get; }  //начальная z
         public float SW { get; }  //начальный параметр масштабирования
 
+        public int ARGB { get; set; } 
+
         public MPoint(float x, float y, float z)
         {
             X = x;
@@ -37,6 +39,8 @@ namespace EmuEngine.Shapes
 
             W = 1;
             SW = W;
+
+            ARGB = 0;
         }
 
         public MPoint(double x, double y, double z)
@@ -52,6 +56,8 @@ namespace EmuEngine.Shapes
 
             W = 1;
             SW = W;
+
+            ARGB = 0;
         }
 
         public MPoint(float x, float y, float z, float w)
@@ -67,6 +73,8 @@ namespace EmuEngine.Shapes
 
             W = w;
             SW = W;
+
+            ARGB = 0;
         }
 
         public MPoint(double x, double y, double z, double w)
@@ -82,6 +90,8 @@ namespace EmuEngine.Shapes
 
             W = (float)w;
             SW = W;
+
+            ARGB = 0;
         }
     }
 }

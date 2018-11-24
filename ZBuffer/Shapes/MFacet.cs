@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 using EmuEngine.EmuMath;
+using ZBuffer.EmuMath;
 
 namespace EmuEngine.Shapes
 {
@@ -13,9 +14,9 @@ namespace EmuEngine.Shapes
     public class MFacet : MCommonPrimitive
     {
         [DataMember]
-        public MPoint[] Vertices;  //вершины
+        public MPoint[] Vertices { get; set; }  //вершины
         [DataMember]
-        public int Argb;  //цвет грани
+        public int Argb { get; set; }  //цвет грани
 
         public MFacet(MPoint first, MPoint second, MPoint third) : base()
         {
@@ -70,6 +71,8 @@ namespace EmuEngine.Shapes
             points.AddRange(vectorMath.GetAllVectorPoints(
                 new MPoint(Vertices[0].X, Vertices[0].Y, Vertices[0].Z),
                 new MPoint(Vertices[2].X, Vertices[2].Y, Vertices[2].Z)));
+
+            points.AddRange(new ParallelRasterizer().triangle(this));
 
             return points;
         }

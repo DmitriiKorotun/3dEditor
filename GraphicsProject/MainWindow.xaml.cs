@@ -222,5 +222,15 @@ namespace GraphicsProject
         }
 
         private delegate void Transofrmation(Vector3 coordinates);
+
+        private void btn_createCamera_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_switchCamera_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -7,7 +7,7 @@ using EmuEngine.Shapes;
 
 namespace EmuEngine.Tools
 {
-    class OrthographicCamera : Camera
+    public class OrthographicCamera : Camera
     {
         public OrthographicCamera(float l, float r, float b, float t, float n, float f) : base()
         {

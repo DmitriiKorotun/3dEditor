@@ -13,6 +13,7 @@ using System.Runtime.Serialization;
 using EmuEngine.Affine_Transformation;
 using System.Drawing;
 
+
 namespace EmuEngine
 {
     //TODO Think about changing DataSerializer to XmlSerializer
@@ -29,7 +30,7 @@ namespace EmuEngine
         [DataMember]
         public List<MCommonPrimitive> SelectedShapes { get; set; }
         private Tools.ZBuffer Buffer { get; set; }
-        public Tools.Camera CurrentCamera { get; set; }
+        public StageManager StageManager { get; set; }
 
 
         public Scene(int width, int heigth, int z)
@@ -37,8 +38,9 @@ namespace EmuEngine
             Width = width;
             Height = heigth;
 
-            CurrentCamera = new Tools.OrthographicCamera(-160, 160, -90, 90, -50, 50);
-            //CurrentCamera = new Tools.PerspectiveCamera((float)Math.PI / 4, 16 / 9, 10, -10);
+            StageManager = new StageManager();
+
+            //CurrentCamera = new Tools.OrthographicCamera(-160, 160, -90, 90, -50, 50);
 
             Shapes = new List<MCommonPrimitive>();
 
@@ -46,18 +48,14 @@ namespace EmuEngine
             SelectedShapes = Shapes;
         }
 
-        //public WriteableBitmap Render()
-        //{
-        //    new ShapeEditor().GetTransformedShapes(Shapes, CurrentCamera);
-
-        //    List<MPoint> allPoints = GetAllPoints();
-
-        //    return new Painter().DrawSceneByPoints(this.Width, this.Height, allPoints);
-        //}
+        public void SwitchCameraType()
+        {
+            //CurrentCamera
+        }
 
         public WriteableBitmap Render()
         {
-            new ShapeEditor().GetTransformedShapes(Shapes, CurrentCamera);
+            new ShapeEditor().GetTransformedShapes(Shapes, StageManager.CurrentCamera);
 
             List<MPoint> allPoints = GetAllPoints();
 
@@ -66,7 +64,7 @@ namespace EmuEngine
 
         public Bitmap RenderBitmap()
         {
-            new ShapeEditor().GetTransformedShapes(Shapes, CurrentCamera);
+            new ShapeEditor().GetTransformedShapes(Shapes, StageManager.CurrentCamera);
 
             List<MPoint> allPoints = GetAllPoints();
 

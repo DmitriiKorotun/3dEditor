@@ -9,17 +9,20 @@ namespace EmuEngine.Tools
 {
     abstract public class Camera
     {
-        protected float[,] projectionMatrix;
-
-        public float[,] ProjectionMatrix { get { return projectionMatrix; } }
         public float[,] ViewMatrix { get; set; }
+        public float[,] ProjectionMatrix { get { return projectionMatrix; } }
 
+        protected float[,] projectionMatrix;
+      
+        private const int defaultZoom = -60;
+
+       
         public Camera()
         {
             ViewMatrix = new float[,] {
                 { 1, 0, 0, 0 },
                 { 0, 1, 0, 0 },
-                { 0, 0, 1, -60 },
+                { 0, 0, 1, defaultZoom },
                 { 0, 0, 0, 1 }
             };
         }

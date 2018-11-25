@@ -228,7 +228,7 @@
                             <TextBox Name="tb_CameraLeft"/>
                         </StackPanel>
 
-                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Grid.Row="1">
                             <Label Content="Верхняя граница: "></Label>
                             <TextBox Name="tb_CameraTop"/>
                         </StackPanel>
@@ -243,7 +243,7 @@
                             <TextBox Name="tb_CameraRight"/>
                         </StackPanel>
 
-                        <StackPanel Grid.Column="1" Orientation="Horizontal" Grid.Row="1">
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
                             <Label Content="Нижняя граница: "></Label>
                             <TextBox Name="tb_CameraBot"/>
                         </StackPanel>

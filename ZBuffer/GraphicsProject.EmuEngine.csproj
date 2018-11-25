@@ -69,6 +69,7 @@
     <Compile Include="Shapes\MSideCylinder.cs" />
     <Compile Include="Shapes\MTopCylinder.cs" />
     <Compile Include="Tools\Camera.cs" />
+    <Compile Include="Tools\StageManager.cs" />
     <Compile Include="Tools\ZBuffer.cs" />
     <Compile Include="EmuMath\VectorMath.cs" />
   </ItemGroup>

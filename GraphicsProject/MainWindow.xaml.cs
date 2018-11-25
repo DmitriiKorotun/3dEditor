@@ -225,12 +225,23 @@ namespace GraphicsProject
 
         private void btn_createCamera_Click(object sender, RoutedEventArgs e)
         {
+            float l = Int32.Parse(tb_CameraLeft.Text),
+                r = Int32.Parse(tb_CameraRight.Text),
+                b = Int32.Parse(tb_CameraBot.Text),
+                t = Int32.Parse(tb_CameraTop.Text),
+                n = Int32.Parse(tb_CameraNear.Text),
+                f = Int32.Parse(tb_CameraFar.Text);
 
+            Scene.StageManager.CreateCamera(l, r, b, t, n, f);
+
+            Render();
         }
 
         private void btn_switchCamera_Click(object sender, RoutedEventArgs e)
         {
+            Scene.StageManager.SwitchCameraType();
 
+            Render();
         }
     }
 }

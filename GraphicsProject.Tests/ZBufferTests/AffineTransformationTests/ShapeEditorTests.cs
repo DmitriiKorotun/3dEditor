@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ZBuffer.ZBufferMath;
-using ZBuffer.Shapes;
-using ZBuffer.Affine_Transformation;
+using EmuEngine.EmuMath;
+using EmuEngine.Shapes;
+using EmuEngine.Affine_Transformation;
 using KellermanSoftware.CompareNetObjects;
 
 namespace GraphicsProject.Tests.ZBufferTests.AffineTransformationTests

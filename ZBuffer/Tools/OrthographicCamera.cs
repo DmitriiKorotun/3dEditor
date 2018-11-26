@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ZBuffer.Shapes;
+using EmuEngine.Shapes;
 
-namespace ZBuffer.Tools
+namespace EmuEngine.Tools
 {
-    class OrthographicCamera : Camera
+    public class OrthographicCamera : Camera
     {
         public OrthographicCamera(float l, float r, float b, float t, float n, float f) : base()
         {

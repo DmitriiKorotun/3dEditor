@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphicsProject", "GraphicsProject\GraphicsProject.csproj", "{0B13D088-E1D8-482D-B73F-C1C2B438B07B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphicsProject.ZBuffer", "ZBuffer\GraphicsProject.ZBuffer.csproj", "{ACDA8E75-8A84-4E3F-A46E-CA327F47312F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphicsProject.EmuEngine", "ZBuffer\GraphicsProject.EmuEngine.csproj", "{ACDA8E75-8A84-4E3F-A46E-CA327F47312F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphicsProject.Tests", "GraphicsProject.Tests\GraphicsProject.Tests.csproj", "{9634FDD2-4763-4390-8544-4CFF22FC1EA2}"
 EndProject

@@ -5,11 +5,11 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using ZBuffer.Shapes;
-using ZBuffer.Tools;
-using ZBuffer.ZBufferMath;
+using EmuEngine.Shapes;
+using EmuEngine.Tools;
+using EmuEngine.EmuMath;
 
-namespace ZBuffer.Affine_Transformation
+namespace EmuEngine.Affine_Transformation
 {
     //TODO Implement unified rotation method and optimize shape movement (while rotation) 
     public class ShapeEditor : IShapeEditor
@@ -77,7 +77,7 @@ namespace ZBuffer.Affine_Transformation
                 { 0, 0, 0, 1 }
             };
 
-            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(rotateX, shape.ModelMatrix);
+            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, rotateX);
         }
 
         public void RotateY(MCommonPrimitive shape, double angle)
@@ -91,7 +91,7 @@ namespace ZBuffer.Affine_Transformation
                 { 0, 0, 0, 1 }
             };
 
-            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(rotateY, shape.ModelMatrix);
+            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, rotateY);
         }
 
         public void RotateZ(MCommonPrimitive shape, double angle)
@@ -105,7 +105,7 @@ namespace ZBuffer.Affine_Transformation
                 { 0, 0, 0, 1 }
             };
 
-            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(rotateZ, shape.ModelMatrix);
+            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, rotateZ);
         }
 
         //------------------TRANSLATING-------------------------------
@@ -137,7 +137,7 @@ namespace ZBuffer.Affine_Transformation
                 { 0, 0, 0, 1 }
             };
 
-            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(scaleMatrix, shape.ModelMatrix);
+            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, scaleMatrix);
         }
 
         public void ScaleRange(List<MCommonPrimitive> shapes, float sx, float sy, float sz)
@@ -145,17 +145,6 @@ namespace ZBuffer.Affine_Transformation
             for (int i = 0; i < shapes.Count; ++i)
                 Scale(shapes[i], sx, sy, sz);
         }
-
-        //TO DEL
-        //public void ProjectShape(MCommonPrimitive shape, Camera camera)
-        //{
-        //    TranformShape(shape, camera.ProjectionMatrix);
-
-        //    //foreach (MPoint point in shape.GetAllPoints())
-        //    //{
-        //    //    point.
-        //    //}
-        //}
 
         private void RotateShape(MCommonPrimitive shape, double angle, Vector3 axis)
         {
@@ -231,25 +220,6 @@ namespace ZBuffer.Affine_Transformation
             return new Quaternion(quaternionX, quaternionY, quaternionZ, quaternionW);
         }
 
-      
-        ////TO DEL
-        //private void TranformShape(MCommonPrimitive shape, float[,] transformationMatrix)
-        //{
-        //    List<MPoint> vertices = shape.GetVertices();
-
-        //    for (int i = 0; i < vertices.Count; ++i)
-        //    {
-        //        float[,] vertexCoords = { { vertices[i].X }, { vertices[i].Y }, { vertices[i].Z }, { 1 } };
-
-        //        float[,] newCoords = MatrixMultiplier.MultiplyMatrix(transformationMatrix, vertexCoords);
-
-        //        SetNewCoordinatesToPoint(vertices[i], newCoords);
-
-        //        //TEST
-        //        TransformPointCoordsToDecart(vertices[i]);
-        //    }
-        //}
-
         private void SetNewCoordinatesToPoint(MPoint destinationPoint, Vector3 newCoordinates)
         {
             destinationPoint.X = newCoordinates.X;
@@ -301,25 +271,20 @@ namespace ZBuffer.Affine_Transformation
         {
             var vertices = shape.GetVertices();
 
-
-            string text = "";
-            foreach (MPoint vertex in vertices)
-            {
-                text += "\r\nX: " + vertex.X;
-                text += "\tY: " + vertex.Y;
-                text += "\tZ: " + vertex.Z;
-            }
-            //text += "\r\nX: " + windowCoordinates[0, 0];
-            //text += "\tY: " + windowCoordinates[1, 0];
-            //text += "\tZ: " + windowCoordinates[2, 0];
-
             for (int i = 0; i < vertices.Count; ++i)
             {
                 float[,] vertexCoords = { { vertices[i].SX }, { vertices[i].SY }, { vertices[i].SZ }, { vertices[i].SW } };
 
                 var modelViewMatrix = MatrixMultiplier.MultiplyMatrix(camera.ViewMatrix, shape.ModelMatrix);
-                var eyeCoordinates = MatrixMultiplier.MultiplyMatrix(modelViewMatrix, vertexCoords);              
+                var eyeCoordinates = MatrixMultiplier.MultiplyMatrix(modelViewMatrix, vertexCoords);
                 var clipCoordinates = MatrixMultiplier.MultiplyMatrix(camera.ProjectionMatrix, eyeCoordinates);
+
+                //if (clipCoordinates[0, 0] < -1 || clipCoordinates[0, 0] > 1 ||
+                //    clipCoordinates[1, 0] < -1 || clipCoordinates[1, 0] > 1)
+                //{
+                //    vertices.RemoveAt(i);
+                //    continue;
+                //}
                 
                 var ndc = new float[,] {
                     { clipCoordinates[0, 0] / clipCoordinates[3, 0] },
@@ -334,16 +299,10 @@ namespace ZBuffer.Affine_Transformation
                     { (50 - (-50)) / 2 * ndc[2, 0] + (50 + (-50)) / 2 },
                     { ndc[3, 0]}
                 };
-
-                
-
+               
                 SetNewCoordinatesToPoint(vertices[i], windowCoordinates);             
             }
 
-
-            text += "\r\n-----------------------------------------------";
-
-            File.AppendAllText("vertices.txt", text);
             //float[,] 
             //    ,
             //    projectionModelViewMatrix = GetProjectionModelViewMatrix(camera.ProjectionMatrix, modelViewMatrix);

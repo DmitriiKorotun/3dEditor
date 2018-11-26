@@ -47,11 +47,15 @@
   <ItemGroup>
     <Compile Include="Affine Transformation\IShapeEditor.cs" />
     <Compile Include="Affine Transformation\MatrixCatalogue.cs" />
+    <Compile Include="EmuMath\ITriangleRasterizer.cs" />
+    <Compile Include="EmuMath\ParallelRasterizer.cs" />
     <Compile Include="Shapes\MCommonPrimitive.cs" />
     <Compile Include="Tools\OrthographicCamera.cs" />
     <Compile Include="Tools\PerspectiveCamera.cs" />
-    <Compile Include="ZBufferMath\MatrixComparator.cs" />
-    <Compile Include="ZBufferMath\MatrixMultiplier.cs" />
+    <Compile Include="EmuMath\BresenhamLine.cs" />
+    <Compile Include="EmuMath\ILineRasterizer.cs" />
+    <Compile Include="EmuMath\MatrixComparator.cs" />
+    <Compile Include="EmuMath\MatrixMultiplier.cs" />
     <Compile Include="Affine Transformation\ShapeEditor.cs" />
     <Compile Include="Scene.cs" />
     <Compile Include="Shapes\MBorder.cs" />
@@ -65,8 +69,9 @@
     <Compile Include="Shapes\MSideCylinder.cs" />
     <Compile Include="Shapes\MTopCylinder.cs" />
     <Compile Include="Tools\Camera.cs" />
+    <Compile Include="Tools\StageManager.cs" />
     <Compile Include="Tools\ZBuffer.cs" />
-    <Compile Include="ZBufferMath\VectorMath.cs" />
+    <Compile Include="EmuMath\VectorMath.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

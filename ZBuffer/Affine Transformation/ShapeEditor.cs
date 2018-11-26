@@ -271,18 +271,6 @@ namespace EmuEngine.Affine_Transformation
         {
             var vertices = shape.GetVertices();
 
-
-            string text = "";
-            foreach (MPoint vertex in vertices)
-            {
-                text += "\r\nX: " + vertex.X;
-                text += "\tY: " + vertex.Y;
-                text += "\tZ: " + vertex.Z;
-            }
-            //text += "\r\nX: " + windowCoordinates[0, 0];
-            //text += "\tY: " + windowCoordinates[1, 0];
-            //text += "\tZ: " + windowCoordinates[2, 0];
-
             for (int i = 0; i < vertices.Count; ++i)
             {
                 float[,] vertexCoords = { { vertices[i].SX }, { vertices[i].SY }, { vertices[i].SZ }, { vertices[i].SW } };
@@ -290,6 +278,13 @@ namespace EmuEngine.Affine_Transformation
                 var modelViewMatrix = MatrixMultiplier.MultiplyMatrix(camera.ViewMatrix, shape.ModelMatrix);
                 var eyeCoordinates = MatrixMultiplier.MultiplyMatrix(modelViewMatrix, vertexCoords);
                 var clipCoordinates = MatrixMultiplier.MultiplyMatrix(camera.ProjectionMatrix, eyeCoordinates);
+
+                //if (clipCoordinates[0, 0] < -1 || clipCoordinates[0, 0] > 1 ||
+                //    clipCoordinates[1, 0] < -1 || clipCoordinates[1, 0] > 1)
+                //{
+                //    vertices.RemoveAt(i);
+                //    continue;
+                //}
                 
                 var ndc = new float[,] {
                     { clipCoordinates[0, 0] / clipCoordinates[3, 0] },
@@ -304,16 +299,10 @@ namespace EmuEngine.Affine_Transformation
                     { (50 - (-50)) / 2 * ndc[2, 0] + (50 + (-50)) / 2 },
                     { ndc[3, 0]}
                 };
-
-                
-
+               
                 SetNewCoordinatesToPoint(vertices[i], windowCoordinates);             
             }
 
-
-            text += "\r\n-----------------------------------------------";
-
-            File.AppendAllText("vertices.txt", text);
             //float[,] 
             //    ,
             //    projectionModelViewMatrix = GetProjectionModelViewMatrix(camera.ProjectionMatrix, modelViewMatrix);

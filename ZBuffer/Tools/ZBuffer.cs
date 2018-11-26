@@ -39,6 +39,9 @@ namespace EmuEngine.Tools
         {
             foreach (MPoint point in points)
             {
+                if (point.X < 0 || point.X >= 640 || point.Y < 0 || point.Y >= 360)
+                    continue;
+
                 var offset = (int)point.X + (int)point.Y * Width;
 
                 if (Buffer[offset].Z > point.Z)

@@ -33,6 +33,8 @@ namespace EmuEngine.Tools
                 currentCamera = CreateOrthoCamera(
                     Frustrum.L, Frustrum.R, Frustrum.B, Frustrum.T, Frustrum.N, Frustrum.F
                     );
+
+            currentCamera.ViewMatrix[2, 3] = Frustrum.N - 10;
         }
 
         public void CreateCamera(float l, float r, float b, float t, float n, float f)
@@ -41,6 +43,8 @@ namespace EmuEngine.Tools
                 currentCamera = CreateOrthoCamera(l, r, b, t, n, f);
             else
                 currentCamera = CreatePerspectiveCamera(l, r, b, t, n, f);
+
+            
 
             SetFrustrum(l, r, b, t, n, f);
         }

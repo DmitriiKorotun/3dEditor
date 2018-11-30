@@ -31,7 +31,7 @@ namespace EmuEngine.Tools
                     0,
                     2 / (t - b),
                     0,
-                    -(t + b) / (t - b)
+                    - (t + b) / (t - b)
                 },
                 {   0,
                     0,

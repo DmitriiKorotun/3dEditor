@@ -7,8 +7,8 @@
     <ProjectGuid>{ACDA8E75-8A84-4E3F-A46E-CA327F47312F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ZBuffer</RootNamespace>
-    <AssemblyName>ZBuffer</AssemblyName>
+    <RootNamespace>EmuEngine</RootNamespace>
+    <AssemblyName>EmuEngine</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -50,6 +50,7 @@
     <Compile Include="EmuMath\ITriangleRasterizer.cs" />
     <Compile Include="EmuMath\ParallelRasterizer.cs" />
     <Compile Include="Shapes\MCommonPrimitive.cs" />
+    <Compile Include="Shapes\Shuttle.cs" />
     <Compile Include="Tools\OrthographicCamera.cs" />
     <Compile Include="Tools\PerspectiveCamera.cs" />
     <Compile Include="EmuMath\BresenhamLine.cs" />

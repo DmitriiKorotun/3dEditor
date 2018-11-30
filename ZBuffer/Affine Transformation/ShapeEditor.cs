@@ -77,7 +77,7 @@ namespace EmuEngine.Affine_Transformation
                 { 0, 0, 0, 1 }
             };
 
-            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, rotateX);
+            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(rotateX, shape.ModelMatrix);
         }
 
         public void RotateY(MCommonPrimitive shape, double angle)
@@ -91,7 +91,7 @@ namespace EmuEngine.Affine_Transformation
                 { 0, 0, 0, 1 }
             };
 
-            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, rotateY);
+            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(rotateY, shape.ModelMatrix);
         }
 
         public void RotateZ(MCommonPrimitive shape, double angle)
@@ -105,7 +105,7 @@ namespace EmuEngine.Affine_Transformation
                 { 0, 0, 0, 1 }
             };
 
-            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, rotateZ);
+            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(rotateZ, shape.ModelMatrix);
         }
 
         //------------------TRANSLATING-------------------------------
@@ -137,7 +137,7 @@ namespace EmuEngine.Affine_Transformation
                 { 0, 0, 0, 1 }
             };
 
-            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, scaleMatrix);
+            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(scaleMatrix, shape.ModelMatrix);
         }
 
         public void ScaleRange(List<MCommonPrimitive> shapes, float sx, float sy, float sz)

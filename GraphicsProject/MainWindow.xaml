@@ -78,7 +78,7 @@
                     </Grid>
 
 
-                    <Button Name="btn_createShape" Content="Создать куб" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" Grid.ColumnSpan="2" Width="80" Click="btn_createShape_Click"/>
+                    <Button Name="btn_createShape" Content="Создать деталь" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.ColumnSpan="2" Width="93" Click="btn_createShape_Click" Margin="80,60,68,60"/>
 
                     <Grid Grid.Column="1" Margin="10, 0">
                         <Grid.RowDefinitions>
@@ -121,51 +121,51 @@
 
                 <Grid Name="grid_TransformationControls">
 
+                    <Grid.Resources>
+                        <Style x:Key="VerticalControl" TargetType="{x:Type Control}">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Margin" Value="0, 15"/>
+                        </Style>
+                    </Grid.Resources>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50*"/>
+                        <RowDefinition Height="50*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Name="grid_TransformationControlsInput">
+
                         <Grid.Resources>
-                            <Style x:Key="VerticalControl" TargetType="{x:Type Control}">
-                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Style TargetType="TextBox" BasedOn="{StaticResource VerticalControl}">
+                                <Setter Property="MinWidth" Value="120"/>
                             </Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Margin" Value="0, 15"/>
-                            </Style>
+                            <Style TargetType="Label" BasedOn="{StaticResource VerticalControl}"/>
                         </Grid.Resources>
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="50*"/>
-                            <RowDefinition Height="50*"/>
-                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
 
-                        <Grid Name="grid_TransformationControlsInput">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="X: "></Label>
+                            <TextBox Name="tb_TransformationX"/>
+                        </StackPanel>
 
-                            <Grid.Resources>
-                                <Style TargetType="TextBox" BasedOn="{StaticResource VerticalControl}">
-                                    <Setter Property="MinWidth" Value="120"/>
-                                </Style>
-                                <Style TargetType="Label" BasedOn="{StaticResource VerticalControl}"/>
-                            </Grid.Resources>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Label Content="Y: "></Label>
+                            <TextBox Name="tb_TransformationY" Width="60"/>
+                        </StackPanel>
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                            <Label Content="Z: "></Label>
+                            <TextBox Name="tb_TransformationZ" Width="60"/>
+                        </StackPanel>
 
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="X: "></Label>
-                                <TextBox Name="tb_TransformationX"/>
-                            </StackPanel>
-
-                            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                <Label Content="Y: "></Label>
-                                <TextBox Name="tb_TransformationY" Width="60"/>
-                            </StackPanel>
-
-                            <StackPanel Grid.Column="2" Orientation="Horizontal">
-                                <Label Content="Z: "></Label>
-                                <TextBox Name="tb_TransformationZ" Width="60"/>
-                            </StackPanel>
-
-                        </Grid>
+                    </Grid>
 
                     <Grid Name="grid_TransformationControlsButtons" Grid.Row="1">
 

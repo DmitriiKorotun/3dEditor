@@ -76,6 +76,12 @@ namespace EmuEngine
             Shapes.Add(shape);
         }
 
+        public void AddShape(Shuttle shuttle)
+        {
+            foreach (MCommonPrimitive shape in shuttle.GetAllCommonPrimitives())
+                Shapes.Add(shape);
+        }
+
         //TODO Rework
         public void RotateSelected(double angle)
         {

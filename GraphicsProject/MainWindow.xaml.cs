@@ -40,8 +40,11 @@ namespace GraphicsProject
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var testBox = new MBox(new MPoint(0, 0, 0), 50, 50, 50);
+            //MCommonPrimitive mcylinder = new MTopCylinder(new MPoint(-25, 25, 40), 10, 20, 30);
+            Shuttle shuttle = new Shuttle();
 
-            Scene.AddShape(testBox);
+            Scene.AddShape(shuttle);
+            //Scene.AddShape(mcylinder);
 
             screen.Source = Scene.Render();
 
@@ -84,7 +87,8 @@ namespace GraphicsProject
 
             var leftFaceCorner = new MPoint(x, y, z);
 
-            MBox mbox = new MBox(leftFaceCorner, width, length, height);
+            //MCommonPrimitive mbox = new MSideCylinder(leftFaceCorner, width, length, height);
+            MCommonPrimitive mbox = new MSideCylinder(leftFaceCorner, 10, height);
         }
 
         private async void btn_rotateLeft_Click(object sender, RoutedEventArgs e)

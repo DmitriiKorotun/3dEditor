@@ -14,8 +14,12 @@ namespace EmuEngine.Shapes
         public float Height { get; set; }
         public float Length { get; set; }
         public float Width { get; set; }
+        public string Name { get; set; }
         public float[,] ModelMatrix { get; set; }
         public Quaternion RotationQuaternion { get; set; }
+        public float X, Y, Z;
+
+        private static int id = 0;
 
         //public MCommonPrimitive(float length, float width, float height)
         //{
@@ -31,6 +35,24 @@ namespace EmuEngine.Shapes
         //    };
         //}
 
+        public MCommonPrimitive(float x, float y, float z, string name)
+        {
+            ModelMatrix = new float[,] {
+                {1, 0, 0, x },
+                {0, 1, 0, y },
+                {0, 0, 1, z },
+                {0, 0, 0, 1 }
+            };
+
+            X = x;
+            Y = y;
+            Z = z;
+
+            RotationQuaternion = new Quaternion(0, 0, 0, 1);
+
+            Name = name;
+        }
+
         public MCommonPrimitive(float x, float y, float z)
         {
             ModelMatrix = new float[,] {
@@ -40,7 +62,13 @@ namespace EmuEngine.Shapes
                 {0, 0, 0, 1 }
             };
 
+            X = x;
+            Y = y;
+            Z = z;
+
             RotationQuaternion = new Quaternion(0, 0, 0, 1);
+
+            Name = "shape" + id++.ToString();
         }
 
         public MCommonPrimitive()
@@ -53,6 +81,8 @@ namespace EmuEngine.Shapes
             };
 
             RotationQuaternion = new Quaternion(0, 0, 0, 1);
+
+            Name = "shape" + id++.ToString();
         }
 
         public abstract List<MPoint> GetVertices();
@@ -89,5 +119,14 @@ namespace EmuEngine.Shapes
             destinationPoint.Y = sourcePoint.Y < destinationPoint.Y ? sourcePoint.Y : destinationPoint.Y;
             destinationPoint.Z = sourcePoint.Z < destinationPoint.Z ? sourcePoint.Z : destinationPoint.Z;
         }
+
+        public void SetColor(int argb)
+        {
+            var vertices = GetVertices();
+            for (int i = 0; i < vertices.Count; ++i)
+                vertices[i].ARGB = argb;
+        }
+
+        public abstract List<MFacet> GetAllFacets();
     }
 }

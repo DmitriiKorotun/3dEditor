@@ -12,6 +12,13 @@ namespace EmuEngine.Shapes
         {
         }
 
-        
+        public MSideCylinder(MPoint centerBot, float radius, float heigth, bool isHasParent) : base(centerBot, radius, heigth, isHasParent)
+        {
+        }
+
+        public MSideCylinder(MPoint centerBot, float radius, float heigth, float sx, float sy) : base(centerBot, radius, heigth, sx, sy)
+        {
+        }
+
     }
 }

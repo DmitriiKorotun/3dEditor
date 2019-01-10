@@ -72,7 +72,10 @@ namespace EmuEngine.Shapes
                 new MPoint(Vertices[0].X, Vertices[0].Y, Vertices[0].Z),
                 new MPoint(Vertices[2].X, Vertices[2].Y, Vertices[2].Z)));
 
-            points.AddRange(new ParallelRasterizer().triangle(this));
+            //EdgeRasterization.TriangleUsingEdgeFunctionZBuffer(Vertices[0], Vertices[1], Vertices[2], 640, 360,);
+
+            //if (points.Count != 0)
+            //    points.AddRange(new ParallelRasterizer().triangle(this));
 
             return points;
         }
@@ -80,6 +83,11 @@ namespace EmuEngine.Shapes
         public override List<MPoint> GetVertices()
         {
             return Vertices.ToList();
+        }
+
+        public override List<MFacet> GetAllFacets()
+        {
+            return new List<MFacet>() { this };
         }
     }
 }

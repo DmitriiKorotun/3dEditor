@@ -1,6 +1,8 @@
-﻿using System;
+﻿using EmuEngine.EmuMath;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +20,7 @@ namespace EmuEngine.Shapes
         public float Z { get; set; }  //текущая z
         [DataMember]
         public float W { get; set; }  //текщий параметр масштабирования
+        public bool IsClipped { get { return W == 0; } }
 
         public float SX { get; }  //начальный х
         public float SY { get; }  //начальный y
@@ -92,6 +95,19 @@ namespace EmuEngine.Shapes
             SW = W;
 
             ARGB = 0;
+        }
+
+        public MPoint Multiply(Matrix matrix)
+        {
+            if (matrix.Size.Item1 != 4 && matrix.Size.Item2 != 4)
+                throw new ArgumentException();
+
+            float x = X * matrix[0, 0] + Y * matrix[1, 0] + Z * matrix[2, 0] + W * matrix[3, 0];
+            float y = X * matrix[0, 1] + Y * matrix[1, 1] + Z * matrix[2, 1] + W * matrix[3, 1];
+            float z = X * matrix[0, 2] + Y * matrix[1, 2] + Z * matrix[2, 2] + W * matrix[3, 2];
+            float w = X * matrix[0, 3] + Y * matrix[1, 3] + Z * matrix[2, 3] + W * matrix[3, 3];
+
+            return new MPoint(x, y, z, w);
         }
     }
 }

@@ -47,10 +47,20 @@
   <ItemGroup>
     <Compile Include="Affine Transformation\IShapeEditor.cs" />
     <Compile Include="Affine Transformation\MatrixCatalogue.cs" />
+    <Compile Include="EmuEngineExceptions.cs" />
+    <Compile Include="EmuMath\EdgeRasterization.cs" />
     <Compile Include="EmuMath\ITriangleRasterizer.cs" />
+    <Compile Include="EmuMath\Matrix.cs" />
     <Compile Include="EmuMath\ParallelRasterizer.cs" />
+    <Compile Include="EmuMath\Vector2i.cs" />
+    <Compile Include="EmuMath\Vector3i.cs" />
+    <Compile Include="EmuMath\ZBuffer.cs" />
+    <Compile Include="Shapes\Door.cs" />
+    <Compile Include="Shapes\Engine.cs" />
+    <Compile Include="Shapes\Leg.cs" />
     <Compile Include="Shapes\MCommonPrimitive.cs" />
     <Compile Include="Shapes\Shuttle.cs" />
+    <Compile Include="Shapes\Wing.cs" />
     <Compile Include="Tools\OrthographicCamera.cs" />
     <Compile Include="Tools\PerspectiveCamera.cs" />
     <Compile Include="EmuMath\BresenhamLine.cs" />

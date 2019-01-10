@@ -77,7 +77,8 @@ namespace EmuEngine.Affine_Transformation
                 { 0, 0, 0, 1 }
             };
 
-            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(rotateX, shape.ModelMatrix);
+            //shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(rotateX, shape.ModelMatrix);
+            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, rotateX);
         }
 
         public void RotateY(MCommonPrimitive shape, double angle)
@@ -91,7 +92,8 @@ namespace EmuEngine.Affine_Transformation
                 { 0, 0, 0, 1 }
             };
 
-            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(rotateY, shape.ModelMatrix);
+            //shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(rotateY, shape.ModelMatrix);
+            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, rotateY);
         }
 
         public void RotateZ(MCommonPrimitive shape, double angle)
@@ -105,7 +107,8 @@ namespace EmuEngine.Affine_Transformation
                 { 0, 0, 0, 1 }
             };
 
-            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(rotateZ, shape.ModelMatrix);
+            //shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(rotateZ, shape.ModelMatrix);
+            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, rotateZ);
         }
 
         //------------------TRANSLATING-------------------------------
@@ -119,6 +122,7 @@ namespace EmuEngine.Affine_Transformation
             };
 
             shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(movementMatrix, shape.ModelMatrix);
+            //shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, movementMatrix);
         }
 
         public void TranslateRange(List<MCommonPrimitive> shapes, float sx, float sy, float sz)
@@ -137,7 +141,8 @@ namespace EmuEngine.Affine_Transformation
                 { 0, 0, 0, 1 }
             };
 
-            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(scaleMatrix, shape.ModelMatrix);
+            shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, scaleMatrix);
+            //shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(scaleMatrix, shape.ModelMatrix);
         }
 
         public void ScaleRange(List<MCommonPrimitive> shapes, float sx, float sy, float sz)
@@ -264,7 +269,16 @@ namespace EmuEngine.Affine_Transformation
         public void GetTransformedShapes(List<MCommonPrimitive> shapes, Camera camera)
         {
             for (int i = 0; i < shapes.Count; ++i)
-                GetTransformedShape(shapes[i], camera);
+            {
+                //if (shapes[i] is Shuttle)
+                //{
+                //    var kek = shapes[i] as Shuttle;
+                //    foreach (MCommonPrimitive shape in kek.GetAllCommonPrimitives())
+                //        GetTransformedShape(shape, camera);
+                //}
+                //else
+                    GetTransformedShape(shapes[i], camera);               
+            }
         }
 
         public void GetTransformedShape(MCommonPrimitive shape, Camera camera)
@@ -273,19 +287,22 @@ namespace EmuEngine.Affine_Transformation
 
             for (int i = 0; i < vertices.Count; ++i)
             {
+                //vertices[i].W = 0;
+
                 float[,] vertexCoords = { { vertices[i].SX }, { vertices[i].SY }, { vertices[i].SZ }, { vertices[i].SW } };
 
-                var modelViewMatrix = MatrixMultiplier.MultiplyMatrix(camera.ViewMatrix, shape.ModelMatrix);
-                var eyeCoordinates = MatrixMultiplier.MultiplyMatrix(modelViewMatrix, vertexCoords);
+                var modelViewMatrix = MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, vertexCoords);
+                var eyeCoordinates = MatrixMultiplier.MultiplyMatrix(camera.ViewMatrix, modelViewMatrix);
                 var clipCoordinates = MatrixMultiplier.MultiplyMatrix(camera.ProjectionMatrix, eyeCoordinates);
 
                 //if (clipCoordinates[0, 0] < -1 || clipCoordinates[0, 0] > 1 ||
-                //    clipCoordinates[1, 0] < -1 || clipCoordinates[1, 0] > 1)
+                //    clipCoordinates[1, 0] < -1 || clipCoordinates[1, 0] > 1 ||
+                //    clipCoordinates[2, 0] < -1 || clipCoordinates[2, 0] > 1)
                 //{
-                //    vertices.RemoveAt(i);
-                //    continue;
+                //    vertices[i].IsClipped = true;
+                //    //continue;
                 //}
-                
+
                 var ndc = new float[,] {
                     { clipCoordinates[0, 0] / clipCoordinates[3, 0] },
                     { clipCoordinates[1, 0] / clipCoordinates[3, 0] },

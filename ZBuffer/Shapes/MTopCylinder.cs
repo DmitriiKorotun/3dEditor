@@ -16,18 +16,25 @@ namespace EmuEngine.Shapes
             InitFacets();
         }
 
+        public MTopCylinder(MPoint centerBot, float radius1, float radius2, float height, bool isHasParent) : base(centerBot, radius1, height, isHasParent)
+        {
+            CalcDotsBot(radius1);
+            CalcDotsTop(radius2);
+
+            InitFacets();
+        }
+
         private void CalcDotsBot(float radius)
         {
             double angle, da, x, y, z; // some temp variables
             int i;
-            z = Height * 0.5; // half height of cyliner
             da = 2 * Math.PI / (circleDotsCount - 1);
             for (angle = 0.0, i = 0; i < circleDotsCount; i++, angle += da)
             {
                 x = radius * Math.Cos(angle);
                 y = radius * Math.Sin(angle);
 
-                BottomDots[i] = new MPoint(x, y, -z);
+                BottomDots[i] = new MPoint(CenterBot.SX + x, CenterBot.SY + y, CenterBot.SZ);
             }
         }
 
@@ -35,14 +42,13 @@ namespace EmuEngine.Shapes
         {
             double angle, da, x, y, z; // some temp variables
             int i;
-            z = Height * 0.5; // half height of cyliner
             da = 2 * Math.PI / (circleDotsCount - 1);
             for (angle = 0.0, i = 0; i < circleDotsCount; i++, angle += da)
             {
                 x = radius * Math.Cos(angle);
                 y = radius * Math.Sin(angle);
 
-                TopDots[i] = new MPoint(x, y, +z);
+                TopDots[i] = new MPoint(CenterTop.SX + x, CenterTop.SY + y, CenterTop.SZ);
             }
         }
     }

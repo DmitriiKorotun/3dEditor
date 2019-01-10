@@ -31,6 +31,14 @@ namespace EmuEngine.Shapes
             SetParameters(length, width, height);
 
             InitVerticesCenter(center, length, width, height);
+            InitFacets(Vertices);           
+        }
+
+        public MBox(MPoint center, float length, float width, float height, bool isHasParent) : base()
+        {
+            SetParameters(length, width, height);
+
+            InitVerticesCenter2(center, length, width, height);
             InitFacets(Vertices);
         }
 
@@ -44,6 +52,11 @@ namespace EmuEngine.Shapes
         private void InitVerticesCenter(MPoint center, float length, float width, float height)
         {
             Vertices = GetVerticesFromCenter(center, length, width, height);
+        }
+
+        private void InitVerticesCenter2(MPoint center, float length, float width, float height)
+        {
+            Vertices = GetVerticesFromCenter2(center, length, width, height);
         }
 
         private MPoint[] GetVerticesFromCenter(MPoint center, float length, float width, float height)
@@ -82,6 +95,54 @@ namespace EmuEngine.Shapes
                     //Left rear corner
                     case 3:
                         vertex = new MPoint( -halfLength, halfWidth, halfHeight);
+                        break;
+
+                    default:
+                        throw new Exception("Error while trying to initialize MBox vertices");
+                }
+
+                Vertices[i] = vertex;
+            }
+
+            return Vertices;
+        }
+
+        private MPoint[] GetVerticesFromCenter2(MPoint center, float length, float width, float height)
+        {
+            const int verticesCount = 8;
+
+            Vertices = new MPoint[verticesCount];
+
+            float halfLength = length / 2,
+                halfWidth = width / 2;
+
+            for (int i = 0; i < verticesCount; ++i)
+            {
+                MPoint vertex = null;
+
+                float halfHeight = i >= verticesCount / 2 ? height / 2 : -height / 2;
+
+                // Calculates new vertices counterclockwise
+                switch (i % 4)
+                {
+                    //Left front corner
+                    case 0:
+                        vertex = new MPoint(-halfLength + center.SX, -halfWidth + center.SY, halfHeight + center.SZ);
+                        break;
+
+                    //Right front corner
+                    case 1:
+                        vertex = new MPoint(halfLength + center.SX, -halfWidth + center.SY, halfHeight + center.SZ);
+                        break;
+
+                    //Right rear corner
+                    case 2:
+                        vertex = new MPoint(halfLength + center.SX, halfWidth + center.SY, halfHeight + center.SZ);
+                        break;
+
+                    //Left rear corner
+                    case 3:
+                        vertex = new MPoint(-halfLength + center.SX, halfWidth + center.SY, halfHeight + center.SZ);
                         break;
 
                     default:
@@ -184,6 +245,17 @@ namespace EmuEngine.Shapes
         public override List<MPoint> GetVertices()
         {
             return Vertices.ToList();
+        }
+
+        public override List<MFacet> GetAllFacets()
+        {
+            return Facets.ToList();
+        }
+
+        private void SetColor()
+        {
+            for (int i = 0; i < Vertices.Length; ++i)
+                Vertices[i].ARGB = 25700;
         }
 
         //public override HashSet<Point3D> GetHashedPoints()

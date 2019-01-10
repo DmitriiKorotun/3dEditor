@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GraphicsProject"
         mc:Ignorable="d"
-        Title="GraphicsProject" Height="688.643" Width="auto"
+        Title="GraphicsProject" Height="788.203" Width="auto"
         SizeToContent="WidthAndHeight">
     <Grid>
 
@@ -49,7 +49,7 @@
                         <ColumnDefinition Width="50*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Grid>
+                    <Grid Visibility="Hidden">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="50*"/>
                             <RowDefinition Height="50*"/>
@@ -78,9 +78,9 @@
                     </Grid>
 
 
-                    <Button Name="btn_createShape" Content="Создать деталь" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.ColumnSpan="2" Width="93" Click="btn_createShape_Click" Margin="80,60,68,60"/>
+                    <Button Click="Button_Click" Name="btn_createShape" Content="Создать деталь" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.ColumnSpan="2" Width="93" Margin="80,60,68,60"/>
 
-                    <Grid Grid.Column="1" Margin="10, 0">
+                    <Grid Visibility="Hidden" Grid.Column="1" Margin="10, 0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="50*"/>
                             <RowDefinition Height="50*"/>
@@ -106,17 +106,19 @@
                         </Label>
                         <TextBox Name="tb_leftCornerZ" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" TextWrapping="Wrap" Width="60"/>
                     </Grid>
+                    <Button x:Name="btn_clear" Content="Очистить" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Click="btn_clear_Click" Grid.ColumnSpan="2"/>
 
                 </Grid>
             </StackPanel>
-            <Button Content="Тест" HorizontalAlignment="Left" Margin="702,25,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" RenderTransformOrigin="-2.219,0.75" Grid.Row="2"/>
+            <Button x:Name="btn_rotateCamera" Content="Вращать камеру" HorizontalAlignment="Left" Margin="31,30,0,0" VerticalAlignment="Top" Width="140" Grid.Row="1" Click="btn_rotateCamera_Click"/>
+            <Button x:Name="btn_moveCamera" Content="Переместить камеру" HorizontalAlignment="Left" Margin="255,30,0,0" VerticalAlignment="Top" Width="152" Grid.Row="1" Click="btn_moveCamera_Click"/>
         </Grid>
         <Border BorderBrush="Black" BorderThickness="1" Margin="10" Grid.Row="2">
             <Grid Name="grid_Controls">
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50*"/>
-                    <ColumnDefinition Width="50*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="5*"/>
                 </Grid.ColumnDefinitions>
 
                 <Grid Name="grid_TransformationControls">
@@ -139,7 +141,7 @@
 
                         <Grid.Resources>
                             <Style TargetType="TextBox" BasedOn="{StaticResource VerticalControl}">
-                                <Setter Property="MinWidth" Value="120"/>
+                                <Setter Property="MinWidth" Value="100"/>
                             </Style>
                             <Style TargetType="Label" BasedOn="{StaticResource VerticalControl}"/>
                         </Grid.Resources>
@@ -172,7 +174,7 @@
                         <Grid.Resources>
                             <Style TargetType="Button" BasedOn="{StaticResource VerticalControl}">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
-                                <Setter Property="MinWidth" Value="120"/>
+                                <Setter Property="MinWidth" Value="100"/>
                                 <Setter Property="Margin" Value="15, 0, 0, 0"/>
                             </Style>
                         </Grid.Resources>
@@ -190,93 +192,231 @@
                     </Grid>
                 </Grid>
 
-                <Grid Name="grid_CameraControls" Grid.Column="1">
+                <TabControl
+                    Grid.Column="1" Grid.RowSpan="2"
+                    HorizontalAlignment="Right" VerticalAlignment="Top" 
+                    Height="auto"  MinWidth="450" Width="auto"
+                    Margin="5, 0">
+                    <TabItem Header="Камера">
+                        <Grid Name="grid_CameraControls" >
 
-                    <Grid.Resources>
-                        <Style x:Key="VerticalControl" TargetType="{x:Type Control}">
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                        </Style>
-                    </Grid.Resources>
+                            <Grid.Resources>
+                                <Style x:Key="VerticalControl" TargetType="{x:Type Control}">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                            </Grid.Resources>
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50*"/>
-                        <RowDefinition Height="40*"/>
-                    </Grid.RowDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50*"/>
+                                <RowDefinition Height="40*"/>
+                            </Grid.RowDefinitions>
 
-                    <Grid Name="grid_CameraControlsInput">
+                            <Grid Name="grid_CameraControlsInput">
 
-                        <Grid.Resources>
-                            <Style TargetType="TextBox" BasedOn="{StaticResource VerticalControl}">
-                                <Setter Property="MinWidth" Value="30"/>
-                            </Style>
-                            <Style TargetType="Label" BasedOn="{StaticResource VerticalControl}"/>
-                        </Grid.Resources>
+                                <Grid.Resources>
+                                    <Style TargetType="TextBox" BasedOn="{StaticResource VerticalControl}">
+                                        <Setter Property="MinWidth" Value="30"/>
+                                    </Style>
+                                    <Style TargetType="Label" BasedOn="{StaticResource VerticalControl}"/>
+                                </Grid.Resources>
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="50*"/>
-                            <RowDefinition Height="50*"/>
-                        </Grid.RowDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50*"/>
+                                    <RowDefinition Height="50*"/>
+                                </Grid.RowDefinitions>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                        </Grid.ColumnDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
 
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Левая граница: "></Label>
-                            <TextBox Name="tb_CameraLeft"/>
-                        </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Верт. угол обзора: "></Label>
+                                    <TextBox Name="tb_CameraVfov"/>
+                                </StackPanel>
 
-                        <StackPanel Grid.Column="1" Orientation="Horizontal" Grid.Row="1">
-                            <Label Content="Верхняя граница: "></Label>
-                            <TextBox Name="tb_CameraTop"/>
-                        </StackPanel>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" Grid.Row="1"/>
 
-                        <StackPanel Grid.Column="2" Orientation="Horizontal">
-                            <Label Content="Ближняя граница: "></Label>
-                            <TextBox Name="tb_CameraNear"/>
-                        </StackPanel>
+                                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                    <Label Content="Ближняя граница: "></Label>
+                                    <TextBox Name="tb_CameraNear"/>
+                                </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" Grid.Row="1">
-                            <Label Content="Правая граница: "></Label>
-                            <TextBox Name="tb_CameraRight"/>
-                        </StackPanel>
+                                <StackPanel Orientation="Horizontal" Grid.Row="1"/>
 
-                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                            <Label Content="Нижняя граница: "></Label>
-                            <TextBox Name="tb_CameraBot"/>
-                        </StackPanel>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <Label Content="Гор. угол обзора: "></Label>
+                                    <TextBox Name="tb_CameraFov"/>
+                                </StackPanel>
 
-                        <StackPanel Grid.Column="2" Orientation="Horizontal" Grid.Row="1">
-                            <Label Content="Дальняя граница: "></Label>
-                            <TextBox Name="tb_CameraFar"/>
-                        </StackPanel>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" Grid.Row="1">
+                                    <Label Content="Дальняя граница: "></Label>
+                                    <TextBox Name="tb_CameraFar"/>
+                                </StackPanel>
 
-                    </Grid>
+                            </Grid>
 
 
-                    <Grid Name="grid_CameraControlsButtons" Grid.Row="1" Margin="0, 0, 0, 20">
+                            <Grid Name="grid_CameraControlsButtons" Grid.Row="1" Margin="0, 0, 0, 20">
 
-                        <Grid.Resources>
-                            <Style TargetType="Button" BasedOn="{StaticResource VerticalControl}">
-                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                <Setter Property="MinWidth" Value="120"/>
-                                <Setter Property="Margin" Value="15, 0, 0, 0"/>
-                            </Style>
-                        </Grid.Resources>
+                                <Grid.Resources>
+                                    <Style TargetType="Button" BasedOn="{StaticResource VerticalControl}">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="MinWidth" Value="120"/>
+                                        <Setter Property="Margin" Value="15, 0, 0, 0"/>
+                                    </Style>
+                                </Grid.Resources>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                        </Grid.ColumnDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
 
-                        <Button Name="btn_createCamera" Content="Создать камеру" Click="btn_createCamera_Click"></Button>
-                        <Button Name="btn_switchCamera" Content="Изменить тип камеры" Grid.Column="1" Click="btn_switchCamera_Click"></Button>
+                                <Button Name="btn_createCamera" Content="Создать камеру" Click="btn_createCamera_Click"></Button>
+                                <Button Name="btn_switchCamera" Content="Изменить тип камеры" Grid.Column="1" Click="btn_switchCamera_Click"></Button>
 
-                    </Grid>
-                </Grid>
+                            </Grid>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Параметризация 1">
+                        <Grid Name="grid_Pa">
+
+                            <Grid.Resources>
+                                <Style x:Key="VerticalControl" TargetType="{x:Type Control}">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                                <Style TargetType="TextBox" BasedOn="{StaticResource VerticalControl}">
+                                    <Setter Property="MinWidth" Value="30"/>
+                                    <Setter Property="Margin" Value="0, 0, 5, 0"/>
+                                </Style>
+                                <Style TargetType="Label" BasedOn="{StaticResource VerticalControl}"/>
+                            </Grid.Resources>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50*"/>
+                                <RowDefinition Height="50*"/>
+                                <RowDefinition Height="50*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Content="Радиус корпуса: " Grid.Row="2"></Label>
+                            <TextBox Name="tb_BodyRadius" Grid.Column="1" Grid.Row="2"/>
+
+                            <Label Content="Кол-во двигателей: "></Label>
+                            <TextBox Name="tb_EnginesCount" Grid.Column="1"/>
+
+                            <Label Content="Длина крыла: " Grid.Column="2" Grid.Row="2" ></Label>
+                            <TextBox Name="tb_WingLength" Grid.Column="3" Grid.Row="2"/>
+
+                            <Label Content="Высота корпуса: " Grid.Column="2"></Label>
+                            <TextBox Name="tb_BodyHeight" Grid.Column="3"/>
+
+                            <Label Content="Радиус двигателя: " Grid.Row="1" ></Label>
+                            <TextBox Name="tb_EngineRadius" Grid.Column="1" Grid.Row="1"/>
+
+                            <Label Content="Кол-во крыльев: " Grid.Column="2" Grid.Row="1"></Label>
+                            <TextBox Name="tb_WingsCount" Grid.Column="3" Grid.Row="1"/>
+
+                            <Label Content="Ширина платформы: " Grid.Column="4"></Label>
+                            <TextBox Name="tb_PlatformWidth" Grid.Column="5"/>
+
+                            <Label Content="Длина платформы: " Grid.Column="4" Grid.Row="1"></Label>
+                            <TextBox Name="tb_PlatformLength" Grid.Column="5" Grid.Row="1"/>
+
+                            <Button Name="btn_parametrizationDo1" Content="Применить" 
+                                    Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="3" 
+                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    Click="btn_parametrizationDo1_Click"></Button>
+
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Параметризация 2">
+                        <Grid Name="grid_Pad">
+
+                            <Grid.Resources>
+                                <Style x:Key="VerticalControl" TargetType="{x:Type Control}">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                                <Style TargetType="TextBox" BasedOn="{StaticResource VerticalControl}">
+                                    <Setter Property="MinWidth" Value="30"/>
+                                    <Setter Property="Margin" Value="0, 0, 5, 0"/>
+                                </Style>
+                                <Style TargetType="Label" BasedOn="{StaticResource VerticalControl}"/>
+                            </Grid.Resources>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50*"/>
+                                <RowDefinition Height="50*"/>
+                                <RowDefinition Height="50*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+
+                            <Label Content="Кол-во дверей: " Grid.Row="1" Grid.Column="2"></Label>
+                            <TextBox Name="tb_DoorsCount" Grid.Column="3" Grid.Row="1"/>
+
+                            <Label Content="Радиус опорных частей: "></Label>
+                            <TextBox Name="tb_LegRadius" Grid.Column="1"/>
+
+                            <Label Content="Угол наклона оп. части: "  Grid.Row="1"></Label>
+                            <TextBox Name="tb_LegAngle" Grid.Column="1"  Grid.Row="1"/>
+
+                            <Label Content="Радиус носа: " Grid.Row="3" Grid.Column="2"></Label>
+                            <TextBox Name="tb_NoseRadius" Grid.Column="3" Grid.Row="3"/>
+
+                            <Label Content="Длина опорных частей: " Grid.Row="2"></Label>
+                            <TextBox Name="tb_legLength" Grid.Column="1" Grid.Row="2"/>
+
+                            <Label Content="Радиус окна двери: " Grid.Column="2"></Label>
+                            <TextBox Name="tb_DoorWindowRadius" Grid.Column="3"/>
+
+                            <Button Name="btn_parametrizationDo2" Content="Применить" 
+                                    Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="3" 
+                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    Margin="10, 0, 0, 0"
+                                    Click="btn_parametrizationDo2_Click">
+
+                            </Button>
+
+
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Объекты">
+                        <Grid Background="#FFE5E5E5"  Width="auto" Height="100">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="167*"/>
+                                <ColumnDefinition Width="49*"/>
+                                <ColumnDefinition Width="22*"/>
+                            </Grid.ColumnDefinitions>
+                            <DataGrid Name="dgrid_Objects" MinWidth="400" ItemsSource="{Binding}">
+                                <!--<DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Объект" IsReadOnly="True"/>
+                                    <DataGridCheckBoxColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Выбор"/>
+                                </DataGrid.Columns>-->
+                            </DataGrid>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+
+
 
                 <Grid HorizontalAlignment="Left" Height="Auto" Margin="10,10" VerticalAlignment="Top" Width="auto" Grid.Column="1">
                     <Grid.ColumnDefinitions>
@@ -285,7 +425,6 @@
                         <ColumnDefinition Width="25*"/>
                         <ColumnDefinition Width="25*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Name="btn_clear" Content="Очистить" Grid.Column="3" HorizontalAlignment="Center" Margin="20,-62,-10,0" VerticalAlignment="Top" Width="75" Click="btn_clear_Click"/>
                 </Grid>
             </Grid>
         </Border>

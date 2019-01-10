@@ -14,7 +14,7 @@ namespace EmuEngine.Tools
 
         protected float[,] projectionMatrix;
       
-        private const int defaultZoom = -60;
+        private const int defaultZoom = 0;
 
        
         public Camera()

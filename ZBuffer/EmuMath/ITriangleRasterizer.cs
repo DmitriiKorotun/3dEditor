@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZBuffer.EmuMath
+namespace EmuEngine.EmuMath
 {
     interface ITriangleRasterizer
     {

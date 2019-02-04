@@ -5,7 +5,7 @@ using EmuEngine.Shapes;
 using EmuEngine.Affine_Transformation;
 using KellermanSoftware.CompareNetObjects;
 
-namespace GraphicsProject.Tests.ZBufferTests.AffineTransformationTests
+namespace GraphicsProject.Tests.EmuEngineTests.AffineTransformationTests
 {
     //TODO Make test's names more obvious (input part is prioritized)
     [TestClass]

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EmuEngine.Shapes;
+using EmuEngine.EmuMath;
 
 namespace EmuEngine.Tools
 {
@@ -18,9 +19,9 @@ namespace EmuEngine.Tools
         // set a orthographic frustum with 6 params
         // (left, right, bottom, top, near, far)
         ///////////////////////////////////////////////////////////////////////////////
-        private float[,] SetOrthoFrustum(float l, float r, float b, float t, float n, float f)
+        private Matrix4 SetOrthoFrustum(float l, float r, float b, float t, float n, float f)
         {
-            return new float[,] {
+            return new Matrix4(new float[,] {
                 {
                     2 / (r - l),
                     0,
@@ -44,7 +45,7 @@ namespace EmuEngine.Tools
                     0,
                     1
                 }
-            };
+            });
         }
     }
 }

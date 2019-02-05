@@ -4,27 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EmuEngine.Shapes;
+using EmuEngine.EmuMath;
 
 namespace EmuEngine.Tools
 {
     abstract public class Camera
     {
-        public float[,] ViewMatrix { get; set; }
-        public float[,] ProjectionMatrix { get { return projectionMatrix; } }
+        public Matrix4 ViewMatrix { get; set; }
+        public Matrix4 ProjectionMatrix { get { return projectionMatrix; } }
 
-        protected float[,] projectionMatrix;
+        protected Matrix4 projectionMatrix;
       
         private const int defaultZoom = -60;
 
        
         public Camera()
         {
-            ViewMatrix = new float[,] {
-                { 1, 0, 0, 0 },
-                { 0, 1, 0, 0 },
-                { 0, 0, 1, defaultZoom },
-                { 0, 0, 0, 1 }
-            };
+            ViewMatrix = new Matrix4();
+            ViewMatrix[2, 3] = defaultZoom;
         }
     }
 }

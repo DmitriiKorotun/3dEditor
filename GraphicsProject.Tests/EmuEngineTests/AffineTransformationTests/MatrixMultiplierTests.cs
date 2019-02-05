@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using EmuEngine.EmuMath;
 
-namespace GraphicsProject.Tests.ZBufferTests.AffineTransformationTests
+namespace GraphicsProject.Tests.EmuEngineTests.AffineTransformationTests
 {
     [TestClass]
     public class MatrixMultiplierTests

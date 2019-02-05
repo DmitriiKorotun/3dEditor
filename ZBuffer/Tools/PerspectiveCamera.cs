@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EmuEngine.Shapes;
+using EmuEngine.EmuMath;
 
 namespace EmuEngine.Tools
 {
@@ -44,9 +45,9 @@ namespace EmuEngine.Tools
         // return a perspective frustum with 6 params
         // (left, right, bottom, top, near, far)
         ///////////////////////////////////////////////////////////////////////////////
-        private float[,] SetFrustum(float l, float r, float b, float t, float n, float f)
+        private Matrix4 SetFrustum(float l, float r, float b, float t, float n, float f)
         {
-            return new float[,] {
+            return new Matrix4(new float[,] {
                 {
                     2 * n / (r - l),
                     0,
@@ -71,7 +72,7 @@ namespace EmuEngine.Tools
                     -1,
                     0
                 }
-            };
+            });
         }
     }
 }

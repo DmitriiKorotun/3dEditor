@@ -26,7 +26,8 @@ namespace EmuEngine.Shapes
         //    InitFacets(Vertices);
         //}
 
-        public MBox(MPoint center, float length, float width, float height) : base(center.X, center.Y, center.Z)
+        public MBox(MPoint center, float length, float width, float height) 
+            : base(center.Current.X, center.Current.Y, center.Current.Z)
         {
             SetParameters(length, width, height);
 
@@ -113,22 +114,26 @@ namespace EmuEngine.Shapes
                 {
                     //Left front corner
                     case 0:
-                        vertex = new MPoint(leftFrontCorner.SX, leftFrontCorner.SY, leftFrontCorner.SZ + applyingHeight);
+                        vertex = new MPoint(
+                            leftFrontCorner.Source.X, leftFrontCorner.Source.Y, leftFrontCorner.Source.Z + applyingHeight);
                         break;
 
                     //Right front corner
                     case 1:
-                        vertex = new MPoint(leftFrontCorner.SX + length, leftFrontCorner.SY, leftFrontCorner.SZ + applyingHeight);
+                        vertex = new MPoint(
+                            leftFrontCorner.Source.X + length, leftFrontCorner.Source.Y, leftFrontCorner.Source.Z + applyingHeight);
                         break;
 
                     //Right rear corner
                     case 2:
-                        vertex = new MPoint(leftFrontCorner.SX + length, leftFrontCorner.SY + width, leftFrontCorner.SZ + applyingHeight);
+                        vertex = new MPoint(
+                            leftFrontCorner.Source.X + length, leftFrontCorner.Source.Y + width, leftFrontCorner.Source.Z + applyingHeight);
                         break;
 
                     //Left rear corner
                     case 3:
-                        vertex = new MPoint(leftFrontCorner.SX, leftFrontCorner.SY + width, leftFrontCorner.SZ + applyingHeight);
+                        vertex = new MPoint(
+                            leftFrontCorner.Source.X, leftFrontCorner.Source.Y + width, leftFrontCorner.Source.Z + applyingHeight);
                         break;
 
                     default:

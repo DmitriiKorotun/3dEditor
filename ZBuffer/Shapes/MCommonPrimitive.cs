@@ -65,8 +65,8 @@ namespace EmuEngine.Shapes
             if (vertices.Count == 0)
                 throw new NullReferenceException("Shape doesn't have verices");
 
-            MPoint maxCoords = new MPoint(vertices[0].X, vertices[0].Y, vertices[0].Z);
-            MPoint minCoords = new MPoint(vertices[0].X, vertices[0].Y, vertices[0].Z);
+            MPoint maxCoords = new MPoint(vertices[0].Current.X, vertices[0].Current.Y, vertices[0].Current.Z);
+            MPoint minCoords = new MPoint(vertices[0].Current.X, vertices[0].Current.Y, vertices[0].Current.Z);
 
             foreach (MPoint vertex in vertices)
             {
@@ -74,21 +74,34 @@ namespace EmuEngine.Shapes
                 CompareAndSetMinCoords(vertex, minCoords);
             }
 
-            return new MPoint((maxCoords.X + minCoords.X) / 2, (maxCoords.Y + minCoords.Y) / 2, (maxCoords.Z + minCoords.Z) / 2);
+            return new MPoint((maxCoords.Current.X + minCoords.Current.X) / 2,
+                (maxCoords.Current.Y + minCoords.Current.Y) / 2,
+                (maxCoords.Current.Z + minCoords.Current.Z) / 2);
         }
 
         private void CompareAndSetMaxCoords(MPoint sourcePoint, MPoint destinationPoint)
         {
-            destinationPoint.X = sourcePoint.X > destinationPoint.X ? sourcePoint.X : destinationPoint.X;
-            destinationPoint.Y = sourcePoint.Y > destinationPoint.Y ? sourcePoint.Y : destinationPoint.Y;
-            destinationPoint.Z = sourcePoint.Z > destinationPoint.Z ? sourcePoint.Z : destinationPoint.Z;
+            destinationPoint.Current.X = sourcePoint.Current.X > destinationPoint.Current.X ?
+                sourcePoint.Current.X : destinationPoint.Current.X;
+
+            destinationPoint.Current.Y = sourcePoint.Current.Y > destinationPoint.Current.Y ?
+                sourcePoint.Current.Y : destinationPoint.Current.Y;
+
+            destinationPoint.Current.Z = sourcePoint.Current.Z > destinationPoint.Current.Z ?
+                sourcePoint.Current.Z : destinationPoint.Current.Z;
+
         }
 
         private void CompareAndSetMinCoords(MPoint sourcePoint, MPoint destinationPoint)
         {
-            destinationPoint.X = sourcePoint.X < destinationPoint.X ? sourcePoint.X : destinationPoint.X;
-            destinationPoint.Y = sourcePoint.Y < destinationPoint.Y ? sourcePoint.Y : destinationPoint.Y;
-            destinationPoint.Z = sourcePoint.Z < destinationPoint.Z ? sourcePoint.Z : destinationPoint.Z;
+            destinationPoint.Current.X = sourcePoint.Current.X < destinationPoint.Current.X ?
+                sourcePoint.Current.X : destinationPoint.Current.X;
+
+            destinationPoint.Current.Y = sourcePoint.Current.Y < destinationPoint.Current.Y ?
+                sourcePoint.Current.Y : destinationPoint.Current.Y;
+
+            destinationPoint.Current.Z = sourcePoint.Current.Z < destinationPoint.Current.Z ?
+                sourcePoint.Current.Z : destinationPoint.Current.Z;
         }
     }
 }

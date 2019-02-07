@@ -39,14 +39,15 @@ namespace EmuEngine.Tools
         {
             foreach (MPoint point in points)
             {
-                if (point.X < 0 || point.X >= 640 || point.Y < 0 || point.Y >= 360)
+                if (point.Current.X < 0 || point.Current.X >= 640 ||
+                    point.Current.Y < 0 || point.Current.Y >= 360)
                     continue;
 
-                var offset = (int)point.X + (int)point.Y * Width;
+                var offset = (int)point.Current.X + (int)point.Current.Y * Width;
 
-                if (Buffer[offset].Z > point.Z)
+                if (Buffer[offset].Z > point.Current.Z)
                 {
-                    Buffer[offset].Z = point.Z;
+                    Buffer[offset].Z = point.Current.Z;
                     Buffer[offset].ARGB = point.ARGB;
                 }
             }

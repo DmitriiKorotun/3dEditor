@@ -66,7 +66,7 @@ namespace EmuEngine
 
             //Moves 0,0 point from top-left to bottom-left
             for (int i = 0; i < points.Count; ++i)
-                points[i].Y = height - points[i].Y;
+                points[i].Current.Y = height - points[i].Current.Y;
 
             var zBufferManager = new Tools.ZBuffer(width, height);
             var zBuffer = zBufferManager.GetBuffer(points);
@@ -109,7 +109,7 @@ namespace EmuEngine
 
             //Moves 0,0 point from top-left to bottom-left
             for (int i = 0; i < points.Count; ++i)
-                points[i].Y = height - points[i].Y;
+                points[i].Current.Y = height - points[i].Current.Y;
 
             for (int i = 0; i < bitmap.Width; ++i)
             {

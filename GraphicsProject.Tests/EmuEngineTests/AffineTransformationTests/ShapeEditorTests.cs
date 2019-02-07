@@ -241,9 +241,9 @@ namespace GraphicsProject.Tests.EmuEngineTests.AffineTransformationTests
         // I need to prevent point.SW from changing in order to compare points
         private void SetPointCoordinatesToDestinationPoint(MPoint sourcePoint, MPoint destinationPoint)
         {
-            destinationPoint.X = sourcePoint.X;
-            destinationPoint.Y = sourcePoint.Y;
-            destinationPoint.Z = sourcePoint.Z;
+            destinationPoint.Current.X = sourcePoint.Current.X;
+            destinationPoint.Current.Y = sourcePoint.Current.Y;
+            destinationPoint.Current.Z = sourcePoint.Current.Z;
         }
 
         //[TestMethod]

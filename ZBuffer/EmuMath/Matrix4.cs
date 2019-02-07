@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EmuEngine.EmuMath.Structures;
 
 namespace EmuEngine.EmuMath
 {
@@ -53,25 +54,43 @@ namespace EmuEngine.EmuMath
             }
         }
 
-        public static Matrix4 operator *(Matrix4 m1, Matrix4 m2)
+        public static Matrix4 operator *(Matrix4 m0, Matrix4 m1)
         {
-            //var product = m1.Clone() as Matrix4;
-
-            //return product;
-
-            if (m1.Size.Columns != m2.Size.Rows)
+            if (m0.Size.Columns != m1.Size.Rows)
                 throw new ArgumentException("Wrong second operand size");
 
+            int m0Rows = m0.Size.Rows;
             int m1Rows = m1.Size.Rows;
-            int m2Rows = m2.Size.Rows;
-            int m2Cols = m2.Size.Columns;
+            int m1Cols = m1.Size.Columns;
 
-            float[,] result = new float[m1Rows, m2Cols];
+            float[,] result = new float[m0Rows, m1Cols];
 
-            for (int i = 0; i < m1Rows; i++)
-                for (int j = 0; j < m2Cols; j++)
-                    for (int k = 0; k < m2Rows; k++)
-                        result[i, j] += m1[i, k] * m2[k, j];
+            for (int i = 0; i < m0Rows; i++)
+                for (int j = 0; j < m1Cols; j++)
+                    for (int k = 0; k < m1Rows; k++)
+                        result[i, j] += m0[i, k] * m1[k, j];
+
+            return new Matrix4(result);
+        }
+
+        public static Matrix4 operator *(Matrix4 m0, Vector4 v0)
+        {
+            var vecDigits = new float[,] { { v0.X }, { v0.Y }, { v0.Z }, { v0.W } };
+            var m1 = new Matrix4(vecDigits);
+
+            if (m0.Size.Columns != m1.Size.Rows)
+                throw new ArgumentException("Wrong second operand size");
+
+            int m0Rows = m0.Size.Rows;
+            int m1Rows = m1.Size.Rows;
+            int m1Cols = m1.Size.Columns;
+
+            float[,] result = new float[m0Rows, m1Cols];
+
+            for (int i = 0; i < m0Rows; i++)
+                for (int j = 0; j < m1Cols; j++)
+                    for (int k = 0; k < m1Rows; k++)
+                        result[i, j] += m0[i, k] * m1[k, j];
 
             return new Matrix4(result);
         }

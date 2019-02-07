@@ -53,6 +53,7 @@
     <Compile Include="EmuMath\ITriangleRasterizer.cs" />
     <Compile Include="EmuMath\Matrix4.cs" />
     <Compile Include="EmuMath\ParallelRasterizer.cs" />
+    <Compile Include="EmuMath\Structures\Vector4.cs" />
     <Compile Include="Screen.cs" />
     <Compile Include="Shapes\MCommonPrimitive.cs" />
     <Compile Include="Tools\OrthographicCamera.cs" />

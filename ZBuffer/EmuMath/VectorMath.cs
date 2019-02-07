@@ -25,8 +25,9 @@ namespace EmuEngine.EmuMath
         private void CalculateLinePoints(List<MPoint> points, MPoint point1, MPoint point2)
         {
             //TODO Add z
-            if (Math.Abs(point2.X - point1.X) <= 1 &&
-                Math.Abs(point2.Y - point1.Y) <= 1 && Math.Abs(point2.Z - point1.Z) <= 1)
+            if (Math.Abs(point2.Current.X - point1.Current.X) <= 1 &&
+                Math.Abs(point2.Current.Y - point1.Current.Y) <= 1 &&
+                Math.Abs(point2.Current.Z - point1.Current.Z) <= 1)
                 return;
 
             MPoint newPoint = GetNextPoint(point1, point2);
@@ -39,9 +40,9 @@ namespace EmuEngine.EmuMath
 
         private MPoint GetNextPoint(MPoint point1, MPoint point2)
         {
-            var x = (float)Math.Round((point1.X + point2.X) / 2);
-            var y = (float)Math.Round((point1.Y + point2.Y) / 2);
-            var z = (float)Math.Round((point1.Z + point2.Z) / 2);
+            var x = (float)Math.Round((point1.Current.X + point2.Current.X) / 2);
+            var y = (float)Math.Round((point1.Current.Y + point2.Current.Y) / 2);
+            var z = (float)Math.Round((point1.Current.Z + point2.Current.Z) / 2);
 
             return new MPoint(x, y, z);
         }

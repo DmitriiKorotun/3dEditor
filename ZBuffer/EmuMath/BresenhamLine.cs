@@ -11,7 +11,8 @@ namespace EmuEngine.EmuMath
     {
         public List<MPoint> GetLine(MPoint point1, MPoint point2)
         {
-            return Bresenham3D((int)point1.X, (int)point1.Y, (int)point1.Z, (int)point2.X, (int)point2.Y, (int)point2.Z);
+            return Bresenham3D((int)point1.Current.X, (int)point1.Current.Y, (int)point1.Current.Z,
+                (int)point2.Current.X, (int)point2.Current.Y, (int)point2.Current.Z);
         }
 
         private List<MPoint> Bresenham3D(int x1, int y1, int z1, int x2, int y2, int z2)

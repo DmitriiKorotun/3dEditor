@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EmuEngine.Shapes;
 using EmuEngine.Tools;
-using EmuEngine.EmuMath;
+using EmuEngine.EmuMath.Structures;
 
 namespace EmuEngine.Affine_Transformation
 {
@@ -273,7 +273,6 @@ namespace EmuEngine.Affine_Transformation
                 //var modelViewMatrix = MatrixMultiplier.MultiplyMatrix(camera.ViewMatrix, shape.ModelMatrix);
                 //var eyeCoordinates = MatrixMultiplier.MultiplyMatrix(modelViewMatrix, vertexCoords);
                 //var clipCoordinates = MatrixMultiplier.MultiplyMatrix(camera.ProjectionMatrix, eyeCoordinates);
-
                 var modelViewMatrix = GetModelViewMatrix(camera.ViewMatrix, shape.ModelMatrix);
                 var eyeCoordinates = GetEyeCoordinatesMatrix(modelViewMatrix, vertexCoords);
                 var clipCoordinates = GetClipCoordinatesMatrix(camera.ProjectionMatrix, eyeCoordinates);

@@ -1,14 +1,14 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EmuEngine.EmuMath;
+using EmuEngine.EmuMath.Structures;
 
 namespace GraphicsProject.Tests.EmuEngineTests.EmuMathTests
 {
     [TestClass]
-    public class Matrix4Tests
+    public class MatrixTests
     {
         [TestMethod]
-        public void Matrix4_CreatedFromFloatArray_SimilarToFloatArrayExpected()
+        public void Matrix_CreatedFromFloatArray_SimilarToFloatArrayExpected()
         {
             // arrange
             var expected = new float[,] { 
@@ -19,16 +19,16 @@ namespace GraphicsProject.Tests.EmuEngineTests.EmuMathTests
             };
 
             // act
-            var matrix4 = new Matrix4(expected);
+            var Matrix = new Matrix(expected);
 
-            bool isEqual = IsEqual(expected, matrix4);
+            bool isEqual = IsEqual(expected, Matrix);
 
             // assert
             Assert.IsTrue(isEqual);
         }
 
         [TestMethod]
-        public void Matrix4_CreatedFromMatrix4_SimilarToSourceMatrix4Expected()
+        public void Matrix_CreatedFromMatrix_SimilarToSourceMatrixExpected()
         {
             // arrange
             var source = new float[,] {
@@ -38,10 +38,10 @@ namespace GraphicsProject.Tests.EmuEngineTests.EmuMathTests
                 {94, -175, -0.630f, -2 }
             };
 
-            var expected = new Matrix4(source);
+            var expected = new Matrix(source);
 
             // act
-            var copied = new Matrix4(expected);
+            var copied = new Matrix(expected);
 
             bool isEqual = IsEqual(expected, copied);
 
@@ -60,8 +60,8 @@ namespace GraphicsProject.Tests.EmuEngineTests.EmuMathTests
                 {0, -175, -0.630f, -2 }
             };
 
-            var m1 = new Matrix4(source);
-            var m2 = new Matrix4(source);
+            var m1 = new Matrix(source);
+            var m2 = new Matrix(source);
 
             // act
             var isEqual = m1 == m2;
@@ -88,8 +88,8 @@ namespace GraphicsProject.Tests.EmuEngineTests.EmuMathTests
                 {0, -175, -0.630f, -1 }
             };
 
-            var m1 = new Matrix4(m1Source);
-            var m2 = new Matrix4(m2Source);
+            var m1 = new Matrix(m1Source);
+            var m2 = new Matrix(m2Source);
 
             // act
             var isEqual = m1 == m2;
@@ -109,8 +109,8 @@ namespace GraphicsProject.Tests.EmuEngineTests.EmuMathTests
                 {0, -175, -0.630f, -2 }
             };
 
-            var m1 = new Matrix4(source);
-            var m2 = new Matrix4(source);
+            var m1 = new Matrix(source);
+            var m2 = new Matrix(source);
 
             // act
             var isUnequal = m1 != m2;
@@ -137,8 +137,8 @@ namespace GraphicsProject.Tests.EmuEngineTests.EmuMathTests
                 {0, -175, -0.630f, -1 }
             };
 
-            var m1 = new Matrix4(m1Source);
-            var m2 = new Matrix4(m2Source);
+            var m1 = new Matrix(m1Source);
+            var m2 = new Matrix(m2Source);
 
             // act
             var isUnequal = m1 != m2;
@@ -172,12 +172,12 @@ namespace GraphicsProject.Tests.EmuEngineTests.EmuMathTests
                 {-800.805969f, -34750.0156f, 1.19421351f, 3322.7f }
             };
 
-            var m1 = new Matrix4(m1Source);
-            var m2 = new Matrix4(m2Source);
-            var expected = new Matrix4(expectedSource);
+            var m1 = new Matrix(m1Source);
+            var m2 = new Matrix(m2Source);
+            var expected = new Matrix(expectedSource);
 
             // act
-            Matrix4 result = m1 * m2;
+            Matrix result = m1 * m2;
 
             var isEqual = IsEqual(result, expected);
 
@@ -209,57 +209,19 @@ namespace GraphicsProject.Tests.EmuEngineTests.EmuMathTests
                     {-612.8024f, -35112.97f, -0.063f}
                 };
 
-            var m1 = new Matrix4(m1Source);
-            var m2 = new Matrix4(m2Source);
+            var m1 = new Matrix(m1Source);
+            var m2 = new Matrix(m2Source);
 
-            var expected = new Matrix4(expectedSource);
+            var expected = new Matrix(expectedSource);
 
             // act
-            Matrix4 result = m1 * m2;
+            Matrix result = m1 * m2;
 
             var isEqual = IsEqual(result, expected);
 
             // assert
             Assert.IsTrue(isEqual);
         }
-
-        //[TestMethod]
-        //public void Multiply_Sign_FirstMatrixsColumnsNumberEqualSecondMatrixsRowsNumberBut_MatrixWithFirstRowsAndSecondColumnsNumberExpected()
-        //{
-        //    // arrange
-        //    var m1Source = new float[,] {
-        //        {5, 17, -8},
-        //        {3.2f, -2, 0},
-        //        {42.4f, -1.25f, 0.12f},
-        //        {0, -175, -0.63f}
-        //    };
-
-        //    var m2Source = new float[,] {
-        //        {2, 7, 1},
-        //        {3.5f, 200.65f, 0},
-        //        {0.48f, -1.24f, 0.1f}
-        //    };
-
-        //    var expectedSource = new float[,] {
-        //            {65.66f, 3455.96973f, 4.2f},
-        //            {-0.5999999f, -378.9f, 3.2f},
-        //            {80.482605f, 45.838726f, 42.4120026f},
-        //            {-612.8024f, -35112.97f, -0.063f}
-        //        };
-
-        //    var m1 = new Matrix4(m1Source);
-        //    var m2 = new Matrix4(m2Source);
-
-        //    var expected = new Matrix4(expectedSource);
-
-        //    // act
-        //    Matrix4 result = m1 * m2;
-
-        //    var isEqual = IsEqual(result, expected);
-
-        //    // assert
-        //    Assert.IsTrue(isEqual);
-        //}
 
         [TestMethod]
         public void Multiply_Sign_SecondMatrixWithMoreColumnsThanFirst_MatrixWithFirstRowsAndSecondColumnsNumberExpected()
@@ -283,13 +245,13 @@ namespace GraphicsProject.Tests.EmuEngineTests.EmuMathTests
                     {-12.25f, -67.95f, -38.5f, 79.7f}
                 };
 
-            var m1 = new Matrix4(m1Source);
-            var m2 = new Matrix4(m2Source);
+            var m1 = new Matrix(m1Source);
+            var m2 = new Matrix(m2Source);
 
-            var expected = new Matrix4(expectedSource);
+            var expected = new Matrix(expectedSource);
 
             //act
-            Matrix4 result = m1 * m2;
+            Matrix result = m1 * m2;
 
             var isEqual = IsEqual(result, expected);
 
@@ -313,11 +275,11 @@ namespace GraphicsProject.Tests.EmuEngineTests.EmuMathTests
                 {0.4857f, -1.245f, 0.104423f, 10}
             };
 
-            var m1 = new Matrix4(m1Source);
-            var m2 = new Matrix4(m2Source);
+            var m1 = new Matrix(m1Source);
+            var m2 = new Matrix(m2Source);
 
             // act
-            Matrix4 result = m1 * m2;
+            Matrix result = m1 * m2;
         }
 
         [TestMethod]
@@ -338,14 +300,14 @@ namespace GraphicsProject.Tests.EmuEngineTests.EmuMathTests
                 {0.6f, 1, 1}
             };
 
-            var m1 = new Matrix4(m1Source);
-            var m2 = new Matrix4(m2Source);
+            var m1 = new Matrix(m1Source);
+            var m2 = new Matrix(m2Source);
 
             // act
-            Matrix4 result = m1 * m2;
+            Matrix result = m1 * m2;
         }
 
-        private bool IsEqual(float[,] m0, Matrix4 m1)
+        private bool IsEqual(float[,] m0, Matrix m1)
         {
             bool isEqual = true;
 
@@ -373,7 +335,7 @@ namespace GraphicsProject.Tests.EmuEngineTests.EmuMathTests
             return isEqual;
         }
 
-        private bool IsEqual(Matrix4 m0, Matrix4 m1)
+        private bool IsEqual(Matrix m0, Matrix m1)
         {
             bool isEqual = true;
 

@@ -51,8 +51,10 @@
     <Compile Include="Affine Transformation\IShapeEditor.cs" />
     <Compile Include="Affine Transformation\MatrixCatalogue.cs" />
     <Compile Include="EmuMath\ITriangleRasterizer.cs" />
-    <Compile Include="EmuMath\Matrix4.cs" />
+    <Compile Include="EmuMath\Structures\Matrix.cs" />
+    <Compile Include="EmuMath\Structures\Matrix4.cs" />
     <Compile Include="EmuMath\ParallelRasterizer.cs" />
+    <Compile Include="EmuMath\Structures\MatrixBase.cs" />
     <Compile Include="EmuMath\Structures\Vector4.cs" />
     <Compile Include="Screen.cs" />
     <Compile Include="Shapes\MCommonPrimitive.cs" />

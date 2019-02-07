@@ -152,7 +152,7 @@ namespace EmuEngine.Affine_Transformation
         {          
             for (int i = 0; i < vertices.Count; ++i)
             {
-                var vertexVector = new Vector3(vertices[i].X, vertices[i].Y, vertices[i].Z);
+                var vertexVector = new Vector3(vertices[i].Current.X, vertices[i].Current.Y, vertices[i].Current.Z);
 
                 var newCoords = Vector3.Transform(vertexVector, rotationQuaternion);
 
@@ -168,9 +168,9 @@ namespace EmuEngine.Affine_Transformation
 
             for (int i = 0; i < vertices.Count; ++i)
             {
-                vertices[i].X -= shapeCenter.X;
-                vertices[i].Y -= shapeCenter.Y;
-                vertices[i].Z -= shapeCenter.Z;
+                vertices[i].Current.X -= shapeCenter.Current.X;
+                vertices[i].Current.Y -= shapeCenter.Current.Y;
+                vertices[i].Current.Z -= shapeCenter.Current.Z;
             }
         }
 
@@ -180,9 +180,9 @@ namespace EmuEngine.Affine_Transformation
 
             for (int i = 0; i < vertices.Count; ++i)
             {
-                vertices[i].X += previousShapeCenter.X;
-                vertices[i].Y += previousShapeCenter.Y;
-                vertices[i].Z += previousShapeCenter.Z;
+                vertices[i].Current.X += previousShapeCenter.Current.X;
+                vertices[i].Current.Y += previousShapeCenter.Current.Y;
+                vertices[i].Current.Z += previousShapeCenter.Current.Z;
             }
         }
 
@@ -198,26 +198,26 @@ namespace EmuEngine.Affine_Transformation
 
         private void SetNewCoordinatesToPoint(MPoint destinationPoint, Vector3 newCoordinates)
         {
-            destinationPoint.X = newCoordinates.X;
-            destinationPoint.Y = newCoordinates.Y;
-            destinationPoint.Z = newCoordinates.Z;
+            destinationPoint.Current.X = newCoordinates.X;
+            destinationPoint.Current.Y = newCoordinates.Y;
+            destinationPoint.Current.Z = newCoordinates.Z;
         }
 
         //REWORK
         private void SetNewCoordinatesToPoint(MPoint destinationPoint, Matrix4 newCoordinates)
         {
-            destinationPoint.X = newCoordinates[0, 0];
-            destinationPoint.Y = newCoordinates[1, 0];
-            destinationPoint.Z = newCoordinates[2, 0];
-            destinationPoint.W = newCoordinates[3, 0];
+            destinationPoint.Current.X = newCoordinates[0, 0];
+            destinationPoint.Current.Y = newCoordinates[1, 0];
+            destinationPoint.Current.Z = newCoordinates[2, 0];
+            destinationPoint.Current.W = newCoordinates[3, 0];
         }
 
         private void SetNewCoordinatesToPoint(MPoint destinationPoint, float[,] newCoordinates)
         {
-            destinationPoint.X = newCoordinates[0, 0];
-            destinationPoint.Y = newCoordinates[1, 0];
-            destinationPoint.Z = newCoordinates[2, 0];
-            destinationPoint.W = newCoordinates[3, 0];
+            destinationPoint.Current.X = newCoordinates[0, 0];
+            destinationPoint.Current.Y = newCoordinates[1, 0];
+            destinationPoint.Current.Z = newCoordinates[2, 0];
+            destinationPoint.Current.W = newCoordinates[3, 0];
         }
 
 
@@ -231,7 +231,7 @@ namespace EmuEngine.Affine_Transformation
             {
                 //float[,] vertexCoords = { { vertices[i].SX }, { vertices[i].SY }, { vertices[i].SZ }, { 1 } };
 
-                var vertexCoords = new Matrix4(new float[,] { { vertices[i].SX }, { vertices[i].SY }, { vertices[i].SZ }, { 1 } });
+                var vertexCoords = new Matrix4(new float[,] { { vertices[i].Source.X }, { vertices[i].Source.Y }, { vertices[i].Source.Z }, { 1 } });
 
                 var newCoords = shape.ModelMatrix * vertexCoords;
 
@@ -264,7 +264,9 @@ namespace EmuEngine.Affine_Transformation
             {
                 //float[,] vertexCoords = { { vertices[i].SX }, { vertices[i].SY }, { vertices[i].SZ }, { vertices[i].SW } };
 
-                var vertexCoords =  new Matrix4(new float[,] { { vertices[i].SX }, { vertices[i].SY }, { vertices[i].SZ }, { vertices[i].SW } });
+                var vertexCoords =  new EmuMath.Structures.Vector4(
+                    vertices[i].Source.X, vertices[i].Source.Y, vertices[i].Source.Z, vertices[i].Source.W
+                    );
 
                 //var modelViewMatrix = MatrixMultiplier.MultiplyMatrix(camera.ViewMatrix, shape.ModelMatrix);
                 //var eyeCoordinates = MatrixMultiplier.MultiplyMatrix(modelViewMatrix, vertexCoords);
@@ -300,7 +302,7 @@ namespace EmuEngine.Affine_Transformation
         }
 
         //Change to Vector4 
-        private Matrix4 GetEyeCoordinatesMatrix(Matrix4 modelViewMatrix, Matrix4 vertexCoords)
+        private Matrix4 GetEyeCoordinatesMatrix(Matrix4 modelViewMatrix, EmuMath.Structures.Vector4 vertexCoords)
         {
             return modelViewMatrix * vertexCoords;
         }

@@ -61,16 +61,16 @@ namespace EmuEngine.Shapes
             VectorMath vectorMath = new VectorMath();
 
             points.AddRange(vectorMath.GetAllVectorPoints(
-                new MPoint(Vertices[0].X, Vertices[0].Y, Vertices[0].Z),
-                new MPoint(Vertices[1].X, Vertices[1].Y, Vertices[1].Z)));
+                new MPoint(Vertices[0].Current.X, Vertices[0].Current.Y, Vertices[0].Current.Z),
+                new MPoint(Vertices[1].Current.X, Vertices[1].Current.Y, Vertices[1].Current.Z)));
 
             points.AddRange(vectorMath.GetAllVectorPoints(
-                new MPoint(Vertices[2].X, Vertices[2].Y, Vertices[2].Z),
-                new MPoint(Vertices[1].X, Vertices[1].Y, Vertices[1].Z)));
+                new MPoint(Vertices[2].Current.X, Vertices[2].Current.Y, Vertices[2].Current.Z),
+                new MPoint(Vertices[1].Current.X, Vertices[1].Current.Y, Vertices[1].Current.Z)));
 
             points.AddRange(vectorMath.GetAllVectorPoints(
-                new MPoint(Vertices[0].X, Vertices[0].Y, Vertices[0].Z),
-                new MPoint(Vertices[2].X, Vertices[2].Y, Vertices[2].Z)));
+                new MPoint(Vertices[0].Current.X, Vertices[0].Current.Y, Vertices[0].Current.Z),
+                new MPoint(Vertices[2].Current.X, Vertices[2].Current.Y, Vertices[2].Current.Z)));
 
             points.AddRange(new ParallelRasterizer().triangle(this));
 

@@ -42,7 +42,8 @@ namespace ZBuffer.EmuMath
 
         private bool EdgeFunction(MPoint a, MPoint b, MPoint c)
         {
-            return ((c.Y - a.Y) * (b.X - a.X) - (c.X - a.X) * (b.Y - a.Y) <= 0);
+            return ((c.Current.Y - a.Current.Y) * (b.Current.X - a.Current.X)
+                - (c.Current.X - a.Current.X) * (b.Current.Y - a.Current.Y) <= 0);
         }
 
         private void SortVertices(MPoint[] vertices)
@@ -55,13 +56,14 @@ namespace ZBuffer.EmuMath
             {
                 for (int j = 1; j < vertices.Length; ++j)
                 {
-                    if (vertices[j].X < vertices[i].X)
+                    if (vertices[j].Current.X < vertices[i].Current.X)
                         Swap(vertices[j], vertices[i]);
                 }
             }
 
             //If second (not index) vertex is bottom vertex, then CCW order turns into CW order.
-            if (vertices[1].Y < vertices[0].Y || vertices[1].Y < vertices[2].Y)
+            if (vertices[1].Current.Y < vertices[0].Current.Y 
+                || vertices[1].Current.Y < vertices[2].Current.Y)
                 Swap(vertices[1], vertices[2]);
         }
 
@@ -85,8 +87,8 @@ namespace ZBuffer.EmuMath
 
             for (int i = 0; i < 3; ++i)
             {
-                if (vertices[i].X > bbmax.X) bbmax.X = vertices[i].X;
-                if (vertices[i].Y > bbmax.Y) bbmax.Y = vertices[i].Y;
+                if (vertices[i].Current.X > bbmax.X) bbmax.X = vertices[i].Current.X;
+                if (vertices[i].Current.Y > bbmax.Y) bbmax.Y = vertices[i].Current.Y;
             }
 
             return bbmax;
@@ -98,8 +100,8 @@ namespace ZBuffer.EmuMath
 
             for (int i = 0; i < 3; ++i)
             {
-                if (vertices[i].X < bbmin.X) bbmin.X = vertices[i].X;
-                if (vertices[i].Y < bbmin.Y) bbmin.Y = vertices[i].Y;
+                if (vertices[i].Current.X < bbmin.X) bbmin.X = vertices[i].Current.X;
+                if (vertices[i].Current.Y < bbmin.Y) bbmin.Y = vertices[i].Current.Y;
             }
 
             return bbmin;
@@ -109,9 +111,9 @@ namespace ZBuffer.EmuMath
         {
             var points = new List<MPoint>();
 
-            Vector2 vertex0 = new Vector2(triangle.Vertices[0].X, triangle.Vertices[0].Y),
-                vertex1 = new Vector2(triangle.Vertices[1].X, triangle.Vertices[1].Y),
-                vertex2 = new Vector2(triangle.Vertices[2].X, triangle.Vertices[2].Y);        
+            Vector2 vertex0 = new Vector2(triangle.Vertices[0].Current.X, triangle.Vertices[0].Current.Y),
+                vertex1 = new Vector2(triangle.Vertices[1].Current.X, triangle.Vertices[1].Current.Y),
+                vertex2 = new Vector2(triangle.Vertices[2].Current.X, triangle.Vertices[2].Current.Y);        
 
             if (vertex0.Y == vertex1.Y && vertex0.Y == vertex2.Y) return new BresenhamLine().GetLine(triangle.Vertices[0], triangle.Vertices[2]);
                                                       // sort the vertices, vertex0, vertex1, vertex2 lower-to-upper

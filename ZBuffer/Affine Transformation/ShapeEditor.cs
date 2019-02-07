@@ -231,7 +231,9 @@ namespace EmuEngine.Affine_Transformation
             {
                 //float[,] vertexCoords = { { vertices[i].SX }, { vertices[i].SY }, { vertices[i].SZ }, { 1 } };
 
-                var vertexCoords = new Matrix4(new float[,] { { vertices[i].Source.X }, { vertices[i].Source.Y }, { vertices[i].Source.Z }, { 1 } });
+                var vertexCoords = new EmuMath.Structures.Vector4(
+                    vertices[i].Source.X, vertices[i].Source.Y, vertices[i].Source.Z, vertices[i].Source.W
+                    );
 
                 var newCoords = shape.ModelMatrix * vertexCoords;
 
@@ -279,13 +281,6 @@ namespace EmuEngine.Affine_Transformation
                 var ndc = GetNormalizedDeviceCoordinatesVector(clipCoordinates);
 
                 var windowCoordinates = GetWindowCoordinatesVector(ndc, new Screen(640, 360, 50, -50));
-
-                //var windowCoordinates = new Matrix4(new float[,] { 
-                //    { 640 / 2 * ndc[0, 0] + (640 / 2) },
-                //    { 360 / 2 * ndc[1, 0] + (360 / 2) },
-                //    { (50 - (-50)) / 2 * ndc[2, 0] + (50 + (-50)) / 2 },
-                //    { ndc[3, 0]}
-                //});
 
                 SetNewCoordinatesToPoint(vertices[i], windowCoordinates);             
             }

@@ -55,7 +55,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EmuEngineTests\EmuMathTests\Matrix4Tests.cs" />
+    <Compile Include="EmuEngineTests\EmuMathTests\MatrixTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EmuEngineTests\AffineTransformationTests\MatrixMultiplierTests.cs" />
     <Compile Include="EmuEngineTests\AffineTransformationTests\ShapeEditorTests.cs" />

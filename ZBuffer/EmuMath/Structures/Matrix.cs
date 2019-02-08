@@ -4,24 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EmuEngine.EmuMath.Structures;
 
-namespace EmuEngine.EmuMath
+namespace EmuEngine.EmuMath.Structures
 {
-    public class Matrix4 : ICloneable, IEqualityComparer
+    public class Matrix : MatrixBase
     {
-        public (int Rows, int Columns) Size { get; private set; }
+        protected Matrix() { }
 
-        private float[,] elements;
-
-        // Единичная матрица 4x4
-        public Matrix4()
-        {
-            elements = new float[,] { { 1, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 0, 1, 0 }, { 0, 0, 0, 1 } };
-            Size = (Rows: elements.GetLength(0), Columns: elements.GetLength(1));
-        }
-
-        public Matrix4(Matrix4 matrix)
+        public Matrix(Matrix matrix)
         {
             int rows = matrix.Size.Rows;
             int cols = matrix.Size.Columns;
@@ -35,26 +25,13 @@ namespace EmuEngine.EmuMath
             Size = matrix.Size;
         }
 
-        public Matrix4(float[,] elements)
+        public Matrix(float[,] elements)
         {
             this.elements = elements;
             Size = (Rows: elements.GetLength(0), Columns: elements.GetLength(1));
         }
 
-        public float this[int i1, int i2]
-        {
-            get
-            {
-                return elements[i1, i2];
-            }
-
-            set
-            {
-                elements[i1, i2] = value;
-            }
-        }
-
-        public static Matrix4 operator *(Matrix4 m0, Matrix4 m1)
+        public static Matrix operator *(Matrix m0, Matrix m1)
         {
             if (m0.Size.Columns != m1.Size.Rows)
                 throw new ArgumentException("Wrong second operand size");
@@ -70,13 +47,13 @@ namespace EmuEngine.EmuMath
                     for (int k = 0; k < m1Rows; k++)
                         result[i, j] += m0[i, k] * m1[k, j];
 
-            return new Matrix4(result);
+            return new Matrix(result);
         }
 
-        public static Matrix4 operator *(Matrix4 m0, Vector4 v0)
+        public static Matrix operator *(Matrix m0, Vector4 v0)
         {
             var vecDigits = new float[,] { { v0.X }, { v0.Y }, { v0.Z }, { v0.W } };
-            var m1 = new Matrix4(vecDigits);
+            var m1 = new Matrix(vecDigits);
 
             if (m0.Size.Columns != m1.Size.Rows)
                 throw new ArgumentException("Wrong second operand size");
@@ -92,10 +69,10 @@ namespace EmuEngine.EmuMath
                     for (int k = 0; k < m1Rows; k++)
                         result[i, j] += m0[i, k] * m1[k, j];
 
-            return new Matrix4(result);
+            return new Matrix(result);
         }
 
-        public static bool operator ==(Matrix4 m0, Matrix4 m1)
+        public static bool operator ==(Matrix m0, Matrix m1)
         {
             bool isEqual = true;
 
@@ -122,7 +99,7 @@ namespace EmuEngine.EmuMath
             return isEqual;
         }
 
-        public static bool operator !=(Matrix4 m0, Matrix4 m1)
+        public static bool operator !=(Matrix m0, Matrix m1)
         {
             bool isNotEqual = false;
 
@@ -149,8 +126,7 @@ namespace EmuEngine.EmuMath
             return isNotEqual;
         }
 
-
-        public Matrix4 Multiply(Matrix4 matrix)
+        public Matrix Multiply(Matrix matrix)
         {
             if (Size.Columns != matrix.Size.Rows)
                 throw new ArgumentException("Wrong second operand size");
@@ -166,54 +142,20 @@ namespace EmuEngine.EmuMath
                     for (int k = 0; k < m2Rows; k++)
                         r[i, j] += elements[i, k] * matrix[k, j];
 
-            return new Matrix4(r);
+            return new Matrix(r);
         }
 
-        public float[] ToArray()
+        public override object Clone()
         {
-            int index = 0;
-            int width = elements.GetLength(0);
-            int height = elements.GetLength(1);
-            float[] single = new float[width * height];
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    single[index] = elements[x, y];
-                    index++;
-                }
-            }
-            return single;
+            return new Matrix(this);
         }
 
-        public double[] ToArrayOfDoubles()
-        {
-            int index = 0;
-            int width = elements.GetLength(0);
-            int height = elements.GetLength(1);
-            double[] single = new double[width * height];
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    single[index] = elements[x, y];
-                    index++;
-                }
-            }
-            return single;
-        }
-
-        public object Clone()
-        {
-            return new Matrix4(this);
-        }
-
-        public new bool Equals(object x, object y)
+        public override bool Equals(object x, object y)
         {
             throw new NotImplementedException();
         }
 
-        public int GetHashCode(object obj)
+        public override int GetHashCode(object obj)
         {
             throw new NotImplementedException();
         }

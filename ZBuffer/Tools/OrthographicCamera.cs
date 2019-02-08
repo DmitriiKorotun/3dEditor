@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EmuEngine.Shapes;
-using EmuEngine.EmuMath;
+using EmuEngine.EmuMath.Structures;
 
 namespace EmuEngine.Tools
 {

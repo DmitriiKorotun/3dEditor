@@ -37,6 +37,22 @@ namespace EmuEngine.EmuMath.Structures
             W = w;
         }
 
+        public Vector4(Vector3 v3)
+        {
+            X = v3.X;
+            Y = v3.Y;
+            Z = v3.Z;
+            W = 0;
+        }
+
+        public Vector4(Vector3 v3, float w)
+        {
+            X = v3.X;
+            Y = v3.Y;
+            Z = v3.Z;
+            W = w;
+        }
+
         public object Clone()
         {
             return new Vector4(X, Y, Z, W);

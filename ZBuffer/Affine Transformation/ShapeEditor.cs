@@ -122,7 +122,7 @@ namespace EmuEngine.Affine_Transformation
                 Scale(shapes[i], sx, sy, sz);
         }
 
-        private void RotateShape(MCommonPrimitive shape, double angle, Vector3 axis)
+        private void RotateShape(MCommonPrimitive shape, double angle, System.Numerics.Vector3 axis)
         {
             double rads = angle * Math.PI / 180.0;
 
@@ -152,9 +152,9 @@ namespace EmuEngine.Affine_Transformation
         {          
             for (int i = 0; i < vertices.Count; ++i)
             {
-                var vertexVector = new Vector3(vertices[i].Current.X, vertices[i].Current.Y, vertices[i].Current.Z);
+                var vertexVector = new System.Numerics.Vector3(vertices[i].Current.X, vertices[i].Current.Y, vertices[i].Current.Z);
 
-                var newCoords = Vector3.Transform(vertexVector, rotationQuaternion);
+                var newCoords = System.Numerics.Vector3.Transform(vertexVector, rotationQuaternion);
 
                 SetNewCoordinatesToPoint(vertices[i], newCoords);
             }
@@ -186,7 +186,7 @@ namespace EmuEngine.Affine_Transformation
             }
         }
 
-        private Quaternion GetRotationQuaternion(Vector3 axis, double rads)
+        private Quaternion GetRotationQuaternion(System.Numerics.Vector3 axis, double rads)
         {
             float quaternionX = (float)(Math.Sin(rads / 2) * axis.X),
                    quaternionY = (float)(Math.Sin(rads / 2) * axis.Y),
@@ -196,7 +196,7 @@ namespace EmuEngine.Affine_Transformation
             return new Quaternion(quaternionX, quaternionY, quaternionZ, quaternionW);
         }
 
-        private void SetNewCoordinatesToPoint(MPoint destinationPoint, Vector3 newCoordinates)
+        private void SetNewCoordinatesToPoint(MPoint destinationPoint, System.Numerics.Vector3 newCoordinates)
         {
             destinationPoint.Current.X = newCoordinates.X;
             destinationPoint.Current.Y = newCoordinates.Y;

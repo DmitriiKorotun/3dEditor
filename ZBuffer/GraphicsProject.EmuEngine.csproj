@@ -55,6 +55,7 @@
     <Compile Include="EmuMath\Structures\Matrix4.cs" />
     <Compile Include="EmuMath\ParallelRasterizer.cs" />
     <Compile Include="EmuMath\Structures\MatrixBase.cs" />
+    <Compile Include="EmuMath\Structures\Vector3.cs" />
     <Compile Include="EmuMath\Structures\Vector4.cs" />
     <Compile Include="Screen.cs" />
     <Compile Include="Shapes\MCommonPrimitive.cs" />

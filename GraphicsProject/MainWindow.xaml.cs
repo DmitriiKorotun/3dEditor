@@ -39,9 +39,17 @@ namespace GraphicsProject
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var testBox = new MBox(new MPoint(0, 0, 0), 50, 50, 50);
+            var testBox = new MBox(new MPoint(-75, 0, 0), 50, 50, 50);
+            var testBox2 = new MBox(new MPoint(75, 20, 0), 50, 50, 50);
 
-            Scene.AddShape(testBox);
+            var mComplex = new MComplex(testBox);
+            mComplex.AddPrimitive(testBox2);
+
+            new ShapeEditor().Rotate(mComplex, 15, 0, 0);
+
+            //Scene.AddShape(testBox);
+            //Scene.AddShape(testBox2);
+            Scene.AddShape(mComplex);
 
             screen.Source = Scene.Render();
 

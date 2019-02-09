@@ -18,7 +18,7 @@ namespace EmuEngine.Shapes
         [DataMember]
         public int Argb { get; set; }  //цвет грани
 
-        public MFacet(MPoint first, MPoint second, MPoint third) : base()
+        public MFacet(MPoint first, MPoint second, MPoint third)
         {
             Vertices = new MPoint[] { first, second, third };
         }

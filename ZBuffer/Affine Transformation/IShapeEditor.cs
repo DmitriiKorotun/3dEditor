@@ -9,13 +9,13 @@ namespace EmuEngine.Affine_Transformation
 {
     interface IShapeEditor
     {
-        void Rotate(MCommonPrimitive shape, double sx, double sy, double sz);
-        void RotateRange(List<MCommonPrimitive> shapes, double sx, double sy, double sz);
+        void Rotate(MShape shape, double sx, double sy, double sz);
+        void RotateRange(List<MShape> shapes, double sx, double sy, double sz);
 
-        void Translate(MCommonPrimitive shape, float sx, float sy, float sz);
-        void TranslateRange(List<MCommonPrimitive> shapes, float sx, float sy, float sz);
+        void Translate(MShape shape, float sx, float sy, float sz);
+        void TranslateRange(List<MShape> shapes, float sx, float sy, float sz);
 
-        void Scale(MCommonPrimitive shape, float sx, float sy, float sz);
-        void ScaleRange(List<MCommonPrimitive> shapes, float sx, float sy, float sz);
+        void Scale(MShape shape, float sx, float sy, float sz);
+        void ScaleRange(List<MShape> shapes, float sx, float sy, float sz);
     }
 }

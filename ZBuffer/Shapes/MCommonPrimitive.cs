@@ -15,48 +15,13 @@ namespace EmuEngine.Shapes
         public float Height { get; set; }
         public float Length { get; set; }
         public float Width { get; set; }
-        public Matrix4 ModelMatrix { get; set; }
-        public Quaternion RotationQuaternion { get; set; }
-
-        //public MCommonPrimitive(float length, float width, float height)
-        //{
-        //    Length = length;
-        //    Width = width;
-        //    Height = height;
-
-        //    TransformationMatrix = new float[,] {
-        //        {1, 0, 0, 0 },
-        //        {0, 1, 0, 0 },
-        //        {0, 0, 1, 0 },
-        //        {0, 0, 0, 1 }
-        //    };
-        //}
-
-        public MCommonPrimitive(float x, float y, float z)
-        {
-            ModelMatrix = new Matrix4(new float[,] {
-                {1, 0, 0, x },
-                {0, 1, 0, y },
-                {0, 0, 1, z },
-                {0, 0, 0, 1 }
-            });
-
-            RotationQuaternion = new Quaternion(0, 0, 0, 1);
-        }
 
         public MCommonPrimitive()
         {
-            ModelMatrix = new Matrix4(new float[,] {
-                {1, 0, 0, 0 },
-                {0, 1, 0, 0 },
-                {0, 0, 1, 0 },
-                {0, 0, 0, 1 }
-            });
 
-            RotationQuaternion = new Quaternion(0, 0, 0, 1);
         }
 
-        public abstract List<MPoint> GetVertices();
+        public MCommonPrimitive(float x, float y, float z) : base(x, y, z) { }
 
         public virtual MPoint GetCenterPoint()
         {

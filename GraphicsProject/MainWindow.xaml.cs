@@ -20,6 +20,7 @@ using EmuEngine.Affine_Transformation;
 using EmuEngine.Shapes;
 using System.IO;
 using System.Drawing;
+using EmuEngine.Shapes.ShapeCreation;
 
 namespace GraphicsProject
 {
@@ -39,17 +40,10 @@ namespace GraphicsProject
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var testBox = new MBox(new MPoint(-75, 0, 0), 50, 50, 50);
-            var testBox2 = new MBox(new MPoint(75, 20, 0), 50, 50, 50);
+            ShapeCreator shapeCreator = new ShuttleCreator();
+            MShape shape = shapeCreator.CreateShape();
 
-            var mComplex = new MComplex(testBox);
-            mComplex.AddPrimitive(testBox2);
-
-            new ShapeEditor().Rotate(mComplex, 15, 0, 0);
-
-            //Scene.AddShape(testBox);
-            //Scene.AddShape(testBox2);
-            Scene.AddShape(mComplex);
+            Scene.AddShape(shape);
 
             screen.Source = Scene.Render();
 

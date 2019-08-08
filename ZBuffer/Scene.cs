@@ -26,9 +26,9 @@ namespace EmuEngine
 
         //TODO Make public?
         [DataMember]
-        private List<MCommonPrimitive> Shapes { get; set; }
+        private List<MShape> Shapes { get; set; }
         [DataMember]
-        public List<MCommonPrimitive> SelectedShapes { get; set; }
+        public List<MShape> SelectedShapes { get; set; }
         private Tools.ZBuffer Buffer { get; set; }
         public StageManager StageManager { get; set; }
 
@@ -42,7 +42,7 @@ namespace EmuEngine
 
             //CurrentCamera = new Tools.OrthographicCamera(-160, 160, -90, 90, -50, 50);
 
-            Shapes = new List<MCommonPrimitive>();
+            Shapes = new List<MShape>();
 
             //TODO Rework
             SelectedShapes = Shapes;
@@ -55,7 +55,7 @@ namespace EmuEngine
 
         public WriteableBitmap Render()
         {
-            new ShapeEditor().GetTransformedShapes(Shapes, StageManager.CurrentCamera);
+            new ShapeEditor().TransformShapes(Shapes, StageManager.CurrentCamera);
 
             List<MPoint> allPoints = GetAllPoints();
 
@@ -64,14 +64,14 @@ namespace EmuEngine
 
         public Bitmap RenderBitmap()
         {
-            new ShapeEditor().GetTransformedShapes(Shapes, StageManager.CurrentCamera);
+            new ShapeEditor().TransformShapes(Shapes, StageManager.CurrentCamera);
 
             List<MPoint> allPoints = GetAllPoints();
 
             return new Painter().DrawSceneByPointsBitmap(this.Width, this.Height, allPoints);
         }
 
-        public void AddShape(MCommonPrimitive shape)
+        public void AddShape(MShape shape)
         {
             Shapes.Add(shape);
         }

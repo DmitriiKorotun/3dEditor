@@ -14,7 +14,7 @@ namespace EmuEngine.Affine_Transformation
     public class ShapeEditor : IShapeEditor
     {
         //------------------ROTATING-------------------------------
-        public void Rotate(MCommonPrimitive shape, double sx, double sy, double sz)
+        public void Rotate(MShape shape, double sx, double sy, double sz)
         {
             if (sx != 0)
                 RotateX(shape, sx);
@@ -26,13 +26,13 @@ namespace EmuEngine.Affine_Transformation
                 RotateZ(shape, sz);
         }
 
-        public void RotateRange(List<MCommonPrimitive> shapes, double sx, double sy, double sz)
+        public void RotateRange(List<MShape> shapes, double sx, double sy, double sz)
         {
             for (int i = 0; i < shapes.Count; ++i)
                 Rotate(shapes[i], sx, sy, sz);
         }
 
-        public void RotateX(MCommonPrimitive shape, double angle)
+        public void RotateX(MShape shape, double angle)
         {
             double rads = angle * Math.PI / 180.0;
 
@@ -48,7 +48,7 @@ namespace EmuEngine.Affine_Transformation
             //shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, rotateX);
         }
 
-        public void RotateY(MCommonPrimitive shape, double angle)
+        public void RotateY(MShape shape, double angle)
         {
             double rads = angle * Math.PI / 180.0;
 
@@ -64,7 +64,7 @@ namespace EmuEngine.Affine_Transformation
             //shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, rotateY);
         }
 
-        public void RotateZ(MCommonPrimitive shape, double angle)
+        public void RotateZ(MShape shape, double angle)
         {
             double rads = angle * Math.PI / 180.0;
 
@@ -81,7 +81,7 @@ namespace EmuEngine.Affine_Transformation
         }
 
         //------------------TRANSLATING-------------------------------
-        public void Translate(MCommonPrimitive shape, float sx, float sy, float sz)
+        public void Translate(MShape shape, float sx, float sy, float sz)
         {
             var movementMatrix = new Matrix4(new float[,] {
                 { 1, 0, 0, sx },
@@ -90,19 +90,20 @@ namespace EmuEngine.Affine_Transformation
                 { 0, 0, 0, 1 }
             });
 
-            shape.ModelMatrix *= movementMatrix;
+            //shape.ModelMatrix *= movementMatrix;
+            shape.ModelMatrix = shape.ModelMatrix  * movementMatrix;
 
             //shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(movementMatrix, shape.ModelMatrix);
         }
 
-        public void TranslateRange(List<MCommonPrimitive> shapes, float sx, float sy, float sz)
+        public void TranslateRange(List<MShape> shapes, float sx, float sy, float sz)
         {
             for (int i = 0; i < shapes.Count; ++i)
                 Translate(shapes[i], sx, sy, sz);
         }
 
         //------------------SCALING-------------------------------
-        public void Scale(MCommonPrimitive shape, float sx, float sy, float sz)
+        public void Scale(MShape shape, float sx, float sy, float sz)
         {
             var scaleMatrix = new Matrix4(new float[,] {
                 { sx, 0, 0, 0 },
@@ -116,19 +117,19 @@ namespace EmuEngine.Affine_Transformation
             //shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, scaleMatrix);
         }
 
-        public void ScaleRange(List<MCommonPrimitive> shapes, float sx, float sy, float sz)
+        public void ScaleRange(List<MShape> shapes, float sx, float sy, float sz)
         {
             for (int i = 0; i < shapes.Count; ++i)
                 Scale(shapes[i], sx, sy, sz);
         }
 
-        private void RotateShape(MCommonPrimitive shape, double angle, System.Numerics.Vector3 axis)
+        private void RotateShape(MShape shape, double angle, System.Numerics.Vector3 axis)
         {
             double rads = angle * Math.PI / 180.0;
 
             Quaternion rotationQuaternion = GetRotationQuaternion(axis, rads);
 
-            shape.RotationQuaternion *= rotationQuaternion;
+            //shape.RotationQuaternion *= rotationQuaternion;
         }
 
         //private void RotateShape(MCommonPrimitive shape, double angle, Vector3 axis)
@@ -223,13 +224,12 @@ namespace EmuEngine.Affine_Transformation
 
 
 
-        private void TransformShape(MCommonPrimitive shape)
+        private void TransformShape(MShape shape)
         {
             List<MPoint> vertices = shape.GetVertices();
 
             for (int i = 0; i < vertices.Count; ++i)
             {
-                //float[,] vertexCoords = { { vertices[i].SX }, { vertices[i].SY }, { vertices[i].SZ }, { 1 } };
 
                 var vertexCoords = new EmuMath.Structures.Vector4(
                     vertices[i].Source.X, vertices[i].Source.Y, vertices[i].Source.Z, vertices[i].Source.W
@@ -240,39 +240,80 @@ namespace EmuEngine.Affine_Transformation
                 //MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, vertexCoords);
 
                 SetNewCoordinatesToPoint(vertices[i], newCoords);
-
-                ////TEST
-                //TransformPointCoordsToDecart(vertices[i]);
             }
         }
 
-        public void TransformShapes(List<MCommonPrimitive> shapes)
+        public void TransformShapes(List<MShape> shapes)
         {
-            foreach (MCommonPrimitive shape in shapes)
+            foreach (MShape shape in shapes)
                 TransformShape(shape);
         }
 
-        public void GetTransformedShapes(List<MCommonPrimitive> shapes, Camera camera)
+        public void TransformComplex(MComplex complex, Camera camera)
         {
-            for (int i = 0; i < shapes.Count; ++i)
-                GetTransformedShape(shapes[i], camera);
+            complex.ApplyModelMatrixToChildren();
+
+            for (int i = 0; i < complex.Primitives.Count; ++i)
+                TransformPrimitive(complex.Primitives[i], camera);
+
+            complex.RestoreChildrenModelMatrix();
         }
 
-        public void GetTransformedShape(MCommonPrimitive shape, Camera camera)
+        public void TransformPrimitive(MCommonPrimitive primitive, Camera camera)
         {
-            var vertices = shape.GetVertices();
+            var vertices = primitive.GetVertices();
 
             for (int i = 0; i < vertices.Count; ++i)
             {
-                //float[,] vertexCoords = { { vertices[i].SX }, { vertices[i].SY }, { vertices[i].SZ }, { vertices[i].SW } };
-
-                var vertexCoords =  new EmuMath.Structures.Vector4(
+                var vertexCoords = new EmuMath.Structures.Vector4(
                     vertices[i].Source.X, vertices[i].Source.Y, vertices[i].Source.Z, vertices[i].Source.W
                     );
 
                 //var modelViewMatrix = MatrixMultiplier.MultiplyMatrix(camera.ViewMatrix, shape.ModelMatrix);
                 //var eyeCoordinates = MatrixMultiplier.MultiplyMatrix(modelViewMatrix, vertexCoords);
                 //var clipCoordinates = MatrixMultiplier.MultiplyMatrix(camera.ProjectionMatrix, eyeCoordinates);
+                var modelViewMatrix = GetModelViewMatrix(camera.ViewMatrix, primitive.ModelMatrix);
+                var eyeCoordinates = GetEyeCoordinatesMatrix(modelViewMatrix, vertexCoords);
+                var clipCoordinates = GetClipCoordinatesMatrix(camera.ProjectionMatrix, eyeCoordinates);
+
+                var ndc = GetNormalizedDeviceCoordinatesVector(clipCoordinates);
+
+                var windowCoordinates = GetWindowCoordinatesVector(ndc, new Screen(640, 360, 50, -50));
+
+                SetNewCoordinatesToPoint(vertices[i], windowCoordinates);
+            }
+        }
+
+        public void TransformShapes(List<MShape> shapes, Camera camera)
+        {
+            for (int i = 0; i < shapes.Count; ++i)
+                TransformShape(shapes[i], camera);
+        }
+
+        public void TransformShape(MShape shape, Camera camera)
+        {
+            if (shape is MComplex)
+                TransformComplex(shape as MComplex, camera);
+            else
+                TransformPrimitive(shape as MCommonPrimitive, camera);
+        }
+
+        public void TransformShapes(List<MComplex> shapes, Camera camera)
+        {
+            for (int i = 0; i < shapes.Count; ++i)
+                TransformShape(shapes[i], camera);
+        }
+
+        public void TransformShape(MComplex shape, Camera camera)
+        {
+            var vertices = shape.GetVertices();
+
+            for (int i = 0; i < vertices.Count; ++i)
+            {
+                var vertexCoords = new EmuMath.Structures.Vector4(
+                    vertices[i].Source.X, vertices[i].Source.Y, vertices[i].Source.Z, vertices[i].Source.W
+                    );
+
                 var modelViewMatrix = GetModelViewMatrix(camera.ViewMatrix, shape.ModelMatrix);
                 var eyeCoordinates = GetEyeCoordinatesMatrix(modelViewMatrix, vertexCoords);
                 var clipCoordinates = GetClipCoordinatesMatrix(camera.ProjectionMatrix, eyeCoordinates);
@@ -281,9 +322,10 @@ namespace EmuEngine.Affine_Transformation
 
                 var windowCoordinates = GetWindowCoordinatesVector(ndc, new Screen(640, 360, 50, -50));
 
-                SetNewCoordinatesToPoint(vertices[i], windowCoordinates);             
+                SetNewCoordinatesToPoint(vertices[i], windowCoordinates);
             }
         }
+
 
         private Matrix4 GetClipCoordinatesMatrix(Matrix4 projectionMatrix, Matrix4 eyeCoordinates)
         {

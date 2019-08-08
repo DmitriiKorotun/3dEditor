@@ -15,7 +15,7 @@ namespace GraphicsProject.Tests.ZBufferTests.ShapesTests
         {
             // arrange
             float width = 100,
-                length = (float)58.3,
+                length = 58.3F,
                 height = 50;
 
             var expectedVertices = GetVertices(width, length, height);

@@ -8,12 +8,21 @@ namespace EmuEngine.Shapes
 {
     public class MTopCylinder : MCylinder
     {
-        public float TopRadius { get; set; }
-        public float BotRadius { get; set; }
+        public float TopRadius { get; private set; }
+        public float BotRadius { get; private set; }
 
         //TRY TO REWORK DUPLICATION OF CODE
         public MTopCylinder(MPoint centerBot, float botRadius, float topRadius, float heigth) : base(centerBot, heigth)
         {
+            if (botRadius < 0 || botRadius > float.MaxValue)
+                throw new ArgumentOutOfRangeException("bot radius can't be less than 0 or more than float maxValue");
+
+            if (topRadius < 0 || topRadius > float.MaxValue)
+                throw new ArgumentOutOfRangeException("top radius can't be less than 0 or more than float maxValue");
+
+            if (topRadius == 0 && botRadius == 0)
+                throw new ArgumentOutOfRangeException("both top and bot radius can't be 0 at the same time");
+
             BotRadius = botRadius;
             TopRadius = topRadius;
 
@@ -24,50 +33,22 @@ namespace EmuEngine.Shapes
 
         protected override void CalcDots()
         {
+            double angle, da, topX, topY, botX, botY;
+
+            int i;
+            da = 2 * Math.PI / (circleDotsCount - 1);
+
+            for (angle = 0.0, i = 0; i < circleDotsCount; i++, angle += da)
             {
-                double angle, da, topX, topY, botX, botY; // some temp variables
-                int i;
-                da = 2 * Math.PI / (circleDotsCount - 1);
-                for (angle = 0.0, i = 0; i < circleDotsCount; i++, angle += da)
-                {
-                    topX = TopRadius * Math.Cos(angle);
-                    topY = TopRadius * Math.Sin(angle);
+                topX = TopRadius * Math.Cos(angle);
+                topY = TopRadius * Math.Sin(angle);
 
-                    botX = BotRadius * Math.Cos(angle);
-                    botY = BotRadius * Math.Sin(angle);
+                botX = BotRadius * Math.Cos(angle);
+                botY = BotRadius * Math.Sin(angle);
 
-                    TopDots[i] = new MPoint(CenterTop.Source.X + topX, CenterTop.Source.X + topY, CenterTop.Source.Z);
-                    BottomDots[i] = new MPoint(CenterBot.Source.X + botX, CenterBot.Source.Y + botY, CenterBot.Source.Z);
-                }
+                TopDots[i] = new MPoint(CenterTop.Source.X + topX, CenterTop.Source.Y + topY, CenterTop.Source.Z);
+                BottomDots[i] = new MPoint(CenterBot.Source.X + botX, CenterBot.Source.Y + botY, CenterBot.Source.Z);
             }
         }
-
-        //private void CalcDotsBot(float radius)
-        //{
-        //    double angle, da, x, y, z; // some temp variables
-        //    int i;
-        //    da = 2 * Math.PI / (circleDotsCount - 1);
-        //    for (angle = 0.0, i = 0; i < circleDotsCount; i++, angle += da)
-        //    {
-        //        x = radius * Math.Cos(angle);
-        //        y = radius * Math.Sin(angle);
-
-        //        BottomDots[i] = new MPoint(CenterBot.Source.X + x, CenterBot.Source.Y + y, CenterBot.Source.Z);
-        //    }
-        //}
-
-        //private void CalcDotsTop(float radius)
-        //{
-        //    double angle, da, x, y, z; // some temp variables
-        //    int i;
-        //    da = 2 * Math.PI / (circleDotsCount - 1);
-        //    for (angle = 0.0, i = 0; i < circleDotsCount; i++, angle += da)
-        //    {
-        //        x = radius * Math.Cos(angle);
-        //        y = radius * Math.Sin(angle);
-
-        //        TopDots[i] = new MPoint(CenterTop.Source.X + x, CenterTop.Source.Y + y, CenterTop.Source.Z);
-        //    }
-        //}
     }
 }

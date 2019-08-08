@@ -30,7 +30,7 @@ namespace GraphicsProject.Tests.EmuEngineTests.AffineTransformationTests
         [TestMethod]
         [ExpectedException(typeof(ArithmeticException),
             "Matrixes with different amount of columns and rows was succesfully multiplied")]
-        public void MatrixMultiplication_MatrixesAColumnsAndBRowsDoesntEqual_ExpectedArithmeticException()
+        public void MatrixMultiplication_MatrixesAColumnsAndBRowsDoesntEqual_ArithmeticExceptionThrown()
         {
             // arrange
             float[,] matrixA = { { 1, 2, 7 }, { 3, 2, 2 } };

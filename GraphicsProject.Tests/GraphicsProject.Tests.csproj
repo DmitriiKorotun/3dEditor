@@ -56,6 +56,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EmuEngineTests\EmuMathTests\MatrixTests.cs" />
+    <Compile Include="EmuEngineTests\ShapesTests\MSideCylinderTests.cs" />
+    <Compile Include="EmuEngineTests\ShapesTests\MTopCylinderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EmuEngineTests\AffineTransformationTests\MatrixMultiplierTests.cs" />
     <Compile Include="EmuEngineTests\AffineTransformationTests\ShapeEditorTests.cs" />

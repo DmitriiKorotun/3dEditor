@@ -58,7 +58,11 @@
     <Compile Include="EmuMath\Structures\Vector3.cs" />
     <Compile Include="EmuMath\Structures\Vector4.cs" />
     <Compile Include="Screen.cs" />
+    <Compile Include="Shapes\ComplexShapes\Shuttle.cs" />
     <Compile Include="Shapes\MCommonPrimitive.cs" />
+    <Compile Include="Shapes\MComplex.cs" />
+    <Compile Include="Shapes\ShapeCreation\ShapeCreator.cs" />
+    <Compile Include="Shapes\ShapeCreation\ShuttleCreator.cs" />
     <Compile Include="Tools\OrthographicCamera.cs" />
     <Compile Include="Tools\PerspectiveCamera.cs" />
     <Compile Include="EmuMath\BresenhamLine.cs" />

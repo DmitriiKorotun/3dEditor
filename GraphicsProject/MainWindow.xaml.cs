@@ -20,6 +20,7 @@ using EmuEngine.Affine_Transformation;
 using EmuEngine.Shapes;
 using System.IO;
 using System.Drawing;
+using EmuEngine.Shapes.ShapeCreation;
 
 namespace GraphicsProject
 {
@@ -39,10 +40,10 @@ namespace GraphicsProject
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var sCylinder = new MTopCylinder(new MPoint(0, 0, 0), 30, 15, 20);
-            //var testBox = new MBox(new MPoint(0, 0, 0), 50, 50, 50);
+            ShapeCreator shapeCreator = new ShuttleCreator();
+            MShape shape = shapeCreator.CreateShape();
 
-            Scene.AddShape(sCylinder);
+            Scene.AddShape(shape);
 
             screen.Source = Scene.Render();
 

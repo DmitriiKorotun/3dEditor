@@ -39,9 +39,10 @@ namespace GraphicsProject
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var testBox = new MBox(new MPoint(0, 0, 0), 50, 50, 50);
+            var sCylinder = new MTopCylinder(new MPoint(0, 0, 0), 30, 15, 20);
+            //var testBox = new MBox(new MPoint(0, 0, 0), 50, 50, 50);
 
-            Scene.AddShape(testBox);
+            Scene.AddShape(sCylinder);
 
             screen.Source = Scene.Render();
 

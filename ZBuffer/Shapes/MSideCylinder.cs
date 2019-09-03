@@ -25,18 +25,16 @@ namespace EmuEngine.Shapes
 
         protected override void CalcDots()
         {
+            double angle, da, x, y;
+            int i;
+            da = 2 * Math.PI / (circleDotsCount - 1);
+            for (angle = 0.0, i = 0; i < circleDotsCount; i++, angle += da)
             {
-                double angle, da, x, y; // some temp variables
-                int i;
-                da = 2 * Math.PI / (circleDotsCount - 1);
-                for (angle = 0.0, i = 0; i < circleDotsCount; i++, angle += da)
-                {
-                    x = Radius * Math.Cos(angle);
-                    y = Radius * Math.Sin(angle);
+                x = Radius * Math.Cos(angle);
+                y = Radius * Math.Sin(angle);
 
-                    TopDots[i] = new MPoint(CenterTop.Source.X + x, CenterTop.Source.X + y, CenterTop.Source.Z);
-                    BottomDots[i] = new MPoint(CenterBot.Source.X + x, CenterBot.Source.Y + y, CenterBot.Source.Z);
-                }
+                TopDots[i] = new MPoint(CenterTop.Source.X + x, CenterTop.Source.X + y, CenterTop.Source.Z);
+                BottomDots[i] = new MPoint(CenterBot.Source.X + x, CenterBot.Source.Y + y, CenterBot.Source.Z);
             }
         }
     }

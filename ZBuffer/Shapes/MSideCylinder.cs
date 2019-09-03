@@ -13,10 +13,10 @@ namespace EmuEngine.Shapes
         //TRY TO REWORK DUPLICATION OF CODE
         public MSideCylinder(MPoint centerBot, float radius, float heigth) : base(centerBot, heigth)
         {
-            if (radius <= 0 || radius > float.MaxValue)
-                throw new ArgumentOutOfRangeException("Radius of cylinder can't be equal or less than 0 or more than float maxValue");
-
-            Radius = radius;
+            if (radius > 0 && radius <= float.MaxValue)
+                Radius = radius;
+            else
+                throw new ArgumentOutOfRangeException("Radius of cylinder can't be less than 0 or more than " + float.MaxValue);
 
             CalcDots();
 

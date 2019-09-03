@@ -40,6 +40,12 @@ namespace GraphicsProject
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            //    var body = new MSideCylinder(new MPoint(0, 0, 0), 25, 80);
+            //    var lowerBody = new MSideCylinder(new MPoint(0, 0, -30), 20, 30);
+
+            //    Scene.AddShape(body);
+            //    Scene.AddShape(lowerBody);
+
             ShapeCreator shapeCreator = new ShuttleCreator();
             MShape shape = shapeCreator.CreateShape();
 

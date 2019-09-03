@@ -41,7 +41,7 @@ namespace EmuEngine.Shapes
             for (int i = 0; i < Primitives.Count; ++i)
             {
                 PrimitivesModel.Add(Primitives[i].ModelMatrix);
-                Primitives[i].ModelMatrix = this.ModelMatrix * Primitives[i].ModelMatrix;               
+                Primitives[i].ModelMatrix = Primitives[i].ModelMatrix * this.ModelMatrix;               
             }
         }
 

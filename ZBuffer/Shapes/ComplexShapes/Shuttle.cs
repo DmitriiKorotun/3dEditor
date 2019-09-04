@@ -6,9 +6,17 @@ using System.Threading.Tasks;
 
 namespace EmuEngine.Shapes.ComplexShapes
 {
-    //TO IMPLEMENT
-    class Shuttle : MComplex
+    public class Shuttle : MComplex
     {
+        public MSideCylinder Body { get; set; }        
+        public MSideCylinder UpperBody { get; set; }
+        public MSideCylinder LowerBody { get; set; }        
+        public MSideCylinder EngineLower { get; set; }
+        public MTopCylinder UpperBodyFastener { get; set; }
+        public MTopCylinder LowerBodyToEngineFastener { get; set; }
+        public MTopCylinder EngineToBodyFastener { get; set; }
+
+
         public float BodyRadius { get; set; } = 25;
         public float BodyHeight { get; set; } = 80;
 
@@ -33,7 +41,7 @@ namespace EmuEngine.Shapes.ComplexShapes
         public float EngineLowerRadius { get; set; } = 15;
         public float EngineLowerHeight { get; set; } = 30;
 
-        readonly MPoint bodyBotCenter = new MPoint(0, 0, 0);
+        readonly MPoint bodyBotCenter = new MPoint(0, 0, -40);
         readonly MPoint upperBodyFastenerBotCenter = new MPoint(0, 0, 80);
         readonly MPoint upperBodyBotCenter = new MPoint(0, 0, 100);
         readonly MPoint lowerBodyBotCenter = new MPoint(0, 0, -30);
@@ -43,36 +51,45 @@ namespace EmuEngine.Shapes.ComplexShapes
 
         public Shuttle()
         {
-            var body = new MSideCylinder(bodyBotCenter, BodyRadius, BodyHeight);
+            //InitPrimitives();
+            //FillPrimitivesList();
+        }
+
+        protected override void InitPrimitives()
+        {
+            Body = new MSideCylinder(bodyBotCenter, BodyRadius, BodyHeight);
 
             // Upper Body
-            var upperBodyFastener = new MTopCylinder(
+            UpperBodyFastener = new MTopCylinder(
                 upperBodyFastenerBotCenter, UpperBodyFastenerBotRadius, UpperBodyFastenerTopRadius, UpperBodyFastenerHeight
                 );
 
-            var upperBody = new MSideCylinder(upperBodyBotCenter, UpperBodyRadius, UpperBodyHeight);
+            UpperBody = new MSideCylinder(upperBodyBotCenter, UpperBodyRadius, UpperBodyHeight);
 
             // Lower Body
-            var lowerBody = new MSideCylinder(lowerBodyBotCenter, LowerBodyRadius, LowerBodyHeight);
-            var lowerBodyToEngineFastener = new MTopCylinder(
-                lowerBodyToEngineFastenerBotCenter, 
+            LowerBody = new MSideCylinder(lowerBodyBotCenter, LowerBodyRadius, LowerBodyHeight);
+            LowerBodyToEngineFastener = new MTopCylinder(
+                lowerBodyToEngineFastenerBotCenter,
                 LowerBodyToEngineFastenerBotRadius, LowerBodyToEngineFastenerTopRadius, LowerBodyToEngineFastenerHeight
                 );
 
             // Engine
-            var engineToBodyFastener = new MTopCylinder(
+            EngineToBodyFastener = new MTopCylinder(
                 engineToBodyFastenerBotCenter,
                 EngineToBodyFastenerBotRadius, EngineToBodyFastenerTopRadius, EngineToBodyFastenerHeight
                 );
-            var engineLower = new MSideCylinder(engineLowerBotCenter, EngineLowerRadius, EngineLowerHeight);
+            EngineLower = new MSideCylinder(engineLowerBotCenter, EngineLowerRadius, EngineLowerHeight);
+        }
 
-            this.AddPrimitive(body);
-            this.AddPrimitive(upperBodyFastener);
-            this.AddPrimitive(upperBody);
-            this.AddPrimitive(lowerBody);
-            this.AddPrimitive(lowerBodyToEngineFastener);
-            this.AddPrimitive(engineToBodyFastener);
-            this.AddPrimitive(engineLower);
+        protected override void FillPrimitivesList()
+        {
+            this.AddPrimitive(Body);
+            this.AddPrimitive(UpperBodyFastener);
+            this.AddPrimitive(UpperBody);
+            this.AddPrimitive(LowerBody);
+            this.AddPrimitive(LowerBodyToEngineFastener);
+            this.AddPrimitive(EngineToBodyFastener);
+            this.AddPrimitive(EngineLower);
         }
     }
 }

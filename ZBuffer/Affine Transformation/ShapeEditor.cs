@@ -44,6 +44,7 @@ namespace EmuEngine.Affine_Transformation
             });
 
             shape.ModelMatrix *= rotateX;
+            //shape.ModelMatrix = rotateX * shape.ModelMatrix;
 
             //shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, rotateX);
         }
@@ -60,7 +61,7 @@ namespace EmuEngine.Affine_Transformation
             });
 
             shape.ModelMatrix *= rotateY;
-
+            //shape.ModelMatrix = rotateY * shape.ModelMatrix;
             //shape.ModelMatrix = MatrixMultiplier.MultiplyMatrix(shape.ModelMatrix, rotateY);
         }
 
@@ -122,32 +123,6 @@ namespace EmuEngine.Affine_Transformation
             for (int i = 0; i < shapes.Count; ++i)
                 Scale(shapes[i], sx, sy, sz);
         }
-
-        private void RotateShape(MShape shape, double angle, System.Numerics.Vector3 axis)
-        {
-            double rads = angle * Math.PI / 180.0;
-
-            Quaternion rotationQuaternion = GetRotationQuaternion(axis, rads);
-
-            //shape.RotationQuaternion *= rotationQuaternion;
-        }
-
-        //private void RotateShape(MCommonPrimitive shape, double angle, Vector3 axis)
-        //{
-        //    double rads = angle * Math.PI / 180.0;
-        //    var vertices = shape.GetVertices();
-
-        //    MPoint currentShapeCenter;
-
-        //    Quaternion rotationQuaternion = GetRotationQuaternion(axis, rads);
-
-        //    shape.RotationQuaternion *= rotationQuaternion;
-
-        //    // Sets object in the coordinate's origin, rotates it and move to the previous place
-        //    MoveShapeToOrigin(shape, out currentShapeCenter);
-        //    RotateVertices(vertices, rotationQuaternion);
-        //    MoveShapeToPreviousPosition(shape, currentShapeCenter);
-        //}
 
         private void RotateVertices(List<MPoint> vertices, Quaternion rotationQuaternion)
         {          

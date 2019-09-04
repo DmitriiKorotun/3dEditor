@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EmuEngine.Shapes
 {
-    public class MComplex : MShape
+    public abstract class MComplex : MShape
     {
         public List<MCommonPrimitive> Primitives { get; set; }
         private List<Matrix4> PrimitivesModel { get; set; }
@@ -15,6 +15,9 @@ namespace EmuEngine.Shapes
         public MComplex()
         {
             Primitives = new List<MCommonPrimitive>();
+
+            InitPrimitives();
+            FillPrimitivesList();
         }
 
         public MComplex(MCommonPrimitive shape)
@@ -30,8 +33,10 @@ namespace EmuEngine.Shapes
         public void AddPrimitive(MCommonPrimitive shape)
         {
             Primitives.Add(shape);
-
         }
+
+        protected abstract void InitPrimitives();
+        protected abstract void FillPrimitivesList();
 
         // REWORK
         public void ApplyModelMatrixToChildren()
@@ -41,7 +46,7 @@ namespace EmuEngine.Shapes
             for (int i = 0; i < Primitives.Count; ++i)
             {
                 PrimitivesModel.Add(Primitives[i].ModelMatrix);
-                Primitives[i].ModelMatrix = Primitives[i].ModelMatrix * this.ModelMatrix;               
+                Primitives[i].ModelMatrix *= this.ModelMatrix;               
             }
         }
 

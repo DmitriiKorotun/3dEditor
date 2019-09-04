@@ -21,6 +21,7 @@ using EmuEngine.Shapes;
 using System.IO;
 using System.Drawing;
 using EmuEngine.Shapes.ShapeCreation;
+using EmuEngine.Shapes.ComplexShapes;
 
 namespace GraphicsProject
 {
@@ -40,16 +41,22 @@ namespace GraphicsProject
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //    var body = new MSideCylinder(new MPoint(0, 0, 0), 25, 80);
+            var body = new MBox(new MPoint(0, 0, 0), 25, 40, 40);
             //    var lowerBody = new MSideCylinder(new MPoint(0, 0, -30), 20, 30);
 
             //    Scene.AddShape(body);
             //    Scene.AddShape(lowerBody);
 
-            ShapeCreator shapeCreator = new ShuttleCreator();
-            MShape shape = shapeCreator.CreateShape();
+            var shapeEditor = new ShapeEditor();
 
-            Scene.AddShape(shape);
+            ShapeCreator shapeCreator = new ShuttleCreator();
+            MComplex shuttle = new Shuttle();
+            shapeEditor.Rotate(shuttle.Primitives[0], 0, 90, 0);
+
+
+            Scene.AddShape(body);
+            //shapeEditor.Rotate(body, 0, 0, 0);
+            //Scene.AddShape(shuttle);
 
             screen.Source = Scene.Render();
 
